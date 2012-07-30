@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
@@ -42,19 +43,23 @@ public class DisplaySearchResultsActivity extends ListActivity {
 	private class CovertImageToBitMap extends AsyncTask<ArrayList<Profile>, Integer, ArrayList<Profile>> {
 	 
 		private Context context;
-		
+
 		public CovertImageToBitMap(DisplaySearchResultsActivity activity) {
 			super();
 			this.context = activity;
+
 		}
 
 		@Override
 		protected ArrayList<Profile> doInBackground(ArrayList<Profile>... params) {
-			
-			return ConvertImagetoBitmap.getImageBitmap(params[0]);
+			for(Profile profile : params[0]) {
+				profile.setProfileBitMap(ConvertImagetoBitmap.getImageBitmap(profile.getProfileImage()));
+			}
+			return params[0];
 		}
 		
 		protected void onPostExecute(ArrayList<Profile> profileList) {
+
 			mainActivity.setListAdapter(new DisplayCustomerAdapter(
 					DisplaySearchResultsActivity.this, profileList));
 		}
@@ -131,13 +136,13 @@ public class DisplaySearchResultsActivity extends ListActivity {
 				} catch (JSONException e) {
 					e.printStackTrace();
 				} catch (JsonParseException e) {
-					// TODO Auto-generated catch block
+				
 					e.printStackTrace();
 				} catch (JsonMappingException e) {
-					// TODO Auto-generated catch block
+		
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				}
 				
@@ -170,6 +175,13 @@ public class DisplaySearchResultsActivity extends ListActivity {
 		ShowSearchResults searchResults = new ShowSearchResults(destIntent,
 				this);
 		searchResults.execute(request);
+	}
+	
+	@Override
+	public void onListItemClick(ListView l, View v , int position, long id) {
+		Profile profile = (Profile) getListAdapter().getItem(position);
+		Intent intent = new Intent(this, ShowUserProfileActivity.class);
+		intent.putExtra("userId", profile.get_id());
 	}
 
 	@Override

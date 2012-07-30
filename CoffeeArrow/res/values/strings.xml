@@ -9,5 +9,6 @@
     <string name="title_activity_sign_in">SignIn</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_display_search_results">Search Results</string>
+    <string name="title_activity_show_user_profile">ShowUserProfileActivity</string>
 
 </resources>

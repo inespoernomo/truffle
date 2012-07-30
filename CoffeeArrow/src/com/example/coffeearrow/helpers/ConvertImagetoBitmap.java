@@ -21,27 +21,23 @@ import android.graphics.BitmapFactory;
  */
 public class ConvertImagetoBitmap {
 
-	public static ArrayList<Profile> getImageBitmap(
-			ArrayList<Profile> profileList) {
+	public static Bitmap getImageBitmap(String url) {
 
-		for (Profile profile : profileList) {
-			Bitmap bm = null;
-			try {
-				URL aURL = new URL(profile.getProfileImage());
-				URLConnection conn = aURL.openConnection();
-				conn.connect();
-				InputStream is = conn.getInputStream();
-				BufferedInputStream bis = new BufferedInputStream(is);
-				bm = BitmapFactory.decodeStream(bis);
-				profile.setProfileBitMap(bm);
-				bis.close();
-				is.close();
-			} catch (IOException e) {
+		Bitmap bm = null;
+		try {
+			URL aURL = new URL(url);
+			URLConnection conn = aURL.openConnection();
+			conn.connect();
+			InputStream is = conn.getInputStream();
+			BufferedInputStream bis = new BufferedInputStream(is);
+			bm = BitmapFactory.decodeStream(bis);
 
-			}
+			bis.close();
+			is.close();
+		} catch (IOException e) {
 
 		}
-		return profileList;
+		return bm;
 	}
 
 }
