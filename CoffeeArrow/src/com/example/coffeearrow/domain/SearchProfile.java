@@ -11,7 +11,7 @@ import android.graphics.Bitmap;
  * @author Nishant
  *
  */
-public class Profile {
+public class SearchProfile {
 	
 	@Override
 	public String toString() {

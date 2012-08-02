@@ -11,7 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.coffeearrow.domain.Profile;
+import com.example.coffeearrow.domain.SearchProfile;
 import com.example.coffeearrow.helpers.ConvertImagetoBitmap;
 import com.example.coffeearrow.server.IntentFactory;
 import com.example.coffeearrow.server.RequestFactory;
@@ -39,37 +39,38 @@ public class DisplaySearchResultsActivity extends ListActivity {
 	private static final String URL = "http://coffeearrow.com/";
 
 	private DisplaySearchResultsActivity mainActivity = null;
-	
-	private class CovertImageToBitMap extends AsyncTask<ArrayList<Profile>, Integer, ArrayList<Profile>> {
-	 
+
+	private class CovertImageToBitMap extends
+			AsyncTask<ArrayList<SearchProfile>, Integer, ArrayList<SearchProfile>> {
+
 		private Context context;
 
 		public CovertImageToBitMap(DisplaySearchResultsActivity activity) {
 			super();
 			this.context = activity;
-
 		}
 
 		@Override
-		protected ArrayList<Profile> doInBackground(ArrayList<Profile>... params) {
-			for(Profile profile : params[0]) {
-				profile.setProfileBitMap(ConvertImagetoBitmap.getImageBitmap(profile.getProfileImage()));
+		protected ArrayList<SearchProfile> doInBackground(
+				ArrayList<SearchProfile>... params) {
+			for (SearchProfile profile : params[0]) {
+				profile.setProfileBitMap(ConvertImagetoBitmap
+						.getImageBitmap(profile.getProfileImage()));
 			}
 			return params[0];
 		}
-		
-		protected void onPostExecute(ArrayList<Profile> profileList) {
 
+		protected void onPostExecute(ArrayList<SearchProfile> profileList) {
 			mainActivity.setListAdapter(new DisplayCustomerAdapter(
 					DisplaySearchResultsActivity.this, profileList));
 		}
-		
-		public class DisplayCustomerAdapter extends ArrayAdapter<Profile> {
 
-			private ArrayList<Profile> profileList;
+		public class DisplayCustomerAdapter extends ArrayAdapter<SearchProfile> {
+
+			private ArrayList<SearchProfile> profileList;
 
 			public DisplayCustomerAdapter(Context context,
-					ArrayList<Profile> profileList) {
+					ArrayList<SearchProfile> profileList) {
 				super(context, R.layout.activity_display_search_results,
 						profileList);
 				this.profileList = profileList;
@@ -85,7 +86,7 @@ public class DisplaySearchResultsActivity extends ListActivity {
 				TextView textView = (TextView) rowView.findViewById(R.id.label);
 				ImageView imageView = (ImageView) rowView
 						.findViewById(R.id.icon);
-				Profile profile = profileList.get(position);
+				SearchProfile profile = profileList.get(position);
 				textView.setText(profile.toString());
 				imageView.setImageBitmap(profile.getProfileBitMap());
 				return rowView;
@@ -122,31 +123,32 @@ public class DisplaySearchResultsActivity extends ListActivity {
 
 			if (objResult != null) {
 				JSONArray resultArray = (JSONArray) objResult;
-				ArrayList<Profile> profileList = new ArrayList<Profile>();
+				ArrayList<SearchProfile> profileList = new ArrayList<SearchProfile>();
 				ObjectMapper mapper = new ObjectMapper();
 				try {
 					for (int i = 0; i < resultArray.length(); i++) {
 						JSONObject jsonObj = resultArray.getJSONObject(i);
 						String record = jsonObj.toString(1);
-						Profile profile = mapper.readValue(record,
-								Profile.class);
-						
+						SearchProfile profile = mapper.readValue(record,
+								SearchProfile.class);
+
 						profileList.add(profile);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				} catch (JsonParseException e) {
-				
+
 					e.printStackTrace();
 				} catch (JsonMappingException e) {
-		
+
 					e.printStackTrace();
 				} catch (IOException e) {
 
 					e.printStackTrace();
 				}
-				
-				CovertImageToBitMap converter = new CovertImageToBitMap(DisplaySearchResultsActivity.this);
+
+				CovertImageToBitMap converter = new CovertImageToBitMap(
+						DisplaySearchResultsActivity.this);
 				converter.execute(profileList);
 			}
 		}
@@ -176,12 +178,13 @@ public class DisplaySearchResultsActivity extends ListActivity {
 				this);
 		searchResults.execute(request);
 	}
-	
+
 	@Override
-	public void onListItemClick(ListView l, View v , int position, long id) {
-		Profile profile = (Profile) getListAdapter().getItem(position);
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		SearchProfile profile = (SearchProfile) getListAdapter().getItem(position);
 		Intent intent = new Intent(this, ShowUserProfileActivity.class);
 		intent.putExtra("userId", profile.get_id());
+		startActivity(intent);
 	}
 
 	@Override

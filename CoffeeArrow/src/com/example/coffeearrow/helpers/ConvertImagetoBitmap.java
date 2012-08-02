@@ -8,9 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-
-import com.example.coffeearrow.domain.Profile;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,7 +28,6 @@ public class ConvertImagetoBitmap {
 			InputStream is = conn.getInputStream();
 			BufferedInputStream bis = new BufferedInputStream(is);
 			bm = BitmapFactory.decodeStream(bis);
-
 			bis.close();
 			is.close();
 		} catch (IOException e) {
@@ -39,5 +35,4 @@ public class ConvertImagetoBitmap {
 		}
 		return bm;
 	}
-
 }
