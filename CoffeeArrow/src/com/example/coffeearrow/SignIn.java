@@ -29,7 +29,7 @@ public class SignIn extends Activity {
 	public final static String EMAIL = "com.coffeearrow.signIn.Email";
 	public final static String PASSWORD = "com.coffeearrow.signIn.Password";
 	private static final String URL = "http://coffeearrow.com/";
-	
+	private SignIn mainActivity = null;
 	
 	
 	private class AuthenticateUser extends AsyncTask<HttpPost, Integer, Object> {
@@ -71,10 +71,11 @@ public class SignIn extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		mainActivity = this;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sign_in);
 		Button signInButton = (Button) findViewById(R.id.signInButton);
-		Button signUpButton = (Button) findViewById(R.id.signUpButton);
+		//Button signUpButton = (Button) findViewById(R.id.signUpButton);
 		signInButton.getBackground().setColorFilter(Color.DKGRAY, PorterDuff.Mode.MULTIPLY);
 		//getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
@@ -108,7 +109,6 @@ public class SignIn extends Activity {
 			jsonRequestParams.put("email", email);
 			jsonRequestParams.put("password", password);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -121,7 +121,8 @@ public class SignIn extends Activity {
 
 	/** Called when the user presses signUp button */
 	public void signUp(View view) {
-		// Do something in response to button
+		Intent intent = new Intent(mainActivity, SignUpActivity.class);
+		startActivity(intent);
 	}
 
 }
