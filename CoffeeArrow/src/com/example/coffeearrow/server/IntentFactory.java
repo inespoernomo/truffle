@@ -3,9 +3,7 @@
  */
 package com.example.coffeearrow.server;
 
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.HashMap;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,16 +14,11 @@ import android.content.Intent;
  */
 public class IntentFactory {
 	
-	public static Intent create(Context context, Class<?> targetClass, JSONObject jsonRequestParams ) {
+	public static Intent create(Context context, Class<?> targetClass, HashMap<String, String> requestParams ) {
 		Intent intent = new Intent(context, targetClass);
-		/*try {
-			//intent.putExtra("email", jsonRequestParams.getString("email"));
-			//intent.putExtra("password", jsonRequestParams.getString("password"));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		
+		for (String key : requestParams.keySet()){
+			intent.putExtra(key, requestParams.get(key));
+		}
 		return intent;
 	}
 

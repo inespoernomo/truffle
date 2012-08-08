@@ -1,5 +1,7 @@
 package com.example.coffeearrow;
 
+import java.util.HashMap;
+
 import org.apache.http.client.methods.HttpPost;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +35,6 @@ public class SignIn extends Activity {
 	
 	
 	private class AuthenticateUser extends AsyncTask<HttpPost, Integer, Object> {
-		
 		
 		private Intent intent;
 		public AuthenticateUser(Intent intent) {
@@ -103,17 +104,12 @@ public class SignIn extends Activity {
 		String email = emailText.getText().toString();
 		EditText passwordText = (EditText) findViewById(R.id.password);
 		String password = passwordText.getText().toString();
-
-		JSONObject jsonRequestParams = new JSONObject();
-		try {
-			jsonRequestParams.put("email", email);
-			jsonRequestParams.put("password", password);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		HashMap<String, String> requestParams = new HashMap<String, String>();
+	    requestParams.put("email", email);
+	    requestParams.put("password", password);
 		
-		HttpPost request = RequestFactory.create(URL, jsonRequestParams, "signInNative");	
-		Intent intent = IntentFactory.create(this, DisplaySearchResultsActivity.class, jsonRequestParams);
+		HttpPost request = RequestFactory.create(URL, requestParams, "signInNative");	
+		Intent intent = IntentFactory.create(this, DisplaySearchResultsActivity.class, requestParams);
 		
 		AuthenticateUser authenticateUser = new AuthenticateUser(intent);
 		authenticateUser.execute(request);

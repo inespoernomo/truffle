@@ -1,6 +1,7 @@
 package com.example.coffeearrow;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.apache.http.client.methods.HttpPost;
 import org.codehaus.jackson.JsonParseException;
@@ -182,15 +183,11 @@ public class ShowUserProfileActivity extends Activity {
 		Intent sourceIntent = getIntent();
 		
 		String userId = sourceIntent.getStringExtra("userId");
-
-		JSONObject jsonRequestParams = new JSONObject();
-		try {
-			jsonRequestParams.put("userId", userId);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		HashMap<String, String> requestParams = new HashMap<String, String>();
+	    requestParams.put("userId", userId);
 		
-		HttpPost request = RequestFactory.create(URL, jsonRequestParams,
+		
+		HttpPost request = RequestFactory.create(URL, requestParams,
 				"getUserProfile");
 		GetUserProfile getUserProfile = new GetUserProfile(this);
 		getUserProfile.execute(request);

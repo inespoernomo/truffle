@@ -1,5 +1,7 @@
 package com.example.coffeearrow;
 
+import java.util.HashMap;
+
 import org.apache.http.client.methods.HttpPost;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -95,23 +97,19 @@ public class SignUpActivity extends Activity {
 
 		int selectedLookingFor = radioLookingForGroup.getCheckedRadioButtonId();
 		RadioButton checkedLookingFor = (RadioButton) findViewById(selectedLookingFor);
-
-		JSONObject jsonRequestParams = new JSONObject();
-		try {
-			jsonRequestParams.put("firstName", name);
-			jsonRequestParams.put("email", email);
-			jsonRequestParams.put("password", password);
-			jsonRequestParams.put("zipCode", zipCode);
-			jsonRequestParams.put("gender", checkedGender.getText());
-			jsonRequestParams.put("looking", checkedLookingFor.getText());
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		
+		HashMap<String, String> requestParams = new HashMap<String, String>();
+	    requestParams.put("firstName", name);
+	    requestParams.put("email", email);
+	    requestParams.put("password", password);
+	    requestParams.put("zipCode", zipCode);
+	    requestParams.put("gender", checkedGender.getText().toString());
+	    requestParams.put("looking", checkedLookingFor.getText().toString());
 
 		HttpPost request = RequestFactory
-				.create(URL, jsonRequestParams, "submitUserInfoNative");
+				.create(URL, requestParams, "submitUserInfoNative");
 		Intent intent = IntentFactory.create(this,
-				PendingVerificationActivity.class, jsonRequestParams);
+				PendingVerificationActivity.class, requestParams);
 
 		SubmitUserInfo authenticateUser = new SubmitUserInfo(intent);
 		authenticateUser.execute(request);

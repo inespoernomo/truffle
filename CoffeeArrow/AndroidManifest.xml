@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-       <activity
+        <activity
             android:name=".SignIn"
             android:label="@string/signIn" >
             <meta-data
@@ -64,6 +64,15 @@
         <activity
             android:name=".PendingVerificationActivity"
             android:label="@string/title_activity_pending_verification" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".RequestHistoryActivity"
+            android:label="@string/title_activity_request_history" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
