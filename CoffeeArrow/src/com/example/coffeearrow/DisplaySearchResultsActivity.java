@@ -2,6 +2,7 @@ package com.example.coffeearrow;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.http.client.methods.HttpPost;
 import org.codehaus.jackson.JsonParseException;
@@ -161,19 +162,14 @@ public class DisplaySearchResultsActivity extends ListActivity {
 
 		Intent sourceIntent = getIntent();
 		String userId = sourceIntent.getStringExtra("userId");
-
-		JSONObject jsonRequestParams = new JSONObject();
-		try {
-			jsonRequestParams.put("userId", userId);
-			jsonRequestParams.put("ageRange", "19-30");
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
-		HttpPost request = RequestFactory.create(URL, jsonRequestParams,
+		HashMap<String, String> requestParams = new HashMap<String, String>();
+	    requestParams.put("userId", userId);
+	    requestParams.put("ageRange", "19-30");
+		
+		HttpPost request = RequestFactory.create(URL, requestParams,
 				"getSearchResultsNative");
 		Intent destIntent = IntentFactory.create(this,
-				DisplaySearchResultsActivity.class, jsonRequestParams);
+				DisplaySearchResultsActivity.class, requestParams);
 		ShowSearchResults searchResults = new ShowSearchResults(destIntent,
 				this);
 		searchResults.execute(request);

@@ -15,19 +15,27 @@ import org.json.JSONObject;
  */
 public class RequestFactory {
 
-	public static HttpPost create(String url, JSONObject jsonObj, String method) {
+	public static HttpPost create(String url, Map<String, String> query, String method) {
 		
 		HttpPost request = new HttpPost(url + method);
-        request.addHeader("content-type", "application/json");
-        StringEntity requestParams = null;	
+		request.addHeader("content-type", "application/json");
+		StringEntity requestParams = null; 
+		JSONObject jsonObj = new JSONObject();
+
 		try {
+			for (String key: query.keySet()) {
+				jsonObj.put(key, query.get(key));
+			}
 			requestParams = new StringEntity(jsonObj.toString(), HTTP.UTF_8);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-        request.setEntity(requestParams);
-        return request;
+
+		request.setEntity(requestParams);
+		return request;
 	}
 }
