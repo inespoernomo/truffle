@@ -114,6 +114,9 @@ public class NotificationsActivity extends ListActivity {
 			extendedData.put("showSure", "true");
 			
 		}
+		
+		
+		
 		extendedData.put("matchId", item.get_id());
 		extendedData.put("lockedDate", item.getLocked());
 		extendedData.put("dateName", item.getName());
