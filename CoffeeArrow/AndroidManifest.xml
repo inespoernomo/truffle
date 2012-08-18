@@ -37,6 +37,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".NotificationsActivity"
+            android:label="@string/title_activity_notifications" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity
             android:name=".DisplaySearchResultsActivity"
             android:label="@string/title_activity_display_search_results" >
             <meta-data

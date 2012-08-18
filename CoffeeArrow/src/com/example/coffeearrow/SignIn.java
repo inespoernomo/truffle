@@ -22,7 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.support.v4.app.NavUtils;
+//import android.support.v4.app.NavUtils;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 
@@ -63,6 +63,9 @@ public class SignIn extends Activity {
 			if ("Failed".equals(userId)) {
 				String message = "Invalid Username/Password";
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+			} else if("NotVerified".equals(userId))  {
+				String message = "Account not verfied, check your work email for verification link";
+				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 			} else {
 				intent.putExtra("userId", userId);
 				startActivity(intent);
@@ -91,7 +94,7 @@ public class SignIn extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			NavUtils.navigateUpFromSameTask(this);
+			//NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
