@@ -20,9 +20,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -30,6 +32,8 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Typeface;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -103,7 +107,7 @@ public class ShowUserProfileActivity extends Activity {
 						//Bitmap mutableBitMap = image.getBitMapImgLink().copy(image.getBitMapImgLink().getConfig(), true);
 						//canvas.setBitmap(mutableBitMap);
 						canvas.drawBitmap(image.getBitMapImgLink(), 0, 0, paint);
-						canvas.drawText(image.getImgCaption(), 150, 270, paint);
+						//canvas.drawText(image.getImgCaption(), 150, 270, paint);
 					}
 					
 				}
@@ -191,13 +195,35 @@ public class ShowUserProfileActivity extends Activity {
 				"getUserProfile");
 		GetUserProfile getUserProfile = new GetUserProfile(this);
 		getUserProfile.execute(request);
-		
-		//setContentView(R.layout.activity_show_user_profile);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_show_user_profile, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+		String userId = settings.getString("userId", null);
+		
+		if(item.getItemId() == R.id.instagram) {
+			
+			Context mContext = this;
+			Dialog dialog = new Dialog(mContext);
+
+			dialog.setContentView(R.layout.instagram_layout);
+			dialog.setTitle("Instagram sign in");
+			dialog.setOwnerActivity(mainActivity);
+			
+			dialog.show();
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	public void signIn(View view) {
+		//Intent intent = new Intent(mainActivity, InstagramPicturesActivity.class);
+		//startActivity(intent);
 	}
 }

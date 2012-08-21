@@ -3,4 +3,16 @@
         android:title="@string/menu_settings"
         android:orderInCategory="100"
         android:showAsAction="never" />
+    
+      <item android:id="@+id/notifications"
+        android:title="Notifications"
+        android:showAsAction="always"
+        android:orderInCategory="0" />
+     
+      <item android:id="@+id/userProfile"
+        android:title="User Profile"
+        android:showAsAction="always"
+        android:orderInCategory="1" />
+   
+    
 </menu>

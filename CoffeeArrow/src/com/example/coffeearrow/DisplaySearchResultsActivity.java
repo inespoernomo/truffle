@@ -24,6 +24,7 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -159,9 +160,17 @@ public class DisplaySearchResultsActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mainActivity = this;
+		
+		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+		SharedPreferences.Editor editor = settings.edit();
+		
 
 		Intent sourceIntent = getIntent();
 		String userId = sourceIntent.getStringExtra("userId");
+		
+		editor.putString("userId", userId);
+		editor.commit();
+		
 		HashMap<String, String> requestParams = new HashMap<String, String>();
 	    requestParams.put("userId", userId);
 	    requestParams.put("ageRange", "19-30");
@@ -191,10 +200,23 @@ public class DisplaySearchResultsActivity extends ListActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+		String userId = settings.getString("userId", null);
+		
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
+		}
+		if(item.getItemId() == R.id.notifications) {
+			Intent intent = new Intent(this, NotificationsActivity.class);
+			intent.putExtra("userId", userId);
+			startActivity(intent);
+		}
+		if(item.getItemId() == R.id.userProfile) {
+			Intent intent = new Intent(this, ShowUserProfileActivity.class);
+			intent.putExtra("userId",userId);
+			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
 	}
