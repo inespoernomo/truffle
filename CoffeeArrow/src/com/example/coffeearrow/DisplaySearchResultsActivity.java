@@ -44,12 +44,17 @@ public class DisplaySearchResultsActivity extends ListActivity {
 
 	private class CovertImageToBitMap extends
 			AsyncTask<ArrayList<SearchProfile>, Integer, ArrayList<SearchProfile>> {
+		
+		// This is the second progress dialog we display while doing the convert image to big map async task.
+		// TOOD: There is a gap in between the 2 progress dialogs. See if they can be combined to one.
+		private ProgressDialog dialog;
 
 		private Context context;
 
 		public CovertImageToBitMap(DisplaySearchResultsActivity activity) {
 			super();
 			this.context = activity;
+			dialog = new ProgressDialog(activity);
 		}
 
 		@Override
@@ -61,10 +66,20 @@ public class DisplaySearchResultsActivity extends ListActivity {
 			}
 			return params[0];
 		}
+		
+		protected void onPreExecute() {
+			// Display the progress dialog.
+			this.dialog.setMessage("Populating results...");
+			this.dialog.show();
+		}
 
 		protected void onPostExecute(ArrayList<SearchProfile> profileList) {
 			mainActivity.setListAdapter(new DisplayCustomerAdapter(
 					DisplaySearchResultsActivity.this, profileList));
+			
+			// Dismiss the progress dialog
+			if (dialog.isShowing())
+				dialog.dismiss();
 		}
 
 		public class DisplayCustomerAdapter extends ArrayAdapter<SearchProfile> {
@@ -99,6 +114,8 @@ public class DisplaySearchResultsActivity extends ListActivity {
 	private class ShowSearchResults extends
 			AsyncTask<HttpPost, Integer, Object> {
 
+		// This is the first progress dialog we display while fetching the search result.
+		// TOOD: There is a gap in between the 2 progress dialogs. See if they can be combined to one.
 		private ProgressDialog dialog;
 
 		public ShowSearchResults(Intent intent,
@@ -108,6 +125,7 @@ public class DisplaySearchResultsActivity extends ListActivity {
 		}
 
 		protected void onPreExecute() {
+			// Display the progress dialog.
 			this.dialog.setMessage("Populating results...");
 			this.dialog.show();
 		}
@@ -120,9 +138,6 @@ public class DisplaySearchResultsActivity extends ListActivity {
 
 		@SuppressWarnings("unchecked")
 		protected void onPostExecute(Object objResult) {
-			if (dialog.isShowing())
-				dialog.dismiss();
-
 			if (objResult != null) {
 				JSONArray resultArray = (JSONArray) objResult;
 				ArrayList<SearchProfile> profileList = new ArrayList<SearchProfile>();
@@ -152,6 +167,10 @@ public class DisplaySearchResultsActivity extends ListActivity {
 				CovertImageToBitMap converter = new CovertImageToBitMap(
 						DisplaySearchResultsActivity.this);
 				converter.execute(profileList);
+				
+				// Dismiss the progress dialog.
+				if (dialog.isShowing())
+					dialog.dismiss();
 			}
 		}
 	}
