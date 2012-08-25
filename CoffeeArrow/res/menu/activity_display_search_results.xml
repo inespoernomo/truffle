@@ -5,12 +5,12 @@
         android:showAsAction="never" />
     
       <item android:id="@+id/notifications"
-        android:title="Notifications"
+        android:title="My dates"
         android:showAsAction="always"
         android:orderInCategory="0" />
      
       <item android:id="@+id/userProfile"
-        android:title="User Profile"
+        android:title="\@Me"
         android:showAsAction="always"
         android:orderInCategory="1" />
    

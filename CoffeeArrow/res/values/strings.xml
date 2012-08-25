@@ -2,7 +2,7 @@
 
     <string name="app_name">CoffeeArrow</string>
     <string name="notifications">My Notifications</string>
-    <string name="title_activity_notifications">NotificationsActivity</string>
+    <string name="title_activity_notifications">My dates</string>
     <string name="title_activity_request_history">RequestHistoryActivity</string>
     <string name="newTimeButton">Propose New Time</string>
     <string name="email">Email</string>
@@ -23,7 +23,7 @@
     <string name="signWithInstagram">Upload Picture</string>
     <string name="title_activity_sign_in">Sign In</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_display_search_results">Search Results</string>
+    <string name="title_activity_display_search_results">Matches</string>
     <string name="title_activity_show_user_profile">Profile</string>
     <string name="title_activity_sign_up">Sign Up</string>
     <string name="title_activity_pending_verification">PendingVerificationActivity</string>
