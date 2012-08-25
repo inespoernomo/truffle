@@ -226,22 +226,9 @@ public class ShowUserProfileActivity extends Activity {
 		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
 		String userId = settings.getString("userId", null);
 		
-		if(item.getItemId() == R.id.instagram) {
-			
-			Context mContext = this;
-			Dialog dialog = new Dialog(mContext);
-
-			dialog.setContentView(R.layout.instagram_layout);
-			dialog.setTitle("Instagram sign in");
-			dialog.setOwnerActivity(mainActivity);
-			
-			dialog.show();
+		if(item.getItemId() == R.id.sendInvitation) {
+			//TODO: Hook up send invitation.
 		}
 		return super.onOptionsItemSelected(item);
-	}
-	
-	public void signIn(View view) {
-		//Intent intent = new Intent(mainActivity, InstagramPicturesActivity.class);
-		//startActivity(intent);
 	}
 }

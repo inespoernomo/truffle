@@ -30,5 +30,6 @@
     <string name="pendingVerificationMessage">        Please verify your work email and you ll automatically taken to app again.</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="uploadPhotoMenuItem">Upload Photo</string>
+    <string name="sendInvitationMenuItemTitle">Invite</string>
 
 </resources>

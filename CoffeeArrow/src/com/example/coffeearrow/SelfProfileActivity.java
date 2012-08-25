@@ -217,7 +217,7 @@ public class SelfProfileActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_show_user_profile, menu);
+		getMenuInflater().inflate(R.menu.activity_self_profile, menu);
 		return true;
 	}
 	
