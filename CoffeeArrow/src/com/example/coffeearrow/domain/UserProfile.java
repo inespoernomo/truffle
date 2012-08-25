@@ -61,6 +61,9 @@ public class UserProfile {
 			this.imgCaption = imgCaption;
 		}
 		
+		public String toString() {
+			return "{imgLink:"+imgLink+", imgCaption:"+imgCaption+"}";
+		}
 	}
 	
 	@Override

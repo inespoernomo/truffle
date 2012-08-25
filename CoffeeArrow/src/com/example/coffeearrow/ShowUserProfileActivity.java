@@ -86,13 +86,13 @@ public class ShowUserProfileActivity extends Activity {
 			textView.setText(userProfile.getFirstName());
 			imageView.setImageBitmap(userProfile.getProfileImageBitMap());
 			LinearLayout layout = (LinearLayout) findViewById(R.id.container);
-			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(300, 300);
+			//LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(300, 300);
 			
 			for(final UserProfile.Image image : userProfile.getImages()) {
 				TextView textView1 = new TextView(context);
 				textView1.setText(image.getImgCaption());
 				ImageView imageView1 = new ImageView(context);
-				imageView1.setLayoutParams(layoutParams);
+				//imageView1.setLayoutParams(layoutParams);
 				imageView1.setImageBitmap(image.getBitMapImgLink());
 				
 				class MyImageView extends ImageView {
@@ -123,11 +123,13 @@ public class ShowUserProfileActivity extends Activity {
 					
 				}
 				MyImageView myImageView = new MyImageView(context);
-				myImageView.setLayoutParams(layoutParams);
+				//myImageView.setLayoutParams(layoutParams);
 				myImageView.setImageBitmap(image.getBitMapImgLink());
 			    //imageView1.setImageResource(R.drawable.);
 				//textView1.setBackgroundResource(imageView1.getResources());
 				layout.addView(myImageView);
+				
+				layout.addView(textView1);
 				
 			}
 			
@@ -186,6 +188,9 @@ public class ShowUserProfileActivity extends Activity {
 
 					e.printStackTrace();
 				}
+				
+				System.out.println("Got back the user profile:");
+				System.out.println(userProfile);
 
 				CovertImageToBitMap converter = new CovertImageToBitMap(
 						ShowUserProfileActivity.this);
@@ -205,12 +210,16 @@ public class ShowUserProfileActivity extends Activity {
 		Intent sourceIntent = getIntent();
 		
 		String userId = sourceIntent.getStringExtra("userId");
+		System.out.println("Got user id from source intent:");
+		System.out.println(userId);
 		HashMap<String, String> requestParams = new HashMap<String, String>();
 	    requestParams.put("userId", userId);
 		
 		
 		HttpPost request = RequestFactory.create(URL, requestParams,
 				"getUserProfile");
+		System.out.println("Created request:");
+		System.out.println(request);
 		GetUserProfile getUserProfile = new GetUserProfile(this);
 		getUserProfile.execute(request);
 	}
