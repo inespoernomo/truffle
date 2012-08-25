@@ -48,10 +48,15 @@ public class ShowUserProfileActivity extends Activity {
 			AsyncTask<UserProfile, Integer, UserProfile> {
 
 		private Context context;
+		
+		// This is the second progress dialog we display while doing the convert image to big map async task.
+		// TOOD: There is a gap in between the 2 progress dialogs. See if they can be combined to one.
+		private ProgressDialog dialog;
 
 		public CovertImageToBitMap(ShowUserProfileActivity activity) {
 			super();
 			this.context = activity;
+			dialog = new ProgressDialog(activity);
 		}
 
 		@Override
@@ -66,6 +71,12 @@ public class ShowUserProfileActivity extends Activity {
 			}
 			
 			return userProfile;
+		}
+		
+		protected void onPreExecute() {
+			// Display the progress dialog.
+			this.dialog.setMessage("Fetching images...");
+			this.dialog.show();
 		}
 
 		protected void onPostExecute(UserProfile userProfile) {
@@ -120,6 +131,9 @@ public class ShowUserProfileActivity extends Activity {
 				
 			}
 			
+			// Dismiss the progress dialog
+			if (dialog.isShowing())
+				dialog.dismiss();
 		}
 
 	}
@@ -127,6 +141,8 @@ public class ShowUserProfileActivity extends Activity {
 	private class GetUserProfile extends
 			AsyncTask<HttpPost, Integer, Object> {
 
+		// This is the first progress dialog we display while fetching the user info.
+		// TOOD: There is a gap in between the 2 progress dialogs. See if they can be combined to one.
 		private ProgressDialog dialog;
 
 		public GetUserProfile(ShowUserProfileActivity activity) {
@@ -135,6 +151,7 @@ public class ShowUserProfileActivity extends Activity {
 		}
 
 		protected void onPreExecute() {
+			// Display the progress dialog.
 			this.dialog.setMessage("Building profile...");
 			this.dialog.show();
 		}
@@ -146,9 +163,6 @@ public class ShowUserProfileActivity extends Activity {
 		}
 
 		protected void onPostExecute(Object objResult) {
-			if (dialog.isShowing())
-				dialog.dismiss();
-
 			if (objResult != null) {
 				JSONArray resultArray = (JSONArray) objResult;
 				UserProfile userProfile = null;
@@ -177,6 +191,10 @@ public class ShowUserProfileActivity extends Activity {
 						ShowUserProfileActivity.this);
 				converter.execute(userProfile);
 			}
+			
+			// Dismiss the progress dialog
+			if (dialog.isShowing())
+				dialog.dismiss();
 		}
 	}
 

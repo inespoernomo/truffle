@@ -69,7 +69,7 @@ public class DisplaySearchResultsActivity extends ListActivity {
 		
 		protected void onPreExecute() {
 			// Display the progress dialog.
-			this.dialog.setMessage("Populating results...");
+			this.dialog.setMessage("Fetching images...");
 			this.dialog.show();
 		}
 
