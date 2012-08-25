@@ -53,6 +53,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".SelfProfileActivity"
+            android:label="@string/title_activity_show_user_profile" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>        
+        <activity
             android:name=".SignUpActivity"
             android:label="@string/title_activity_sign_up" >
             <intent-filter>

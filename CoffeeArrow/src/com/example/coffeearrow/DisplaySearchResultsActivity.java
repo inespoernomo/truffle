@@ -233,7 +233,7 @@ public class DisplaySearchResultsActivity extends ListActivity {
 			startActivity(intent);
 		}
 		if(item.getItemId() == R.id.userProfile) {
-			Intent intent = new Intent(this, ShowUserProfileActivity.class);
+			Intent intent = new Intent(this, SelfProfileActivity.class);
 			intent.putExtra("userId",userId);
 			startActivity(intent);
 		}
