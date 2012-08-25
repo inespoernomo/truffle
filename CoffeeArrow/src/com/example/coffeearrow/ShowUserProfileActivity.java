@@ -79,58 +79,29 @@ public class ShowUserProfileActivity extends Activity {
 			this.dialog.show();
 		}
 
+		// After convert all the images to bitmap, show them.
 		protected void onPostExecute(UserProfile userProfile) {
+			// We setup the content view here instead of in the onCreate method of the main activity because
+			// If we put it in onCreate, we do not have enough information at that time and will display 
+			// empty info like (null) etc, and it's bad for user experience.
 			mainActivity.setContentView(R.layout.activity_show_user_profile);
+			
+			// This is the name and profile picture.
 			TextView textView = (TextView) findViewById(R.id.label);
 			ImageView imageView = (ImageView)findViewById(R.id.icon);
 			textView.setText(userProfile.getFirstName());
 			imageView.setImageBitmap(userProfile.getProfileImageBitMap());
 			LinearLayout layout = (LinearLayout) findViewById(R.id.container);
-			//LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(300, 300);
 			
+			// Here we get all the pictures of this user with caption.
+			// TODO: Cache locally.
 			for(final UserProfile.Image image : userProfile.getImages()) {
 				TextView textView1 = new TextView(context);
 				textView1.setText(image.getImgCaption());
 				ImageView imageView1 = new ImageView(context);
-				//imageView1.setLayoutParams(layoutParams);
 				imageView1.setImageBitmap(image.getBitMapImgLink());
-				
-				class MyImageView extends ImageView {
-
-					public MyImageView(Context context) {
-						super(context);
-						// TODO Auto-generated constructor stub
-					}
-					
-					@SuppressLint("DrawAllocation")
-					@Override
-					public void onDraw(Canvas canvas) {
-						Typeface typeFace = Typeface.create("Helvetica",1);
-						Paint paint = new Paint();
-						paint.setColor(Color.WHITE); 
-						paint.setStyle(Style.FILL); 
-						paint.setTypeface(typeFace);
-						canvas.drawPaint(paint); 
-
-						paint.setColor(Color.WHITE); 
-						paint.setTextSize(20);
-						paint.setTextAlign(Align.CENTER);
-						//Bitmap mutableBitMap = image.getBitMapImgLink().copy(image.getBitMapImgLink().getConfig(), true);
-						//canvas.setBitmap(mutableBitMap);
-						canvas.drawBitmap(image.getBitMapImgLink(), 0, 0, paint);
-						//canvas.drawText(image.getImgCaption(), 150, 270, paint);
-					}
-					
-				}
-				MyImageView myImageView = new MyImageView(context);
-				//myImageView.setLayoutParams(layoutParams);
-				myImageView.setImageBitmap(image.getBitMapImgLink());
-			    //imageView1.setImageResource(R.drawable.);
-				//textView1.setBackgroundResource(imageView1.getResources());
-				layout.addView(myImageView);
-				
+				layout.addView(imageView1);
 				layout.addView(textView1);
-				
 			}
 			
 			// Dismiss the progress dialog
