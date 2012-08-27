@@ -15,25 +15,20 @@ import com.example.coffeearrow.domain.UserProfile;
 import com.example.coffeearrow.helpers.ConvertImagetoBitmap;
 import com.example.coffeearrow.server.RequestFactory;
 import com.example.coffeearrow.server.ServerInterface;
+import com.example.coffeearrow.helpers.SquareFrameLayout;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Align;
-import android.graphics.Paint.Style;
-import android.graphics.Typeface;
+import android.graphics.Point;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -91,17 +86,43 @@ public class ShowUserProfileActivity extends Activity {
 			ImageView imageView = (ImageView)findViewById(R.id.icon);
 			textView.setText(userProfile.getFirstName());
 			imageView.setImageBitmap(userProfile.getProfileImageBitMap());
-			LinearLayout layout = (LinearLayout) findViewById(R.id.container);
 			
 			// Here we get all the pictures of this user with caption.
 			// TODO: Cache locally.
+			LinearLayout layout = (LinearLayout) findViewById(R.id.container);
+			
 			for(final UserProfile.Image image : userProfile.getImages()) {
+				// Get the size of the display.
+				Display display = getWindowManager().getDefaultDisplay();
+				Point size = new Point();
+				display.getSize(size);
+				int displayWidth = size.x;
+				
+				// A vertical linear layout with one picture (square) and caption for the picture.
+				// Width set to the width of the display
+				LinearLayout onePicWithCaption = new LinearLayout(context);
+				onePicWithCaption.setOrientation(LinearLayout.VERTICAL);
+				onePicWithCaption.setLayoutParams(
+						new LinearLayout.LayoutParams(displayWidth, LinearLayout.LayoutParams.MATCH_PARENT));
+				layout.addView(onePicWithCaption);
+				
+				// This the frame that make sure the picture is in a square frame.
+				SquareFrameLayout picFrame = new SquareFrameLayout(context, null);
+				picFrame.setLayoutParams(
+						new ViewGroup.LayoutParams(displayWidth, ViewGroup.LayoutParams.MATCH_PARENT));
+				onePicWithCaption.addView(picFrame);
+				
+				// This is the image itself.
+				ImageView imageView1 = new ImageView(context);
+				imageView.setAdjustViewBounds(true);
+				imageView1.setImageBitmap(image.getBitMapImgLink());
+				imageView1.setScaleType(ImageView.ScaleType.FIT_CENTER);				
+				picFrame.addView(imageView1);
+
+				// This is the caption for the image.
 				TextView textView1 = new TextView(context);
 				textView1.setText(image.getImgCaption());
-				ImageView imageView1 = new ImageView(context);
-				imageView1.setImageBitmap(image.getBitMapImgLink());
-				layout.addView(imageView1);
-				layout.addView(textView1);
+				onePicWithCaption.addView(textView1);				
 			}
 			
 			// Dismiss the progress dialog
