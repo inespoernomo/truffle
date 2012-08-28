@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import com.example.coffeearrow.domain.SearchProfile;
 import com.example.coffeearrow.helpers.ConvertImagetoBitmap;
+import com.example.coffeearrow.helpers.ImageLoader;
 import com.example.coffeearrow.server.IntentFactory;
 import com.example.coffeearrow.server.RequestFactory;
 import com.example.coffeearrow.server.ServerInterface;
@@ -46,102 +47,10 @@ public class DisplaySearchResultsActivity extends ListActivity {
 
 	private DisplaySearchResultsActivity mainActivity = null;
 
-	private class CovertImageToBitMap extends
-			AsyncTask<ArrayList<SearchProfile>, Integer, ArrayList<SearchProfile>> {
-		
-		// This is the second progress dialog we display while doing the convert image to big map async task.
-		// TOOD: There is a gap in between the 2 progress dialogs. See if they can be combined to one.
-		private ProgressDialog dialog;
-
-		private Context context;
-
-		public CovertImageToBitMap(DisplaySearchResultsActivity activity) {
-			super();
-			this.context = activity;
-			dialog = new ProgressDialog(activity);
-		}
-
-		@Override
-		protected ArrayList<SearchProfile> doInBackground(
-				ArrayList<SearchProfile>... params) {
-			for (SearchProfile profile : params[0]) {
-				profile.setProfileBitMap(ConvertImagetoBitmap
-						.getImageBitmap(profile.getProfileImage()));
-			}
-			return params[0];
-		}
-		
-		protected void onPreExecute() {
-			// Display the progress dialog.
-			this.dialog.setMessage("Fetching images...");
-			this.dialog.show();
-		}
-
-		protected void onPostExecute(ArrayList<SearchProfile> profileList) {
-			mainActivity.setListAdapter(new DisplayCustomerAdapter(
-					DisplaySearchResultsActivity.this, profileList));
-			
-			// Dismiss the progress dialog
-			if (dialog.isShowing())
-				dialog.dismiss();
-		}
-
-		public class DisplayCustomerAdapter extends ArrayAdapter<SearchProfile> {
-
-			private ArrayList<SearchProfile> profileList;
-
-			public DisplayCustomerAdapter(Context context,
-					ArrayList<SearchProfile> profileList) {
-				super(context, R.layout.activity_display_search_results,
-						profileList);
-				this.profileList = profileList;
-			}
-
-			@Override
-			public View getView(int position, View convertView, ViewGroup parent) {
-				// Find the profile
-				SearchProfile profile = profileList.get(position);
-				
-				// Get the empty row view from the xml.
-				LayoutInflater inflater = (LayoutInflater) context
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				View rowView = inflater
-						.inflate(R.layout.activity_display_search_results,
-								parent, false);
-				
-				// Get the size of the display.
-				Display display = getWindowManager().getDefaultDisplay();
-				Point size = new Point();
-				display.getSize(size);
-				
-				// We want to display 5 results each page.
-				int rowHeight = size.y / 5;
-				
-				// So we set the height of the row to 1/5 of the display height.
-				rowView.setLayoutParams(
-						new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, rowHeight));
-				
-				// This is the profile image and we want it to be square.
-				ImageView imageView = (ImageView) rowView
-						.findViewById(R.id.icon);
-				imageView.setImageBitmap(profile.getProfileBitMap());
-				imageView.setLayoutParams(
-						new LinearLayout.LayoutParams(rowHeight, rowHeight));
-				
-				// The is the label for name and city.
-				TextView textView = (TextView) rowView.findViewById(R.id.label);				
-				textView.setText(profile.toString());
-				
-				return rowView;
-			}
-		}
-	}
-
 	private class ShowSearchResults extends
 			AsyncTask<HttpPost, Integer, Object> {
 
 		// This is the first progress dialog we display while fetching the search result.
-		// TOOD: There is a gap in between the 2 progress dialogs. See if they can be combined to one.
 		private ProgressDialog dialog;
 
 		public ShowSearchResults(Intent intent,
@@ -177,6 +86,10 @@ public class DisplaySearchResultsActivity extends ListActivity {
 
 						profileList.add(profile);
 					}
+					
+					mainActivity.setListAdapter(new DisplayCustomerAdapter(
+							DisplaySearchResultsActivity.this, profileList));
+
 				} catch (JSONException e) {
 					e.printStackTrace();
 				} catch (JsonParseException e) {
@@ -190,13 +103,70 @@ public class DisplaySearchResultsActivity extends ListActivity {
 					e.printStackTrace();
 				}
 
-				CovertImageToBitMap converter = new CovertImageToBitMap(
-						DisplaySearchResultsActivity.this);
-				converter.execute(profileList);
-				
 				// Dismiss the progress dialog.
 				if (dialog.isShowing())
 					dialog.dismiss();
+			}
+		}
+		
+		/**
+		 * This is the adapter for the DisplaySearchResultsActivity, which is a ListActiviy.
+		 * Given it the profile list, with just image url, not converted to bitmap, it can easy load each
+		 * picture and cache them when getView is called.
+		 * @author sunshi
+		 *
+		 */
+		public class DisplayCustomerAdapter extends ArrayAdapter<SearchProfile> {
+
+			private ArrayList<SearchProfile> profileList;
+			public ImageLoader imageLoader;
+			
+			public DisplayCustomerAdapter(Context context,
+					ArrayList<SearchProfile> profileList) {
+				super(context, R.layout.activity_display_search_results,
+						profileList);
+				this.profileList = profileList;
+				imageLoader=new ImageLoader(DisplaySearchResultsActivity.this.getApplicationContext());
+			}
+
+			@Override
+			public View getView(int position, View convertView, ViewGroup parent) {
+				// Find the profile
+				SearchProfile profile = profileList.get(position);
+				
+				// Get the empty row view from the xml.
+				LayoutInflater inflater = (LayoutInflater) DisplaySearchResultsActivity.this
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				View rowView = inflater
+						.inflate(R.layout.activity_display_search_results,
+								parent, false);
+				
+				// Get the size of the display.
+				Display display = getWindowManager().getDefaultDisplay();
+				Point size = new Point();
+				display.getSize(size);
+				
+				// We want to display 5 results each page.
+				int rowHeight = size.y / 5;
+				
+				// So we set the height of the row to 1/5 of the display height.
+				rowView.setLayoutParams(
+						new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, rowHeight));
+				
+				// This is the profile image and we want it to be square.
+				ImageView imageView = (ImageView) rowView
+						.findViewById(R.id.icon);
+				imageView.setLayoutParams(
+						new LinearLayout.LayoutParams(rowHeight, rowHeight));
+				
+				// Lazy load and cache the image.
+				imageLoader.DisplayImage(profile.getProfileImage(), imageView);
+				
+				// The is the label for name and city.
+				TextView textView = (TextView) rowView.findViewById(R.id.label);				
+				textView.setText(profile.toString());
+				
+				return rowView;
 			}
 		}
 	}
