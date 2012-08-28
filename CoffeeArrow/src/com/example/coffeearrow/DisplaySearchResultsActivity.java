@@ -25,13 +25,17 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
@@ -95,17 +99,39 @@ public class DisplaySearchResultsActivity extends ListActivity {
 
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
+				// Find the profile
+				SearchProfile profile = profileList.get(position);
+				
+				// Get the empty row view from the xml.
 				LayoutInflater inflater = (LayoutInflater) context
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				View rowView = inflater
 						.inflate(R.layout.activity_display_search_results,
 								parent, false);
-				TextView textView = (TextView) rowView.findViewById(R.id.label);
+				
+				// Get the size of the display.
+				Display display = getWindowManager().getDefaultDisplay();
+				Point size = new Point();
+				display.getSize(size);
+				
+				// We want to display 5 results each page.
+				int rowHeight = size.y / 5;
+				
+				// So we set the height of the row to 1/5 of the display height.
+				rowView.setLayoutParams(
+						new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, rowHeight));
+				
+				// This is the profile image and we want it to be square.
 				ImageView imageView = (ImageView) rowView
 						.findViewById(R.id.icon);
-				SearchProfile profile = profileList.get(position);
-				textView.setText(profile.toString());
 				imageView.setImageBitmap(profile.getProfileBitMap());
+				imageView.setLayoutParams(
+						new LinearLayout.LayoutParams(rowHeight, rowHeight));
+				
+				// The is the label for name and city.
+				TextView textView = (TextView) rowView.findViewById(R.id.label);				
+				textView.setText(profile.toString());
+				
 				return rowView;
 			}
 		}
