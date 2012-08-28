@@ -104,7 +104,7 @@ public class ShowUserProfileActivity extends Activity {
 				TextView textView = (TextView) findViewById(R.id.label);
 				ImageView imageView = (ImageView)findViewById(R.id.icon);
 				textView.setText(userProfile.getFirstName());
-				//imageView.setImageBitmap(userProfile.getProfileImageBitMap());
+
 				// Lazy load and cache the image.
 				imageLoader.DisplayImage(userProfile.getProfileImage(), imageView);
 				imageView.setAdjustViewBounds(true);				

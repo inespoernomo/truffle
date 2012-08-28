@@ -6,17 +6,12 @@ package com.example.coffeearrow.domain;
 import java.util.ArrayList;
 
 import org.codehaus.jackson.annotate.JsonAnySetter;
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-import android.graphics.Bitmap;
 
 /**
  * @author Nishant
  *
  */
 
-@JsonIgnoreProperties
 public class UserProfile {
 	
 	public static class Image {
@@ -34,16 +29,6 @@ public class UserProfile {
 		String imgLink;
 		
 		String imgCaption;
-		
-		Bitmap bitMapImgLink;
-
-		public Bitmap getBitMapImgLink() {
-			return bitMapImgLink;
-		}
-
-		public void setBitMapImgLink(Bitmap bitMapImgLink) {
-			this.bitMapImgLink = bitMapImgLink;
-		}
 
 		public String getImgLink() {
 			return imgLink;
@@ -83,12 +68,6 @@ public class UserProfile {
 	
 	ArrayList<Image> images;
 	
-	@JsonIgnore
-	Bitmap profileImageBitMap;
-	
-	@JsonIgnore
-	ArrayList<Image> imagesBitMapList;
-	
 	@JsonAnySetter
 	public void handleUnknown(String key, Object value) {
 	    // do something: put to a Map; log a warning, whatever
@@ -96,22 +75,6 @@ public class UserProfile {
 	
 	public String getCity() {
 		return city;
-	}
-
-	public Bitmap getProfileImageBitMap() {
-		return profileImageBitMap;
-	}
-
-	public void setProfileImageBitMap(Bitmap profileImageBitMap) {
-		this.profileImageBitMap = profileImageBitMap;
-	}
-
-	public ArrayList<Image> getImagesBitMapList() {
-		return imagesBitMapList;
-	}
-
-	public void setImagesBitMapList(ArrayList<Image> imagesBitMapList) {
-		this.imagesBitMapList = imagesBitMapList;
 	}
 
 	public void setCity(String city) {

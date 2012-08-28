@@ -3,10 +3,6 @@
  */
 package com.example.coffeearrow.domain;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-
-import android.graphics.Bitmap;
-
 /**
  * @author Nishant
  *
@@ -28,19 +24,8 @@ public class SearchProfile {
 	
 	String profileImage;
 	
-	@JsonIgnore
-	Bitmap profileBitMap;
-	
 	String _id;
 	
-	public Bitmap getProfileBitMap() {
-		return profileBitMap;
-	}
-
-	public void setProfileBitMap(Bitmap profileBitMap) {
-		this.profileBitMap = profileBitMap;
-	}
-
 	public String getFirstName() {
 		return firstName;
 	}
