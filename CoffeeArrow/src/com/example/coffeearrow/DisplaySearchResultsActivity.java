@@ -13,7 +13,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.coffeearrow.domain.SearchProfile;
-import com.example.coffeearrow.helpers.ConvertImagetoBitmap;
 import com.example.coffeearrow.helpers.ImageLoader;
 import com.example.coffeearrow.server.IntentFactory;
 import com.example.coffeearrow.server.RequestFactory;

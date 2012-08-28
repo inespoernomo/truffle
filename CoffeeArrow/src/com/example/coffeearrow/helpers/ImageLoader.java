@@ -1,13 +1,16 @@
 package com.example.coffeearrow.helpers;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -17,6 +20,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.widget.ImageView;
 
 public class ImageLoader {
@@ -59,21 +63,29 @@ public class ImageLoader {
         
         //from SD cache
         Bitmap b = decodeFile(f);
-        if(b!=null)
+        if(b!=null) {
+        	Log.i("ImageLoader", "Hit local file cache for file: "+url);
             return b;
+        }
+    	Log.i("ImageLoader", "Missed local file cache for file: "+url);        
         
         //from web
         try {
+        	// Setup the connections.
             Bitmap bitmap=null;
             URL imageUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection)imageUrl.openConnection();
             conn.setConnectTimeout(30000);
             conn.setReadTimeout(30000);
             conn.setInstanceFollowRedirects(true);
+            
+            // Save image to file.
             InputStream is=conn.getInputStream();
             OutputStream os = new FileOutputStream(f);
             CopyStream(is, os);
             os.close();
+            
+            // Then decode the file.
             bitmap = decodeFile(f);
             return bitmap;
         } catch (Throwable ex){
@@ -84,9 +96,11 @@ public class ImageLoader {
         }
     }
 
-    //decodes image and scales it to reduce memory consumption
+    //decodes image from file
     private Bitmap decodeFile(File f){
         try {
+        	// For reference in case in future we want to scales it to reduce memory consumption.
+        	/*
             //decode image size
             BitmapFactory.Options o = new BitmapFactory.Options();
             o.inJustDecodeBounds = true;
@@ -107,7 +121,9 @@ public class ImageLoader {
             //decode with inSampleSize
             BitmapFactory.Options o2 = new BitmapFactory.Options();
             o2.inSampleSize=scale;
-            return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+            return BitmapFactory.decodeStream(new FileInputStream(f));
+            */
+            return BitmapFactory.decodeStream(new FileInputStream(f));
         } catch (FileNotFoundException e) {}
         return null;
     }
