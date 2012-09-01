@@ -16,6 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 
 /**
  * @author Nishant
@@ -28,10 +30,13 @@ public class ServerInterface {
         HttpResponse response = null;
         JSONArray finalResult = null;
 		try {
+			Log.i("SeverInterface", "request url is:"+request.getURI());
 			response = httpClient.execute(request);
+			Log.i("ServerInterface", "response code:"+response.getStatusLine());
 			BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
 			String json = reader.readLine();
 			System.out.println(json);
+			Log.i("ServerInterface", "json is:"+json);
 			JSONObject obj = new JSONObject(json);
 			finalResult = obj.getJSONArray("results");
 		} catch (ClientProtocolException e) {		

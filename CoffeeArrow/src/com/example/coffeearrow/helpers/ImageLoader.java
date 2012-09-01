@@ -41,10 +41,13 @@ public class ImageLoader {
     {
         imageViews.put(imageView, url);
         Bitmap bitmap=memoryCache.get(url);
-        if(bitmap!=null)
+        if(bitmap!=null) {
+        	Log.i("ImageLoader", "Hit memory cache for: "+url);
             imageView.setImageBitmap(bitmap);
+        }
         else
         {
+        	Log.i("ImageLoader", "Missed memory cache for: "+url);
             queuePhoto(url, imageView);
             // TODO: Get a temp image for lazy loading
             // imageView.setImageResource(stub_id);

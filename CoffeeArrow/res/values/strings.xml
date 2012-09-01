@@ -31,5 +31,7 @@
     <string name="title_activity_test">TestActivity</string>
     <string name="uploadPhotoMenuItem">Upload Photo</string>
     <string name="sendInvitationMenuItemTitle">Invite</string>
+    <string name="title_activity_upload_image">Upload Image</string>
+    <string name="imageCaptionLabel">Caption:</string>
 
 </resources>

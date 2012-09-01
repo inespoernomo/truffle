@@ -40,6 +40,7 @@ public class SignUpActivity extends Activity {
 			return ServerInterface.executeHttpRequest(params[0]);
 		}
 
+		//TODO: Add preExecute for spinning wheel
 		protected void onPostExecute(Object objResult) {
 			JSONArray resultArray = (JSONArray) objResult;
 			String status = null;

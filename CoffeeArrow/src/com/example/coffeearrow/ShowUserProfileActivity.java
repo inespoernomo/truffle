@@ -37,6 +37,7 @@ public class ShowUserProfileActivity extends Activity {
 	private static final String URL = "http://coffeearrow.com/";
 	
 	private ShowUserProfileActivity mainActivity = null;
+	protected String userId; 
 
 	private class GetUserProfile extends
 			AsyncTask<HttpPost, Integer, Object> {
@@ -160,9 +161,8 @@ public class ShowUserProfileActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		Intent sourceIntent = getIntent();
 		
-		String userId = sourceIntent.getStringExtra("userId");
-		System.out.println("Got user id from source intent:");
-		System.out.println(userId);
+		userId = sourceIntent.getStringExtra("userId");
+		System.out.println("Got user id from source intent:"+userId);
 		HashMap<String, String> requestParams = new HashMap<String, String>();
 	    requestParams.put("userId", userId);
 		
