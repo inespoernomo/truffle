@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.example.coffeearrow.adapter.NotificationAdapter;
 import com.example.coffeearrow.domain.NotificationItem;
-import com.example.coffeearrow.server.IntentFactory;
 import com.example.coffeearrow.server.RequestFactory;
 import com.example.coffeearrow.server.ServerInterface;
 
@@ -92,7 +91,7 @@ public class NotificationsActivity extends ListActivity {
 		requestParams.put("userId", "3495999573");
 
 		HttpPost request = RequestFactory.create(URL, requestParams, "getAllNotificationsNative");	
-		Intent destIntent = IntentFactory.create(this, NotificationsActivity.class, requestParams);
+		Intent destIntent = new Intent(this, NotificationsActivity.class);
 		NotificationsTask notifications = new NotificationsTask(destIntent);
         notifications.execute(request);
 
@@ -108,20 +107,17 @@ public class NotificationsActivity extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id) {
     	NotificationItem item = (NotificationItem) getListAdapter().getItem(position);
 		Toast.makeText(this, item.getName() + " selected", Toast.LENGTH_LONG).show();
-		HashMap<String, String> extendedData = new HashMap<String, String>();
+		
+		Intent destIntent = new Intent(this, RequestHistoryActivity.class);
 	
 		if (item.getLatestInitiatorId().equals(item.getUserId())) {
-			extendedData.put("showSure", "true");
+			destIntent.putExtra("showSure", "true");
 			
 		}
-		
-		
-		
-		extendedData.put("matchId", item.get_id());
-		extendedData.put("lockedDate", item.getLocked());
-		extendedData.put("dateName", item.getName());
+		destIntent.putExtra("matchId", item.get_id());
+		destIntent.putExtra("lockedDate", item.getLocked());
+		destIntent.putExtra("dateName", item.getName());
 
-		Intent destIntent = IntentFactory.create(this, RequestHistoryActivity.class, extendedData);
 		startActivity(destIntent);
 	}
     

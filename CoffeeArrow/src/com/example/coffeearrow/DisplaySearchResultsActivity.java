@@ -14,7 +14,6 @@ import org.json.JSONObject;
 
 import com.example.coffeearrow.domain.SearchProfile;
 import com.example.coffeearrow.helpers.ImageLoader;
-import com.example.coffeearrow.server.IntentFactory;
 import com.example.coffeearrow.server.RequestFactory;
 import com.example.coffeearrow.server.ServerInterface;
 
@@ -191,8 +190,8 @@ public class DisplaySearchResultsActivity extends ListActivity {
 		
 		HttpPost request = RequestFactory.create(URL, requestParams,
 				"getSearchResultsNative");
-		Intent destIntent = IntentFactory.create(this,
-				DisplaySearchResultsActivity.class, requestParams);
+		Intent destIntent = new Intent(this,
+				DisplaySearchResultsActivity.class);
 		ShowSearchResults searchResults = new ShowSearchResults(destIntent,
 				this);
 		searchResults.execute(request);

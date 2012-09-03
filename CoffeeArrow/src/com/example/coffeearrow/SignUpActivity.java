@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.coffeearrow.server.IntentFactory;
 import com.example.coffeearrow.server.RequestFactory;
 import com.example.coffeearrow.server.ServerInterface;
 
@@ -108,8 +107,7 @@ public class SignUpActivity extends Activity {
 
 		HttpPost request = RequestFactory
 				.create(URL, requestParams, "submitUserInfoNative");
-		Intent intent = IntentFactory.create(this,
-				PendingVerificationActivity.class, requestParams);
+		Intent intent = new Intent(this, PendingVerificationActivity.class);
 
 		SubmitUserInfo authenticateUser = new SubmitUserInfo(intent);
 		authenticateUser.execute(request);

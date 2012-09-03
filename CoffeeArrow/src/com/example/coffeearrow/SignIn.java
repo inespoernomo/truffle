@@ -8,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.coffeearrow.R;
-import com.example.coffeearrow.server.IntentFactory;
 import com.example.coffeearrow.server.RequestFactory;
 import com.example.coffeearrow.server.ServerInterface;
 
@@ -112,7 +111,7 @@ public class SignIn extends Activity {
 	    requestParams.put("password", password);
 		
 		HttpPost request = RequestFactory.create(URL, requestParams, "signInNative");	
-		Intent intent = IntentFactory.create(this, DisplaySearchResultsActivity.class, requestParams);
+		Intent intent = new Intent(this, DisplaySearchResultsActivity.class);
 		
 		AuthenticateUser authenticateUser = new AuthenticateUser(intent);
 		authenticateUser.execute(request);

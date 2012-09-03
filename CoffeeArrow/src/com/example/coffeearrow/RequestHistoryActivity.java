@@ -32,7 +32,6 @@ import android.widget.Toast;
 
 import com.example.coffeearrow.adapter.DatesAdapter;
 import com.example.coffeearrow.domain.DateItem;
-import com.example.coffeearrow.server.IntentFactory;
 import com.example.coffeearrow.server.RequestFactory;
 import com.example.coffeearrow.server.ServerInterface;
 
@@ -102,7 +101,7 @@ public class RequestHistoryActivity extends ListActivity {
 		requestParams.put("matchId", intent.getStringExtra("matchId"));
 
 		HttpPost request = RequestFactory.create(URL, requestParams, "getNotificationsForMatchNative");	
-		Intent destIntent = IntentFactory.create(this, NotificationsActivity.class, requestParams);
+		Intent destIntent = new Intent(this, NotificationsActivity.class);
 		destIntent.putExtra("lockedDate", intent.getStringExtra("lockedDate"));
 		destIntent.putExtra("dateName", intent.getStringExtra("dateName"));
 		destIntent.putExtra("showSure", intent.getStringExtra("showSure"));
