@@ -14,19 +14,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ListActivity;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -35,16 +42,24 @@ import com.example.coffeearrow.domain.DateItem;
 import com.example.coffeearrow.server.RequestFactory;
 import com.example.coffeearrow.server.ServerInterface;
 
-public class RequestHistoryActivity extends ListActivity {
+public class RequestHistoryActivity extends Activity {
 
 	private static final String URL = "http://coffeearrow.com/";
 	
+
+	private static final String LOCKED_MESSAGE = "You are going on a date at: ";
 	private RequestHistoryActivity mainActivity = null;
+	private String matchId;
+	
+	
 	
 	private class RequestHistory extends AsyncTask<HttpPost, Integer, Object> {
 	
-		public RequestHistory() {
+		private String lockDate;
+		
+		public RequestHistory(String lockDate) {
 			super();
+			this.lockDate = lockDate;
 			
 		}
 		
@@ -79,14 +94,18 @@ public class RequestHistoryActivity extends ListActivity {
 				e.printStackTrace();
 			}
 			
+			setContentView(R.layout.activity_request_history);
+			ListView listView = (ListView) findViewById(R.id.list);
 			DatesAdapter adapter = 	
 					new DatesAdapter(RequestHistoryActivity.this, responseList);
-            RequestHistoryActivity.this.setListAdapter(adapter);
-            
-            
+            listView.setAdapter(adapter);
+                        
+            if (!lockDate.equals("None")) {
+            	TextView text = (TextView) findViewById(R.id.lockDate);
+            	text.setText(LOCKED_MESSAGE + lockDate);
+            } 
             
 		}
-		
 		
 	}
 
@@ -94,57 +113,108 @@ public class RequestHistoryActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
     	mainActivity = this;
         super.onCreate(savedInstanceState);
-
+    	
         Intent intent = getIntent();        
+        matchId = intent.getStringExtra("matchId");
         
         HashMap<String, String> requestParams = new HashMap<String, String>();
-		requestParams.put("matchId", intent.getStringExtra("matchId"));
-
+		requestParams.put("matchId", matchId);
+		
 		HttpPost request = RequestFactory.create(URL, requestParams, "getNotificationsForMatchNative");	
-		Intent destIntent = new Intent(this, NotificationsActivity.class);
-		destIntent.putExtra("lockedDate", intent.getStringExtra("lockedDate"));
-		destIntent.putExtra("dateName", intent.getStringExtra("dateName"));
-		destIntent.putExtra("showSure", intent.getStringExtra("showSure"));
 		
-		
-		RequestHistory history = new RequestHistory();
+		String lockDate = intent.getStringExtra("lockedDate");
+		RequestHistory history = new RequestHistory(lockDate);
         history.execute(request);
 
     }
+    
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_request_history, menu);
         return true;
     }
+
     
-    public void newTime(View view) {
-    	DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getFragmentManager(), "timePicker");
+    /**
+     * Requesting to change the date
+     * */
+    public void newDate(View view) {
+
+		HashMap<String, String> extendedData = new HashMap<String, String>();
+				
+		extendedData.put("matchId", matchId);
+
+		Intent destIntent = new Intent(this, ChangeDateActivity.class);
+		destIntent.putExtra("matchId", matchId);
+		startActivity(destIntent);
     }
+
     
-    public static class TimePickerFragment extends DialogFragment
-    implements TimePickerDialog.OnTimeSetListener {
+    /**
+     * This method confirms the date request from another person. "Locking" the date.
+     * @param view - the view object
+     * */
+    public void lockTheDate(View view) {
+    	
+    	Intent intent = getIntent();
+    	
+    	HashMap<String, String> requestParams = new HashMap<String, String>();
+    	requestParams.put("matchId", intent.getStringExtra("matchId"));
+    	HttpPost request = RequestFactory.create(URL, requestParams, "lockTheDateNative");
+    	
+    	LockTheDate lock = new LockTheDate();
+    	lock.execute(request);
+    	
+    }
+	
+    
+    
+	private class LockTheDate extends AsyncTask<HttpPost, Integer, Object> {
+		
+		public LockTheDate() {
+			super();			
+		}
+		
+		@Override
+		protected Object doInBackground(HttpPost... params) {
+			
+			return ServerInterface.executeHttpRequest(params[0]);
+		}
+		
+		protected void onPostExecute(Object objResult) {
+			JSONArray resultArray = (JSONArray)objResult;
+			ArrayList<DateItem> responseList = new ArrayList<DateItem>();
+			ObjectMapper mapper = new ObjectMapper(); 
+			try {
+				for(int i = 0; i<resultArray.length(); i++) {
+					
+					JSONObject jsonObj = resultArray.getJSONObject(i);
+					System.out.println(jsonObj);
+					String record = jsonObj.toString(1);
+					DateItem dateItem = mapper.readValue(record, DateItem.class);
+					responseList.add(dateItem);
+					
+				} 
+			}catch (JSONException e) {
+				e.printStackTrace();
+			} catch (JsonParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-    	@Override
-    	public Dialog onCreateDialog(Bundle savedInstanceState) {
-    		// Use the current time as the default values for the picker
-    		final Calendar c = Calendar.getInstance();
-    		int hour = c.get(Calendar.HOUR_OF_DAY);
-    		int minute = c.get(Calendar.MINUTE);
-
-    		// Create a new instance of TimePickerDialog and return it
-    		return new TimePickerDialog(getActivity(), this, hour, minute,
-    				DateFormat.is24HourFormat(getActivity()));
-    	}
-
-
-		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-			Toast.makeText(getActivity(),
-					"Hour: " + String.valueOf(hourOfDay) + "Minute: " + String.valueOf(minute) , 
-					Toast.LENGTH_LONG).show();
+			TextView lock = (TextView)findViewById(R.id.lockDate);
+			lock.setText(LOCKED_MESSAGE + responseList.get(0).getTime());
 			
 		}
-    }
+		
+		
+	}
     
 }

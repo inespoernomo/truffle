@@ -1,16 +1,40 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-	<TextView
-            android:id="@+id/label"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:text="@+id/label"
-            android:textSize="15dp" />
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+        
     
-	   <Button
+	<ListView
+            android:id="@+id/list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@+id/label"/>
+	
+	
+	<TextView
+            android:id="@+id/lockDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp" 
+            android:textColor="#006400"
+            android:layout_below="@id/list"/>
+	
+	 <Button
+	     	android:id="@+id/changeDatebutton"
 	 	    android:layout_width="wrap_content"
 	 	    android:layout_height="wrap_content"
-	 	    android:onClick="newTime"
-	 	    android:text="@string/newTimeButton" /> 
+	 	    android:onClick="newDate"
+	 	    android:text="@string/changeDateButton"
+	 	    android:layout_below="@+id/lockDate"/>
+	 	 	 
+	 <Button
+	     	android:id="@+id/surebutton"
+	 	    android:layout_width="wrap_content"
+	 	    android:layout_height="wrap_content"
+	 	    android:onClick="lockTheDate"
+	 	    android:text="@string/sureButton"
+	 	    android:layout_toRightOf="@+id/changeDatebutton"
+	 	    android:layout_below="@id/lockDate"/>
+	 
+	 
+	   
 </RelativeLayout>
