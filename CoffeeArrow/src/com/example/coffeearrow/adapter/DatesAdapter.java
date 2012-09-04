@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.example.coffeearrow.R;
 import com.example.coffeearrow.domain.DateItem;
-import com.example.coffeearrow.domain.NotificationItem;
 
 public class DatesAdapter extends ArrayAdapter<DateItem> {
 	

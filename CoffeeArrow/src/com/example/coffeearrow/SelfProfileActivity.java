@@ -1,20 +1,12 @@
 package com.example.coffeearrow;
 
-import com.example.coffeearrow.helpers.ImageLoader;
-import com.example.coffeearrow.helpers.SquareFrameLayout;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Point;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class SelfProfileActivity extends ShowUserProfileActivity {
 

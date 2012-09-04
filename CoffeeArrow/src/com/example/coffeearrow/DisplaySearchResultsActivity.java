@@ -44,6 +44,7 @@ public class DisplaySearchResultsActivity extends ListActivity {
 	private static final String URL = "http://coffeearrow.com/";
 
 	private DisplaySearchResultsActivity mainActivity = null;
+	private String userId;
 
 	private class ShowSearchResults extends
 			AsyncTask<HttpPost, Integer, Object> {
@@ -69,7 +70,6 @@ public class DisplaySearchResultsActivity extends ListActivity {
 			return ServerInterface.executeHttpRequest(params[0]);
 		}
 
-		@SuppressWarnings("unchecked")
 		protected void onPostExecute(Object objResult) {
 			if (objResult != null) {
 				JSONArray resultArray = (JSONArray) objResult;
@@ -175,14 +175,7 @@ public class DisplaySearchResultsActivity extends ListActivity {
 		mainActivity = this;
 		
 		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
-		SharedPreferences.Editor editor = settings.edit();
-		
-
-		Intent sourceIntent = getIntent();
-		String userId = sourceIntent.getStringExtra("userId");
-		
-		editor.putString("userId", userId);
-		editor.commit();
+		userId = settings.getString("userId", null);
 		
 		HashMap<String, String> requestParams = new HashMap<String, String>();
 	    requestParams.put("userId", userId);
@@ -213,9 +206,6 @@ public class DisplaySearchResultsActivity extends ListActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
-		String userId = settings.getString("userId", null);
-		
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			NavUtils.navigateUpFromSameTask(this);
@@ -223,12 +213,11 @@ public class DisplaySearchResultsActivity extends ListActivity {
 		}
 		if(item.getItemId() == R.id.notifications) {
 			Intent intent = new Intent(this, NotificationsActivity.class);
-			intent.putExtra("userId", userId);
 			startActivity(intent);
 		}
 		if(item.getItemId() == R.id.userProfile) {
 			Intent intent = new Intent(this, SelfProfileActivity.class);
-			intent.putExtra("userId",userId);
+			intent.putExtra("userId", userId);
 			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);

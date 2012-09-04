@@ -22,7 +22,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.Menu;
@@ -157,10 +156,7 @@ public class ShowUserProfileActivity extends Activity {
 	}
 	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
-		String userId = settings.getString("userId", null);
-		
+	public boolean onOptionsItemSelected(MenuItem item) {		
 		if(item.getItemId() == R.id.sendInvitation) {
 			//TODO: Hook up send invitation.
 		}

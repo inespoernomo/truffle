@@ -31,12 +31,9 @@ public class NotificationsActivity extends ListActivity {
 	private static final String URL = "http://coffeearrow.com/";
 	
 	private class NotificationsTask extends AsyncTask<HttpPost, Integer, Object> {
-		
-		private Intent intent;
 	
-		public NotificationsTask(Intent intent) {
+		public NotificationsTask() {
 			super();
-			this.intent = intent;
 		}
 		
 		@Override
@@ -84,15 +81,11 @@ public class NotificationsActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        Intent sourceIntent = getIntent();
-        String userId = sourceIntent.getStringExtra("userId");
-        
         HashMap<String, String> requestParams = new HashMap<String, String>();
 		requestParams.put("userId", "3495999573");
 
 		HttpPost request = RequestFactory.create(URL, requestParams, "getAllNotificationsNative");	
-		Intent destIntent = new Intent(this, NotificationsActivity.class);
-		NotificationsTask notifications = new NotificationsTask(destIntent);
+		NotificationsTask notifications = new NotificationsTask();
         notifications.execute(request);
 
     }

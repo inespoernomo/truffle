@@ -3,7 +3,6 @@ package com.example.coffeearrow;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 
 import org.apache.http.client.methods.HttpPost;
@@ -22,11 +21,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -38,8 +34,6 @@ import com.example.coffeearrow.server.ServerInterface;
 public class RequestHistoryActivity extends ListActivity {
 
 	private static final String URL = "http://coffeearrow.com/";
-	
-	private RequestHistoryActivity mainActivity = null;
 	
 	private class RequestHistory extends AsyncTask<HttpPost, Integer, Object> {
 	
@@ -92,7 +86,6 @@ public class RequestHistoryActivity extends ListActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	mainActivity = this;
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();        
