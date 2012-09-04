@@ -22,7 +22,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.Menu;
@@ -36,7 +35,12 @@ public class ShowUserProfileActivity extends Activity {
 	
 	private static final String URL = "http://coffeearrow.com/";
 	
-	private ShowUserProfileActivity mainActivity = null;
+	private ShowUserProfileActivity mainActivity;
+	private ImageLoader imageLoader;
+	private int displayWidth;
+	
+	private LinearLayout userImages;
+	
 	protected String userId; 
 
 	private class GetUserProfile extends
@@ -45,15 +49,10 @@ public class ShowUserProfileActivity extends Activity {
 		// This is the first progress dialog we display while fetching the user info.
 		// TOOD: There is a gap in between the 2 progress dialogs. See if they can be combined to one.
 		private ProgressDialog dialog;
-		
-		private ShowUserProfileActivity context;
-		public ImageLoader imageLoader;
 
-		public GetUserProfile(ShowUserProfileActivity activity) {
+		public GetUserProfile() {
 			super();
-			dialog = new ProgressDialog(activity);
-			this.context = activity;
-			imageLoader=new ImageLoader(this.context);			
+			dialog = new ProgressDialog(mainActivity);
 		}
 
 		protected void onPreExecute() {
@@ -101,6 +100,9 @@ public class ShowUserProfileActivity extends Activity {
 				// empty info like (null) etc, and it's bad for user experience.
 				mainActivity.setContentView(R.layout.activity_show_user_profile);
 				
+				// This is the LinearLayout containing all the pictures of this user with caption.
+				userImages = (LinearLayout) findViewById(R.id.container);
+				
 				// This is the name and profile picture.
 				TextView textView = (TextView) findViewById(R.id.label);
 				ImageView imageView = (ImageView)findViewById(R.id.icon);
@@ -108,44 +110,10 @@ public class ShowUserProfileActivity extends Activity {
 
 				// Lazy load and cache the image.
 				imageLoader.DisplayImage(userProfile.getProfileImage(), imageView);
-				imageView.setAdjustViewBounds(true);				
-				
-				// Here we get all the pictures of this user with caption.
-				LinearLayout layout = (LinearLayout) findViewById(R.id.container);
+				imageView.setAdjustViewBounds(true);
 				
 				for(final UserProfile.Image image : userProfile.getImages()) {
-					// Get the size of the display.
-					Display display = getWindowManager().getDefaultDisplay();
-					Point size = new Point();
-					display.getSize(size);
-					int displayWidth = size.x;
-					
-					// A vertical linear layout with one picture (square) and caption for the picture.
-					// Width set to the width of the display
-					LinearLayout onePicWithCaption = new LinearLayout(context);
-					onePicWithCaption.setOrientation(LinearLayout.VERTICAL);
-					onePicWithCaption.setLayoutParams(
-							new LinearLayout.LayoutParams(displayWidth, LinearLayout.LayoutParams.MATCH_PARENT));
-					layout.addView(onePicWithCaption);
-					
-					// This the frame that make sure the picture is in a square frame.
-					SquareFrameLayout picFrame = new SquareFrameLayout(context, null);
-					picFrame.setLayoutParams(
-							new ViewGroup.LayoutParams(displayWidth, ViewGroup.LayoutParams.MATCH_PARENT));
-					onePicWithCaption.addView(picFrame);
-					
-					// This is the image itself.
-					ImageView imageView1 = new ImageView(context);
-					imageView1.setScaleType(ImageView.ScaleType.FIT_CENTER);				
-					picFrame.addView(imageView1);
-					
-					// Lazy load and cache the image.
-					imageLoader.DisplayImage(image.getImgLink(), imageView1);
-
-					// This is the caption for the image.
-					TextView textView1 = new TextView(context);
-					textView1.setText(image.getImgCaption());
-					onePicWithCaption.addView(textView1);				
+					addImageWithCaption(image.getImgLink(), image.getImgCaption());
 				}
 			}
 			
@@ -157,21 +125,27 @@ public class ShowUserProfileActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		mainActivity = this;
 		super.onCreate(savedInstanceState);
-		Intent sourceIntent = getIntent();
 		
+		mainActivity = this;
+		imageLoader=new ImageLoader(this);
+		
+		// Get the size of the display.
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		displayWidth = size.x;
+		
+		Intent sourceIntent = getIntent();
 		userId = sourceIntent.getStringExtra("userId");
 		System.out.println("Got user id from source intent:"+userId);
 		HashMap<String, String> requestParams = new HashMap<String, String>();
 	    requestParams.put("userId", userId);
 		
-		
-		HttpPost request = RequestFactory.create(URL, requestParams,
-				"getUserProfile");
+		HttpPost request = RequestFactory.create(URL, requestParams, "getUserProfile");
 		System.out.println("Created request:");
 		System.out.println(request);
-		GetUserProfile getUserProfile = new GetUserProfile(this);
+		GetUserProfile getUserProfile = new GetUserProfile();
 		getUserProfile.execute(request);
 	}
 
@@ -182,13 +156,44 @@ public class ShowUserProfileActivity extends Activity {
 	}
 	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
-		String userId = settings.getString("userId", null);
-		
+	public boolean onOptionsItemSelected(MenuItem item) {		
 		if(item.getItemId() == R.id.sendInvitation) {
 			//TODO: Hook up send invitation.
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	/**
+	 * Add one image to the end of all the images we ar displaying
+	 * @param s3url The url to the image. Currently it's from s3
+	 * @param caption The caption string for the image.
+	 */
+	protected void addImageWithCaption(String s3url, String caption) {
+		// A vertical linear layout with one picture (square) and caption for the picture.
+		// Width set to the width of the display
+		LinearLayout onePicWithCaption = new LinearLayout(this);
+		onePicWithCaption.setOrientation(LinearLayout.VERTICAL);
+		onePicWithCaption.setLayoutParams(
+				new LinearLayout.LayoutParams(displayWidth, LinearLayout.LayoutParams.MATCH_PARENT));
+		userImages.addView(onePicWithCaption);
+		
+		// This the frame that make sure the picture is in a square frame.
+		SquareFrameLayout picFrame = new SquareFrameLayout(this, null);
+		picFrame.setLayoutParams(
+				new ViewGroup.LayoutParams(displayWidth, ViewGroup.LayoutParams.MATCH_PARENT));
+		onePicWithCaption.addView(picFrame);
+		
+		// This is the image itself.
+		ImageView imageView = new ImageView(this);
+		imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);				
+		picFrame.addView(imageView);
+		
+		// Lazy load and cache the image.
+		imageLoader.DisplayImage(s3url, imageView);
+	
+		// This is the caption for the image.
+		TextView captionTextView = new TextView(this);
+		captionTextView.setText(caption);
+		onePicWithCaption.addView(captionTextView);
 	}
 }

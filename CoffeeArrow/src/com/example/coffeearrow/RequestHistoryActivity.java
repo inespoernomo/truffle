@@ -3,7 +3,6 @@ package com.example.coffeearrow;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 
 import org.apache.http.client.methods.HttpPost;
@@ -25,15 +24,17 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.View;
+<<<<<<< HEAD
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+=======
+>>>>>>> ee5e0cf340403efb540bed2e5a131c1fbb41a4c2
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -51,8 +52,7 @@ public class RequestHistoryActivity extends Activity {
 	private RequestHistoryActivity mainActivity = null;
 	private String matchId;
 	
-	
-	
+		
 	private class RequestHistory extends AsyncTask<HttpPost, Integer, Object> {
 	
 		private String lockDate;
@@ -111,7 +111,6 @@ public class RequestHistoryActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	mainActivity = this;
         super.onCreate(savedInstanceState);
     	
         Intent intent = getIntent();        

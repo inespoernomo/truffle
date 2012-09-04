@@ -1,20 +1,12 @@
 package com.example.coffeearrow;
 
-import com.example.coffeearrow.helpers.ImageLoader;
-import com.example.coffeearrow.helpers.SquareFrameLayout;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Point;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class SelfProfileActivity extends ShowUserProfileActivity {
 
@@ -86,7 +78,7 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 				// easier with the lazy loading and image caching, etc.
 	    		String s3url = returnedIntent.getStringExtra("s3url");
 	    		String caption = returnedIntent.getStringExtra("caption");
-	        	addLocalImage(s3url, caption);
+	        	addImageWithCaption(s3url, caption);
 	        } 
 	        else if (resultCode == 0)
 	        {
@@ -100,54 +92,6 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 	        }
 	        break;
 	    }
-	}
-
-	/**
-	 * Add one image to the end of all the images we ar displaying
-	 * @param s3url
-	 * @param caption
-	 */
-	private void addLocalImage(String s3url, String caption) {
-		//TODO: Duplicated code, need refactor and use this for all images.	
-		ImageLoader imageLoader=new ImageLoader(this);
-		
-		// Here we get all the pictures of this user with caption.
-		LinearLayout layout = (LinearLayout) findViewById(R.id.container);
-		
-		// Get the size of the display.
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		int displayWidth = size.x;
-		
-		// A vertical linear layout with one picture (square) and caption for the picture.
-		// Width set to the width of the display
-		LinearLayout onePicWithCaption = new LinearLayout(this);
-		onePicWithCaption.setOrientation(LinearLayout.VERTICAL);
-		onePicWithCaption.setLayoutParams(
-				new LinearLayout.LayoutParams(displayWidth, LinearLayout.LayoutParams.MATCH_PARENT));
-		layout.addView(onePicWithCaption);
-		
-		// This the frame that make sure the picture is in a square frame.
-		SquareFrameLayout picFrame = new SquareFrameLayout(this, null);
-		picFrame.setLayoutParams(
-				new ViewGroup.LayoutParams(displayWidth, ViewGroup.LayoutParams.MATCH_PARENT));
-		onePicWithCaption.addView(picFrame);
-		
-		// This is the image itself.
-		ImageView imageView1 = new ImageView(this);
-		imageView1.setScaleType(ImageView.ScaleType.FIT_CENTER);				
-		picFrame.addView(imageView1);
-		
-		// Lazy load and cache the image.
-		imageLoader.DisplayImage(s3url, imageView1);
-	
-		// This is the caption for the image.
-		TextView textView1 = new TextView(this);
-		textView1.setText(caption);
-		onePicWithCaption.addView(textView1);				
-		
-		// Duplicated code end.
 	}
 	
 }

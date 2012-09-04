@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import com.example.coffeearrow.domain.DateItem;
 import com.example.coffeearrow.R;
+
 public class DatesAdapter extends ArrayAdapter<DateItem> {
 	
 	private Context context; 
