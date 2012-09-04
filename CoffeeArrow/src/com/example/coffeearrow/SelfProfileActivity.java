@@ -86,7 +86,7 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 				// easier with the lazy loading and image caching, etc.
 	    		String s3url = returnedIntent.getStringExtra("s3url");
 	    		String caption = returnedIntent.getStringExtra("caption");
-	        	addLocalImage(s3url, caption);
+	        	addImageWithCaption(s3url, caption);
 	        } 
 	        else if (resultCode == 0)
 	        {
