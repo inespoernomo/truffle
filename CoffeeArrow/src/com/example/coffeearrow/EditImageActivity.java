@@ -129,6 +129,7 @@ public class EditImageActivity extends Activity {
 				// we just uploaded.
 				Intent result = new Intent();
 				result.putExtra("s3url", s3url);
+				result.putExtra("type", "delete");
 				setResult(RESULT_OK, result);
 				
 				// Dismiss the progress dialog.

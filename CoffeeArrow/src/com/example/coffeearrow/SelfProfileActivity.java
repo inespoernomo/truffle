@@ -95,7 +95,56 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 	        	Log.i("selfprofile", "Result code not OK.");
 	        }
 	        break;
+	    case ACTIVITY_EDIT_IMAGE:
+	    	Log.i("selfprofile", "Call back from edit image activity with resultCode:"+resultCode);
+	    	if(resultCode == RESULT_OK){
+				//TODO: We can use the local file path. But right now, using s3 url is 
+				// easier with the lazy loading and image caching, etc.
+	    		String s3url = returnedIntent.getStringExtra("s3url");
+	    		String editType = returnedIntent.getStringExtra("type");
+	    		
+	    		if(editType.equals("delete")) {
+	    			removeImage(s3url);
+	    		}
+	    		else {
+	    			// Update the caption.
+	    			String caption = returnedIntent.getStringExtra("caption");
+	    			updateCaption(s3url, caption);
+	    		}
+	        } 
+	        else if (resultCode == 0)
+	        {
+	        	// User cancelled.
+	        	//TODO: Collect info for user behavior?
+	        	Log.i("selfprofile", "User cancelled image edit.");
+	        }
+	        else 
+	        {
+	        	Log.i("selfprofile", "Result code not OK.");
+	        }
+	        break;
 	    }
+	}
+
+	/**
+	 * TODO: This should update just one picture. But now we 
+	 * reload the whole activity.
+	 * @param s3url
+	 * @param caption
+	 */
+	private void updateCaption(String s3url, String caption) {
+		startActivity(getIntent());
+		finish();
+	}
+
+	/**
+	 * TODO: This should remove just one picture. But now we 
+	 * reload the whole activity. 
+	 * @param s3url
+	 */
+	private void removeImage(String s3url) {
+		startActivity(getIntent());
+		finish();
 	}
 
 	/**
