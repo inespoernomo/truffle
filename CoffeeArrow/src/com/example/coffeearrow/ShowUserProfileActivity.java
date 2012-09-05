@@ -35,13 +35,13 @@ public class ShowUserProfileActivity extends Activity {
 	
 	private static final String URL = "http://coffeearrow.com/";
 	
-	private ShowUserProfileActivity mainActivity;
 	private ImageLoader imageLoader;
 	private int displayWidth;
 	
 	private LinearLayout userImages;
 	
-	protected String userId; 
+	protected String userId;
+	protected ShowUserProfileActivity mainActivity;
 
 	private class GetUserProfile extends
 			AsyncTask<HttpPost, Integer, Object> {
@@ -202,5 +202,9 @@ public class ShowUserProfileActivity extends Activity {
 	
 	protected void addImageClickListener(ImageView view, String s3url, String caption) {
 		// Do nothing now. For SelfProfileActivity to override.
+	}
+	
+	protected void editImage(String s3url, String caption) {
+		// Do nothing now. For SelfProfileActivity to override.		
 	}
 }

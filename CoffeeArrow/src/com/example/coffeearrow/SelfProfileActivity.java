@@ -15,6 +15,7 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 
 	private static final int ACTIVITY_SELECT_IMAGE = 1234;
 	private static final int ACTIVITY_UPLOAD_IMAGE = 1235;
+	private static final int ACTIVITY_EDIT_IMAGE = 1236;
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -126,6 +127,15 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 		public void onClick(View v) {
 			//TODO: Go to edit view instead of log this.
             Log.i("SelfProfileActivity", "Image clicked. Image s3url is: "+s3url+". Caption is: "+caption);
+            mainActivity.editImage(s3url, caption);
         }
+	}
+	
+	@Override
+	protected void editImage(String s3url, String caption) {
+		Intent destinationIntent = new Intent(this, EditImageActivity.class);
+        destinationIntent.putExtra("s3url", s3url);
+        destinationIntent.putExtra("caption", caption);
+        startActivityForResult(destinationIntent, ACTIVITY_EDIT_IMAGE);
 	}
 }

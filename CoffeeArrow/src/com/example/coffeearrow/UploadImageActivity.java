@@ -29,6 +29,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+/**
+ * This is the activity to upload a image from the phone.
+ * TODO: This and UploadImageActivity are almost identical, need to refactor.
+ * @author sunshi
+ *
+ */
 public class UploadImageActivity extends Activity {
 	private static final String URL = "http://coffeearrow.com/";
 	

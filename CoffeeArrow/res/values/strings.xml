@@ -36,5 +36,6 @@
     <string name="title_activity_change_date">Change Date Request</string>
     <string name="changeDateButton">Change Date</string>
     <string name="sureButton">Sure</string>
+    <string name="title_activity_edit_image">Edit Image</string>
 
 </resources>
