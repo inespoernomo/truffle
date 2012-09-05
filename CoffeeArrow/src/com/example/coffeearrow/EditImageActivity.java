@@ -8,10 +8,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.coffeearrow.helpers.ImageLoader;
+import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.RequestFactory;
-import com.example.coffeearrow.server.ServerInterface;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -101,7 +100,7 @@ public class EditImageActivity extends Activity {
     }
     
 
-    private class DeleteImageTask extends AsyncTask<HttpPost, Integer, Object> {
+    private class DeleteImageTask extends PostToServerAsyncTask {
     	
     	// This is the first progress dialog we display while fetching the search result.
 		private ProgressDialog dialog;
@@ -111,18 +110,14 @@ public class EditImageActivity extends Activity {
 			dialog = new ProgressDialog(mainActivity);
 		}
 		
+		@Override
 		protected void onPreExecute() {
 			// Display the progress dialog.
 			this.dialog.setMessage("Deleting image...");
 			this.dialog.show();
 		}
-
+		
 		@Override
-		protected Object doInBackground(HttpPost... params) {
-
-			return ServerInterface.executeHttpRequest(params[0]);
-		}
-
 		protected void onPostExecute(Object objResult) {
 			Log.i("UploadUserImage", "Got back to onPostExecute.");
 			Log.i("UploadUserImage", "The result is: " + objResult);
@@ -160,7 +155,7 @@ public class EditImageActivity extends Activity {
 	}
 
 
-    private class EditCaptionTask extends AsyncTask<HttpPost, Integer, Object> {
+    private class EditCaptionTask extends PostToServerAsyncTask {
     	
     	// This is the first progress dialog we display while fetching the search result.
 		private ProgressDialog dialog;
@@ -170,6 +165,7 @@ public class EditImageActivity extends Activity {
 			dialog = new ProgressDialog(mainActivity);
 		}
 		
+		@Override
 		protected void onPreExecute() {
 			// Display the progress dialog.
 			this.dialog.setMessage("Updating caption...");
@@ -177,11 +173,6 @@ public class EditImageActivity extends Activity {
 		}
 
 		@Override
-		protected Object doInBackground(HttpPost... params) {
-
-			return ServerInterface.executeHttpRequest(params[0]);
-		}
-
 		protected void onPostExecute(Object objResult) {
 			Log.i("UploadUserImage", "Got back to onPostExecute.");
 			Log.i("UploadUserImage", "The result is: " + objResult);

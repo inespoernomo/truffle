@@ -14,7 +14,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -23,8 +22,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.example.coffeearrow.adapter.DatesAdapter;
 import com.example.coffeearrow.domain.DateItem;
+import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.RequestFactory;
-import com.example.coffeearrow.server.ServerInterface;
 
 public class RequestHistoryActivity extends Activity {
 
@@ -32,7 +31,7 @@ public class RequestHistoryActivity extends Activity {
 	private String matchId;
 	
 		
-	private class RequestHistory extends AsyncTask<HttpPost, Integer, Object> {
+	private class RequestHistory extends PostToServerAsyncTask {
 	
 		private String lockDate;
 		
@@ -43,11 +42,6 @@ public class RequestHistoryActivity extends Activity {
 		}
 		
 		@Override
-		protected Object doInBackground(HttpPost... params) {
-			
-			return ServerInterface.executeHttpRequest(params[0]);
-		}
-		
 		protected void onPostExecute(Object objResult) {
 			JSONArray resultArray = (JSONArray)objResult;
 			ArrayList<DateItem> responseList = new ArrayList<DateItem>();
@@ -148,18 +142,13 @@ public class RequestHistoryActivity extends Activity {
 	
     
     
-	private class LockTheDate extends AsyncTask<HttpPost, Integer, Object> {
+	private class LockTheDate extends PostToServerAsyncTask {
 		
 		public LockTheDate() {
 			super();			
 		}
 		
 		@Override
-		protected Object doInBackground(HttpPost... params) {
-			
-			return ServerInterface.executeHttpRequest(params[0]);
-		}
-		
 		protected void onPostExecute(Object objResult) {
 			JSONArray resultArray = (JSONArray)objResult;
 			ArrayList<DateItem> responseList = new ArrayList<DateItem>();

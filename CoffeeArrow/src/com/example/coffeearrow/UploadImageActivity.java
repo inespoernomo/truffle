@@ -12,9 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.coffeearrow.server.ServerInterface;
+import com.example.coffeearrow.server.PostToServerAsyncTask;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -96,7 +95,7 @@ public class UploadImageActivity extends Activity {
 	    }
 	}
 	
-	public class UploadUserImageTask extends AsyncTask<HttpPost, Integer, Object> {
+	public class UploadUserImageTask extends PostToServerAsyncTask {
 
 		// This is the first progress dialog we display while fetching the search result.
 		private ProgressDialog dialog;
@@ -107,16 +106,13 @@ public class UploadImageActivity extends Activity {
 		}
 
 		@Override
-		protected Object doInBackground(HttpPost... params) {
-			return ServerInterface.executeHttpRequest(params[0]);
-		}
-		
 		protected void onPreExecute() {
 			// Display the progress dialog.
 			this.dialog.setMessage("Uploading image...");
 			this.dialog.show();
 		}
 
+		@Override
 		protected void onPostExecute(Object objResult) {
 			Log.i("UploadUserImage", "Got back to onPostExecute.");
 			Log.i("UploadUserImage", "The result is: " + objResult);

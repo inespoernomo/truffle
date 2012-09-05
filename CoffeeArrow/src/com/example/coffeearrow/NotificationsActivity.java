@@ -14,7 +14,6 @@ import org.json.JSONObject;
 
 import android.app.ListActivity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -23,23 +22,18 @@ import android.widget.Toast;
 
 import com.example.coffeearrow.adapter.NotificationAdapter;
 import com.example.coffeearrow.domain.NotificationItem;
+import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.RequestFactory;
-import com.example.coffeearrow.server.ServerInterface;
 
 public class NotificationsActivity extends ListActivity {
 	
-	private class NotificationsTask extends AsyncTask<HttpPost, Integer, Object> {
+	private class NotificationsTask extends PostToServerAsyncTask {
 	
 		public NotificationsTask() {
 			super();
 		}
-		
+	
 		@Override
-		protected Object doInBackground(HttpPost... params) {
-			
-			return ServerInterface.executeHttpRequest(params[0]);
-		}
-		
 		protected void onPostExecute(Object objResult) {
 			JSONArray resultArray = (JSONArray)objResult;
 			ArrayList<NotificationItem> responseList = new ArrayList<NotificationItem>();

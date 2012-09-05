@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.example.coffeearrow.server;
 
 import java.io.BufferedReader;
@@ -16,22 +13,32 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
+public class PostToServerAsyncTask extends AsyncTask<HttpPost, Integer, Object>{
+	
+	private static PostToServerAsyncTask instance = null;
+	private static HttpClient client = null;
+	protected PostToServerAsyncTask() {
+		client = new DefaultHttpClient();
+	}
+	
+	public static PostToServerAsyncTask getInstance() {
+		if(instance == null) {
+			instance = new PostToServerAsyncTask();
+		}
+		return instance;
+	}
 
-/**
- * @author Nishant
- *
- */
-public class ServerInterface {
-
-	public static JSONArray executeHttpRequest(HttpPost request) {
-		HttpClient httpClient = new DefaultHttpClient();
-        HttpResponse response = null;
+	@Override
+	protected JSONArray doInBackground(HttpPost... params) {
+		HttpPost request = params[0];
+		HttpResponse response = null;
         JSONArray finalResult = null;
 		try {
 			Log.i("SeverInterface", "request url is:"+request.getURI());
-			response = httpClient.execute(request);
+			response = client.execute(request);
 			Log.i("ServerInterface", "response code:"+response.getStatusLine());
 			BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
 			String json = reader.readLine();
@@ -51,5 +58,5 @@ public class ServerInterface {
 		
 		return finalResult;
 	}
-	
+
 }

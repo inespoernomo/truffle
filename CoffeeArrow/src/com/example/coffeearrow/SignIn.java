@@ -8,10 +8,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.coffeearrow.R;
+import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.RequestFactory;
-import com.example.coffeearrow.server.ServerInterface;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -33,7 +32,7 @@ public class SignIn extends Activity {
 	private SignIn mainActivity = null;
 	
 	
-	private class AuthenticateUser extends AsyncTask<HttpPost, Integer, Object> {
+	private class AuthenticateUser extends PostToServerAsyncTask {
 		
 		private Intent intent;
 		public AuthenticateUser(Intent intent) {
@@ -42,11 +41,6 @@ public class SignIn extends Activity {
 		}
 
 		@Override
-		protected Object doInBackground(HttpPost... params) {
-
-			return ServerInterface.executeHttpRequest(params[0]);
-		}
-
 		protected void onPostExecute(Object objResult) {
 			JSONArray resultArray = (JSONArray)objResult;
 			String userId = null;

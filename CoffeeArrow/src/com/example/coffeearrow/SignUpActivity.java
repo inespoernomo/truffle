@@ -7,10 +7,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.RequestFactory;
-import com.example.coffeearrow.server.ServerInterface;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -23,7 +22,7 @@ import android.widget.Toast;
 
 public class SignUpActivity extends Activity {
 
-	public class SubmitUserInfo extends AsyncTask<HttpPost, Integer, Object> {
+	public class SubmitUserInfo extends PostToServerAsyncTask {
 
 		private Intent intent;
 
@@ -32,13 +31,8 @@ public class SignUpActivity extends Activity {
 			this.intent = intent;
 		}
 
-		@Override
-		protected Object doInBackground(HttpPost... params) {
-
-			return ServerInterface.executeHttpRequest(params[0]);
-		}
-
 		//TODO: Add preExecute for spinning wheel
+		@Override
 		protected void onPostExecute(Object objResult) {
 			JSONArray resultArray = (JSONArray) objResult;
 			String status = null;

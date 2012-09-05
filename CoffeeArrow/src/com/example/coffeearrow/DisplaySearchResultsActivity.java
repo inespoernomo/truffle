@@ -14,10 +14,9 @@ import org.json.JSONObject;
 
 import com.example.coffeearrow.domain.SearchProfile;
 import com.example.coffeearrow.helpers.ImageLoader;
+import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.RequestFactory;
-import com.example.coffeearrow.server.ServerInterface;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
@@ -44,8 +43,7 @@ public class DisplaySearchResultsActivity extends ListActivity {
 	private DisplaySearchResultsActivity mainActivity = null;
 	private String userId;
 
-	private class ShowSearchResults extends
-			AsyncTask<HttpPost, Integer, Object> {
+	private class ShowSearchResults extends PostToServerAsyncTask {
 
 		// This is the first progress dialog we display while fetching the search result.
 		private ProgressDialog dialog;
@@ -56,6 +54,7 @@ public class DisplaySearchResultsActivity extends ListActivity {
 			dialog = new ProgressDialog(activity);
 		}
 
+		@Override		
 		protected void onPreExecute() {
 			// Display the progress dialog.
 			this.dialog.setMessage("Populating results...");
@@ -63,11 +62,6 @@ public class DisplaySearchResultsActivity extends ListActivity {
 		}
 
 		@Override
-		protected Object doInBackground(HttpPost... params) {
-
-			return ServerInterface.executeHttpRequest(params[0]);
-		}
-
 		protected void onPostExecute(Object objResult) {
 			if (objResult != null) {
 				JSONArray resultArray = (JSONArray) objResult;

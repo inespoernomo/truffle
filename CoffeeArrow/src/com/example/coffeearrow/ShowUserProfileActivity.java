@@ -13,11 +13,10 @@ import org.json.JSONObject;
 
 import com.example.coffeearrow.domain.UserProfile;
 import com.example.coffeearrow.helpers.ImageLoader;
+import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.RequestFactory;
-import com.example.coffeearrow.server.ServerInterface;
 import com.example.coffeearrow.helpers.SquareFrameLayout;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -41,8 +40,7 @@ public class ShowUserProfileActivity extends Activity {
 	protected String userId;
 	protected ShowUserProfileActivity mainActivity;
 
-	private class GetUserProfile extends
-			AsyncTask<HttpPost, Integer, Object> {
+	private class GetUserProfile extends PostToServerAsyncTask {
 
 		// This is the first progress dialog we display while fetching the user info.
 		// TOOD: There is a gap in between the 2 progress dialogs. See if they can be combined to one.
@@ -53,6 +51,7 @@ public class ShowUserProfileActivity extends Activity {
 			dialog = new ProgressDialog(mainActivity);
 		}
 
+		@Override
 		protected void onPreExecute() {
 			// Display the progress dialog.
 			this.dialog.setMessage("Building profile...");
@@ -60,11 +59,6 @@ public class ShowUserProfileActivity extends Activity {
 		}
 
 		@Override
-		protected Object doInBackground(HttpPost... params) {
-
-			return ServerInterface.executeHttpRequest(params[0]);
-		}
-
 		protected void onPostExecute(Object objResult) {
 			if (objResult != null) {
 				// Parse the JSON
