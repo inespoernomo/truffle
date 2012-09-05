@@ -87,7 +87,7 @@ public class UploadImageActivity extends Activity {
 
 	        Log.i("UploadImageActivity", "http post generated successfully.");
 
-		    UploadUserImage uploadTask = new UploadUserImage();
+		    UploadUserImageTask uploadTask = new UploadUserImageTask();
 		    uploadTask.execute(request);
 		    
 	    } catch (IOException e) {
@@ -96,12 +96,12 @@ public class UploadImageActivity extends Activity {
 	    }
 	}
 	
-	public class UploadUserImage extends AsyncTask<HttpPost, Integer, Object> {
+	public class UploadUserImageTask extends AsyncTask<HttpPost, Integer, Object> {
 
 		// This is the first progress dialog we display while fetching the search result.
 		private ProgressDialog dialog;
 		
-		public UploadUserImage() {
+		public UploadUserImageTask() {
 			super();
 			dialog = new ProgressDialog(mainActivity);
 		}
@@ -117,7 +117,6 @@ public class UploadImageActivity extends Activity {
 			this.dialog.show();
 		}
 
-		//TODO: Add preExecute for spinning wheel
 		protected void onPostExecute(Object objResult) {
 			Log.i("UploadUserImage", "Got back to onPostExecute.");
 			Log.i("UploadUserImage", "The result is: " + objResult);
