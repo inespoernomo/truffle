@@ -28,8 +28,6 @@ import com.example.coffeearrow.server.ServerInterface;
 
 public class NotificationsActivity extends ListActivity {
 	
-	private static final String URL = "http://coffeearrow.com/";
-	
 	private class NotificationsTask extends AsyncTask<HttpPost, Integer, Object> {
 	
 		public NotificationsTask() {
@@ -84,7 +82,7 @@ public class NotificationsActivity extends ListActivity {
         HashMap<String, String> requestParams = new HashMap<String, String>();
 		requestParams.put("userId", "3495999573");
 
-		HttpPost request = RequestFactory.create(URL, requestParams, "getAllNotificationsNative");	
+		HttpPost request = RequestFactory.create(requestParams, "getAllNotificationsNative");	
 		NotificationsTask notifications = new NotificationsTask();
         notifications.execute(request);
 

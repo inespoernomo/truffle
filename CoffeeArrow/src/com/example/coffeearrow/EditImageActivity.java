@@ -31,9 +31,7 @@ import android.widget.Toast;
  *
  */
 public class EditImageActivity extends Activity {
-	
-	private static final String URL = "http://coffeearrow.com/";	
-	
+
 	private String s3url;
 	private String caption;
 	private EditImageActivity mainActivity;
@@ -76,7 +74,7 @@ public class EditImageActivity extends Activity {
 		requestParams.put("userId", userId);
 		requestParams.put("imgLink", s3url);
 		
-		HttpPost request = RequestFactory.create(URL, requestParams, "deleteUserImage");
+		HttpPost request = RequestFactory.create(requestParams, "deleteUserImage");
 		
 		DeleteImageTask task = new DeleteImageTask();
 		task.execute(request);
@@ -96,7 +94,7 @@ public class EditImageActivity extends Activity {
 		requestParams.put("imgLink", s3url);
 		requestParams.put("imgCaption", caption);
 		
-		HttpPost request = RequestFactory.create(URL, requestParams, "editImageCaption");
+		HttpPost request = RequestFactory.create(requestParams, "editImageCaption");
 		
 		EditCaptionTask task = new EditCaptionTask();
 		task.execute(request);

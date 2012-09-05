@@ -23,8 +23,6 @@ import android.widget.Toast;
 
 public class SignUpActivity extends Activity {
 
-	private static final String URL = "http://coffeearrow.com/";
-
 	public class SubmitUserInfo extends AsyncTask<HttpPost, Integer, Object> {
 
 		private Intent intent;
@@ -106,8 +104,7 @@ public class SignUpActivity extends Activity {
 	    requestParams.put("gender", checkedGender.getText().toString());
 	    requestParams.put("looking", checkedLookingFor.getText().toString());
 
-		HttpPost request = RequestFactory
-				.create(URL, requestParams, "submitUserInfoNative");
+		HttpPost request = RequestFactory.create(requestParams, "submitUserInfoNative");
 		Intent intent = new Intent(this, PendingVerificationActivity.class);
 
 		SubmitUserInfo authenticateUser = new SubmitUserInfo(intent);

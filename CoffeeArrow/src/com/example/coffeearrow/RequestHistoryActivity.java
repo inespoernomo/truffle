@@ -28,9 +28,6 @@ import com.example.coffeearrow.server.ServerInterface;
 
 public class RequestHistoryActivity extends Activity {
 
-	private static final String URL = "http://coffeearrow.com/";
-	
-
 	private static final String LOCKED_MESSAGE = "You are going on a date at: ";
 	private String matchId;
 	
@@ -101,7 +98,7 @@ public class RequestHistoryActivity extends Activity {
         HashMap<String, String> requestParams = new HashMap<String, String>();
 		requestParams.put("matchId", matchId);
 		
-		HttpPost request = RequestFactory.create(URL, requestParams, "getNotificationsForMatchNative");	
+		HttpPost request = RequestFactory.create(requestParams, "getNotificationsForMatchNative");	
 		
 		String lockDate = intent.getStringExtra("lockedDate");
 		RequestHistory history = new RequestHistory(lockDate);
@@ -142,7 +139,7 @@ public class RequestHistoryActivity extends Activity {
     	
     	HashMap<String, String> requestParams = new HashMap<String, String>();
     	requestParams.put("matchId", intent.getStringExtra("matchId"));
-    	HttpPost request = RequestFactory.create(URL, requestParams, "lockTheDateNative");
+    	HttpPost request = RequestFactory.create(requestParams, "lockTheDateNative");
     	
     	LockTheDate lock = new LockTheDate();
     	lock.execute(request);

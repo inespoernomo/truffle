@@ -41,8 +41,6 @@ import android.support.v4.app.NavUtils;
 
 public class DisplaySearchResultsActivity extends ListActivity {
 
-	private static final String URL = "http://coffeearrow.com/";
-
 	private DisplaySearchResultsActivity mainActivity = null;
 	private String userId;
 
@@ -181,8 +179,7 @@ public class DisplaySearchResultsActivity extends ListActivity {
 	    requestParams.put("userId", userId);
 	    requestParams.put("ageRange", "19-30");
 		
-		HttpPost request = RequestFactory.create(URL, requestParams,
-				"getSearchResultsNative");
+		HttpPost request = RequestFactory.create(requestParams, "getSearchResultsNative");
 		Intent destIntent = new Intent(this,
 				DisplaySearchResultsActivity.class);
 		ShowSearchResults searchResults = new ShowSearchResults(destIntent,

@@ -30,7 +30,6 @@ public class SignIn extends Activity {
 
 	public final static String EMAIL = "com.coffeearrow.signIn.Email";
 	public final static String PASSWORD = "com.coffeearrow.signIn.Password";
-	private static final String URL = "http://coffeearrow.com/";
 	private SignIn mainActivity = null;
 	
 	
@@ -114,7 +113,7 @@ public class SignIn extends Activity {
 	    requestParams.put("email", email);
 	    requestParams.put("password", password);
 		
-		HttpPost request = RequestFactory.create(URL, requestParams, "signInNative");	
+		HttpPost request = RequestFactory.create(requestParams, "signInNative");	
 		Intent intent = new Intent(this, DisplaySearchResultsActivity.class);
 		
 		AuthenticateUser authenticateUser = new AuthenticateUser(intent);

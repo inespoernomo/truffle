@@ -32,9 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ShowUserProfileActivity extends Activity {
-	
-	private static final String URL = "http://coffeearrow.com/";
-	
+
 	private ImageLoader imageLoader;
 	private int displayWidth;
 	
@@ -142,7 +140,7 @@ public class ShowUserProfileActivity extends Activity {
 		HashMap<String, String> requestParams = new HashMap<String, String>();
 	    requestParams.put("userId", userId);
 		
-		HttpPost request = RequestFactory.create(URL, requestParams, "getUserProfile");
+		HttpPost request = RequestFactory.create(requestParams, "getUserProfile");
 		System.out.println("Created request:");
 		System.out.println(request);
 		GetUserProfile getUserProfile = new GetUserProfile();

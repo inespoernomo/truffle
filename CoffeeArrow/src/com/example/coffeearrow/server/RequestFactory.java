@@ -14,10 +14,12 @@ import org.json.JSONObject;
  * Request factory makes the HttpPost Request
  */
 public class RequestFactory {
-
-	public static HttpPost create(String url, Map<String, String> query, String method) {
+	
+	private static final String URL = "http://coffeearrow.com/";
+	
+	public static HttpPost create(Map<String, String> query, String method) {
 		
-		HttpPost request = new HttpPost(url + method);
+		HttpPost request = new HttpPost(URL + method);
 		request.addHeader("content-type", "application/json");
 		StringEntity requestParams = null; 
 		JSONObject jsonObj = new JSONObject();
