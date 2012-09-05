@@ -20,6 +20,8 @@ public class PostToServerAsyncTask extends AsyncTask<HttpPost, Integer, Object>{
 	
 	private static PostToServerAsyncTask instance = null;
 	private static HttpClient client = null;
+	private PostToServerCallback caller = null;
+	
 	protected PostToServerAsyncTask() {
 		client = new DefaultHttpClient();
 	}
@@ -29,6 +31,11 @@ public class PostToServerAsyncTask extends AsyncTask<HttpPost, Integer, Object>{
 			instance = new PostToServerAsyncTask();
 		}
 		return instance;
+	}
+	
+	public void executeWithCallback(HttpPost request, PostToServerCallback caller) {
+		this.caller = caller;
+		execute(request);
 	}
 
 	@Override
@@ -57,6 +64,12 @@ public class PostToServerAsyncTask extends AsyncTask<HttpPost, Integer, Object>{
 		}
 		
 		return finalResult;
+	}
+	
+	@Override
+	protected void onPostExecute(Object objResult) {
+		caller.callback(objResult);
+		caller = null;
 	}
 
 }
