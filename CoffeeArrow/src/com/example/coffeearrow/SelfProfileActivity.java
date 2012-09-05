@@ -7,6 +7,9 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
 
 public class SelfProfileActivity extends ShowUserProfileActivity {
 
@@ -93,5 +96,36 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 	        break;
 	    }
 	}
+
+	/**
+	 * Override the add click listener method.
+	 * We want to bring the image up and edit it.
+	 */
+	@Override
+	protected void addImageClickListener(ImageView view, String s3url, String caption) {
+		view.setOnClickListener(new ImageClickListener(s3url, caption));
+	}
 	
+	/**
+	 * This is the class implements OnClickListener
+	 * For each image, it records the s3url and caption of the image
+	 * to pass to the edit view.
+	 * @author sunshi
+	 *
+	 */
+	private class ImageClickListener implements OnClickListener {
+		
+		private String s3url;
+		private String caption;
+		
+		public ImageClickListener(String s3url, String caption) {
+			this.s3url = s3url;
+			this.caption = caption;
+		}
+		
+		public void onClick(View v) {
+			//TODO: Go to edit view instead of log this.
+            Log.i("SelfProfileActivity", "Image clicked. Image s3url is: "+s3url+". Caption is: "+caption);
+        }
+	}
 }

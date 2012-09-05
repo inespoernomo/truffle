@@ -190,10 +190,17 @@ public class ShowUserProfileActivity extends Activity {
 		
 		// Lazy load and cache the image.
 		imageLoader.DisplayImage(s3url, imageView);
+		
+		// Add click handler for the image
+		addImageClickListener(imageView, s3url, caption);
 	
 		// This is the caption for the image.
 		TextView captionTextView = new TextView(this);
 		captionTextView.setText(caption);
 		onePicWithCaption.addView(captionTextView);
+	}
+	
+	protected void addImageClickListener(ImageView view, String s3url, String caption) {
+		// Do nothing now. For SelfProfileActivity to override.
 	}
 }
