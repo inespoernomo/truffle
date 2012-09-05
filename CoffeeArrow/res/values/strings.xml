@@ -37,5 +37,7 @@
     <string name="changeDateButton">Change Date</string>
     <string name="sureButton">Sure</string>
     <string name="title_activity_edit_image">Edit Image</string>
+    <string name="deleteImage">Delete Image</string>
+    <string name="updateCaption">Update Caption</string>
 
 </resources>
