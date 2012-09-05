@@ -3,7 +3,7 @@
     <string name="app_name">CoffeeArrow</string>
     <string name="notifications">My Notifications</string>
     <string name="title_activity_notifications">My dates</string>
-    <string name="title_activity_request_history">RequestHistoryActivity</string>
+    <string name="title_activity_request_history">History</string>
     <string name="newTimeButton">New Time</string>
     <string name="email">Email</string>
     <string name="password">Password</string>

@@ -2,7 +2,6 @@ package com.example.coffeearrow;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
 import org.apache.http.client.methods.HttpPost;
@@ -14,30 +13,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.ListActivity;
-import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.View;
-<<<<<<< HEAD
-import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.LinearLayout;
+
 import android.widget.ListView;
 import android.widget.TextView;
-=======
->>>>>>> ee5e0cf340403efb540bed2e5a131c1fbb41a4c2
-import android.widget.TimePicker;
-import android.widget.Toast;
-
 import com.example.coffeearrow.adapter.DatesAdapter;
 import com.example.coffeearrow.domain.DateItem;
 import com.example.coffeearrow.server.RequestFactory;
@@ -49,7 +32,6 @@ public class RequestHistoryActivity extends Activity {
 	
 
 	private static final String LOCKED_MESSAGE = "You are going on a date at: ";
-	private RequestHistoryActivity mainActivity = null;
 	private String matchId;
 	
 		
