@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.coffeearrow.server.PostToServerAsyncTask;
+import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 
 import android.os.Bundle;
@@ -20,45 +21,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-public class SignUpActivity extends Activity {
-
-	public class SubmitUserInfo extends PostToServerAsyncTask {
-
-		private Intent intent;
-
-		public SubmitUserInfo(Intent intent) {
-			super();
-			this.intent = intent;
-		}
-
-		//TODO: Add preExecute for spinning wheel
-		@Override
-		protected void onPostExecute(Object objResult) {
-			JSONArray resultArray = (JSONArray) objResult;
-			String status = null;
-			try {
-				for (int i = 0; i < resultArray.length(); i++) {
-					JSONObject record = resultArray.getJSONObject(i);
-
-					status = record.getString("status");
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			if ("Failed".equals(status)) {
-				String message = "Something went wrong";
-				Toast.makeText(getApplicationContext(), message,
-						Toast.LENGTH_SHORT).show();
-			} else if ("AlreadyPresent".equals(status)) {
-				String message = "Email already present, please go to sign in page";
-				Toast.makeText(getApplicationContext(), message,
-						Toast.LENGTH_SHORT).show();
-			} else {
-				startActivity(intent);
-			}
-		}
-
-	}
+public class SignUpActivity extends Activity implements PostToServerCallback {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -99,10 +62,34 @@ public class SignUpActivity extends Activity {
 	    requestParams.put("looking", checkedLookingFor.getText().toString());
 
 		HttpPost request = RequestFactory.create(requestParams, "submitUserInfoNative");
-		Intent intent = new Intent(this, PendingVerificationActivity.class);
 
-		SubmitUserInfo authenticateUser = new SubmitUserInfo(intent);
-		authenticateUser.execute(request);
+		PostToServerAsyncTask task = new PostToServerAsyncTask(this);
+		task.execute(request);
+	}
+	
+	public void callback(Object objResult) {
+		JSONArray resultArray = (JSONArray) objResult;
+		String status = null;
+		try {
+			for (int i = 0; i < resultArray.length(); i++) {
+				JSONObject record = resultArray.getJSONObject(i);
 
+				status = record.getString("status");
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		if ("Failed".equals(status)) {
+			String message = "Something went wrong";
+			Toast.makeText(getApplicationContext(), message,
+					Toast.LENGTH_SHORT).show();
+		} else if ("AlreadyPresent".equals(status)) {
+			String message = "Email already present, please go to sign in page";
+			Toast.makeText(getApplicationContext(), message,
+					Toast.LENGTH_SHORT).show();
+		} else {
+			Intent intent = new Intent(this, PendingVerificationActivity.class);
+			startActivity(intent);
+		}
 	}
 }

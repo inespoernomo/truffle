@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import com.example.coffeearrow.helpers.ImageLoader;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
+import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 
 import android.os.Bundle;
@@ -29,18 +30,20 @@ import android.widget.Toast;
  * @author sunshi
  *
  */
-public class EditImageActivity extends Activity {
+public class EditImageActivity extends Activity implements PostToServerCallback {
 
 	private String s3url;
 	private String caption;
-	private EditImageActivity mainActivity;
+	private String action;
+	private String userId;
+	private ProgressDialog dialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_image);
         
-        mainActivity = this;
+        dialog = new ProgressDialog(this);
         
         // Get the info from the source intent.
         Intent sourceIntent = getIntent();
@@ -56,6 +59,11 @@ public class EditImageActivity extends Activity {
         // Setup the caption
         EditText captionEdit = (EditText)findViewById(R.id.caption);
         captionEdit.setText(caption);
+        
+        // Save the userId
+		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+		userId = settings.getString("userId", null);
+		Log.i("EditImageActivity", "User id deleting the photo is: " + userId);
     }
 
     @Override
@@ -65,24 +73,22 @@ public class EditImageActivity extends Activity {
     }
 
     public void deleteImage(View view) {
-		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
-		String userId = settings.getString("userId", null);
-		Log.i("EditImageActivity", "User id deleting the photo is: " + userId);
-		
+    	action = "delete";
+
 		HashMap<String, String> requestParams = new HashMap<String, String>();
 		requestParams.put("userId", userId);
 		requestParams.put("imgLink", s3url);
-		
 		HttpPost request = RequestFactory.create(requestParams, "deleteUserImage");
 		
-		DeleteImageTask task = new DeleteImageTask();
+		// Display the progress dialog.
+		this.dialog.setMessage("Deleting image...");
+		this.dialog.show();
+		PostToServerAsyncTask task = new PostToServerAsyncTask(this);
 		task.execute(request);
     }
     
     public void updateCaption(View view) {
-    	SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
-		String userId = settings.getString("userId", null);
-		Log.i("EditImageActivity", "User id deleting the photo is: " + userId);
+    	action = "edit";
 		
 		EditText captionEdit = (EditText)findViewById(R.id.caption);
 		caption = captionEdit.getText().toString();
@@ -92,122 +98,49 @@ public class EditImageActivity extends Activity {
 		requestParams.put("userId", userId);
 		requestParams.put("imgLink", s3url);
 		requestParams.put("imgCaption", caption);
-		
 		HttpPost request = RequestFactory.create(requestParams, "editImageCaption");
 		
-		EditCaptionTask task = new EditCaptionTask();
+		// Display the progress dialog.
+		this.dialog.setMessage("Updating caption...");
+		this.dialog.show();
+		PostToServerAsyncTask task = new PostToServerAsyncTask(this);
 		task.execute(request);
     }
     
+	public void callback(Object objResult) {
+		Log.i("UploadUserImage", "Got back to onPostExecute.");
+		Log.i("UploadUserImage", "The result is: " + objResult);
+		
+		JSONArray resultArray = (JSONArray) objResult;
+		String status = null;
+		try {
+			for (int i = 0; i < resultArray.length(); i++) {
+				JSONObject record = resultArray.getJSONObject(i);
 
-    private class DeleteImageTask extends PostToServerAsyncTask {
-    	
-    	// This is the first progress dialog we display while fetching the search result.
-		private ProgressDialog dialog;
-		
-		public DeleteImageTask() {
-			super();
-			dialog = new ProgressDialog(mainActivity);
+				status = record.getString("status");
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
-		
-		@Override
-		protected void onPreExecute() {
-			// Display the progress dialog.
-			this.dialog.setMessage("Deleting image...");
-			this.dialog.show();
-		}
-		
-		@Override
-		protected void onPostExecute(Object objResult) {
-			Log.i("UploadUserImage", "Got back to onPostExecute.");
-			Log.i("UploadUserImage", "The result is: " + objResult);
+		if ("Failed".equals(status)) {
+			String message = "Something went wrong";
+			Toast.makeText(getApplicationContext(), message,
+					Toast.LENGTH_SHORT).show();
+		} else {
+			// Save information for SelfProfileActivity to remove/update the image
+			Intent result = new Intent();
+			result.putExtra("s3url", s3url);
+			result.putExtra("caption", caption);
+			result.putExtra("type", action);
+			setResult(RESULT_OK, result);
 			
-			JSONArray resultArray = (JSONArray) objResult;
-			String status = null;
-			try {
-				for (int i = 0; i < resultArray.length(); i++) {
-					JSONObject record = resultArray.getJSONObject(i);
-
-					status = record.getString("status");
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			if ("Failed".equals(status)) {
-				String message = "Something went wrong";
-				Toast.makeText(getApplicationContext(), message,
-						Toast.LENGTH_SHORT).show();
-			} else {
-				// Save information for SelfProfileActivity to remove the image
-				Intent result = new Intent();
-				result.putExtra("s3url", s3url);
-				result.putExtra("type", "delete");
-				setResult(RESULT_OK, result);
-				
-				// Dismiss the progress dialog.
-				if (dialog.isShowing())
-					dialog.dismiss();
-				
-				// Go back to the profile activity
-				finish();
-			}
+			// Dismiss the progress dialog.
+			if (dialog.isShowing())
+				dialog.dismiss();
+			
+			// Go back to the profile activity
+			finish();
 		}
 	}
-
-
-    private class EditCaptionTask extends PostToServerAsyncTask {
-    	
-    	// This is the first progress dialog we display while fetching the search result.
-		private ProgressDialog dialog;
-		
-		public EditCaptionTask() {
-			super();
-			dialog = new ProgressDialog(mainActivity);
-		}
-		
-		@Override
-		protected void onPreExecute() {
-			// Display the progress dialog.
-			this.dialog.setMessage("Updating caption...");
-			this.dialog.show();
-		}
-
-		@Override
-		protected void onPostExecute(Object objResult) {
-			Log.i("UploadUserImage", "Got back to onPostExecute.");
-			Log.i("UploadUserImage", "The result is: " + objResult);
-			
-			JSONArray resultArray = (JSONArray) objResult;
-			String status = null;
-			try {
-				for (int i = 0; i < resultArray.length(); i++) {
-					JSONObject record = resultArray.getJSONObject(i);
-
-					status = record.getString("status");
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			if ("Failed".equals(status)) {
-				String message = "Something went wrong";
-				Toast.makeText(getApplicationContext(), message,
-						Toast.LENGTH_SHORT).show();
-			} else {
-				// Save information for SelfProfileActivity update caption
-				Intent result = new Intent();
-				result.putExtra("s3url", s3url);
-				result.putExtra("caption", caption);
-				result.putExtra("type", "edit");
-				setResult(RESULT_OK, result);
-				
-				// Dismiss the progress dialog.
-				if (dialog.isShowing())
-					dialog.dismiss();
-				
-				// Go back to the profile activity
-				finish();
-			}
-		}
-	}
-
+  
 }

@@ -23,63 +23,21 @@ import android.widget.Toast;
 import com.example.coffeearrow.adapter.NotificationAdapter;
 import com.example.coffeearrow.domain.NotificationItem;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
+import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 
-public class NotificationsActivity extends ListActivity {
-	
-	private class NotificationsTask extends PostToServerAsyncTask {
-	
-		public NotificationsTask() {
-			super();
-		}
-	
-		@Override
-		protected void onPostExecute(Object objResult) {
-			JSONArray resultArray = (JSONArray)objResult;
-			ArrayList<NotificationItem> responseList = new ArrayList<NotificationItem>();
-			ObjectMapper mapper = new ObjectMapper(); 
-			try {
-				for(int i = 0; i<resultArray.length(); i++) {
-					JSONObject jsonObj = resultArray.getJSONObject(i);
-					String record = jsonObj.toString(1);
-					NotificationItem notificationItem = mapper.readValue(record, NotificationItem.class);
-					responseList.add(notificationItem);
-					
-				} 
-			}catch (JSONException e) {
-				e.printStackTrace();
-			} catch (JsonParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			NotificationAdapter notificationAdapter = 
-						new NotificationAdapter(NotificationsActivity.this, 
-								responseList);
-            NotificationsActivity.this.setListAdapter(notificationAdapter);
-		}
-		
-		
-	}
+public class NotificationsActivity extends ListActivity implements PostToServerCallback {
 
-	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         HashMap<String, String> requestParams = new HashMap<String, String>();
 		requestParams.put("userId", "3495999573");
-
 		HttpPost request = RequestFactory.create(requestParams, "getAllNotificationsNative");	
-		NotificationsTask notifications = new NotificationsTask();
-        notifications.execute(request);
-
+		
+		PostToServerAsyncTask task = new PostToServerAsyncTask(this);
+		task.execute(request);
     }
 
     @Override
@@ -106,6 +64,35 @@ public class NotificationsActivity extends ListActivity {
 		startActivity(destIntent);
 	}
     
-    
-    
+    public void callback(Object objResult) {
+		JSONArray resultArray = (JSONArray)objResult;
+		ArrayList<NotificationItem> responseList = new ArrayList<NotificationItem>();
+		ObjectMapper mapper = new ObjectMapper(); 
+		try {
+			for(int i = 0; i<resultArray.length(); i++) {
+				JSONObject jsonObj = resultArray.getJSONObject(i);
+				String record = jsonObj.toString(1);
+				NotificationItem notificationItem = mapper.readValue(record, NotificationItem.class);
+				responseList.add(notificationItem);
+				
+			} 
+		}catch (JSONException e) {
+			e.printStackTrace();
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		NotificationAdapter notificationAdapter = 
+					new NotificationAdapter(NotificationsActivity.this, 
+							responseList);
+        NotificationsActivity.this.setListAdapter(notificationAdapter);
+	}
+
 }

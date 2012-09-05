@@ -16,26 +16,14 @@ import org.json.JSONObject;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class PostToServerAsyncTask extends AsyncTask<HttpPost, Integer, Object>{
+public final class PostToServerAsyncTask extends AsyncTask<HttpPost, Integer, Object>{
 	
-	private static PostToServerAsyncTask instance = null;
 	private static HttpClient client = null;
 	private PostToServerCallback caller = null;
 	
-	protected PostToServerAsyncTask() {
+	public PostToServerAsyncTask(PostToServerCallback caller) {
 		client = new DefaultHttpClient();
-	}
-	
-	public static PostToServerAsyncTask getInstance() {
-		if(instance == null) {
-			instance = new PostToServerAsyncTask();
-		}
-		return instance;
-	}
-	
-	public void executeWithCallback(HttpPost request, PostToServerCallback caller) {
 		this.caller = caller;
-		execute(request);
 	}
 
 	@Override

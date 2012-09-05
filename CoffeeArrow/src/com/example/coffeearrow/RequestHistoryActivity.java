@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -23,81 +24,74 @@ import android.widget.TextView;
 import com.example.coffeearrow.adapter.DatesAdapter;
 import com.example.coffeearrow.domain.DateItem;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
+import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 
-public class RequestHistoryActivity extends Activity {
+public class RequestHistoryActivity extends Activity{
 
 	private static final String LOCKED_MESSAGE = "You are going on a date at: ";
 	private String matchId;
-	
-		
-	private class RequestHistory extends PostToServerAsyncTask {
-	
-		private String lockDate;
-		
-		public RequestHistory(String lockDate) {
-			super();
-			this.lockDate = lockDate;
-			
-		}
-		
-		@Override
-		protected void onPostExecute(Object objResult) {
-			JSONArray resultArray = (JSONArray)objResult;
-			ArrayList<DateItem> responseList = new ArrayList<DateItem>();
-			ObjectMapper mapper = new ObjectMapper(); 
-			try {
-				for(int i = 0; i<resultArray.length(); i++) {
-					JSONObject jsonObj = resultArray.getJSONObject(i);
-					String record = jsonObj.toString(1);
-					DateItem dateItem = mapper.readValue(record, DateItem.class);
-					responseList.add(dateItem);
-					
-				} 
-			}catch (JSONException e) {
-				e.printStackTrace();
-			} catch (JsonParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			setContentView(R.layout.activity_request_history);
-			ListView listView = (ListView) findViewById(R.id.list);
-			DatesAdapter adapter = 	
-					new DatesAdapter(RequestHistoryActivity.this, responseList);
-            listView.setAdapter(adapter);
-                        
-            if (!lockDate.equals("None")) {
-            	TextView text = (TextView) findViewById(R.id.lockDate);
-            	text.setText(LOCKED_MESSAGE + lockDate);
-            } 
-            
-		}
-		
-	}
+	private RequestHistoryActivity mainActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mainActivity = this;
     	
         Intent intent = getIntent();        
         matchId = intent.getStringExtra("matchId");
         
         HashMap<String, String> requestParams = new HashMap<String, String>();
 		requestParams.put("matchId", matchId);
-		
 		HttpPost request = RequestFactory.create(requestParams, "getNotificationsForMatchNative");	
 		
-		String lockDate = intent.getStringExtra("lockedDate");
-		RequestHistory history = new RequestHistory(lockDate);
-        history.execute(request);
+		PostToServerCallback callback = new PostToServerCallback(){
+			public void callback(Object objResult) {
+				Log.i("requesthistory", "The objResult is: "+objResult);
+				JSONArray resultArray = (JSONArray)objResult;
+				ArrayList<DateItem> responseList = new ArrayList<DateItem>();
+				ObjectMapper mapper = new ObjectMapper(); 
+				try {
+					for(int i = 0; i<resultArray.length(); i++) {
+						JSONObject jsonObj = resultArray.getJSONObject(i);
+						String record = jsonObj.toString(1);
+						DateItem dateItem = mapper.readValue(record, DateItem.class);
+						responseList.add(dateItem);
+						
+					} 
+				}catch (JSONException e) {
+					e.printStackTrace();
+				} catch (JsonParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JsonMappingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				setContentView(R.layout.activity_request_history);
+				ListView listView = (ListView) mainActivity.findViewById(R.id.list);
+				DatesAdapter adapter = 	
+						new DatesAdapter(mainActivity, responseList);
+		        listView.setAdapter(adapter);
+		                    
+		        Intent intent = getIntent();        
+		        matchId = intent.getStringExtra("matchId");
+				String lockDate = intent.getStringExtra("lockedDate");
+				
 
+		        if (!lockDate.equals("None")) {
+		        	TextView text = (TextView) mainActivity.findViewById(R.id.lockDate);
+		        	text.setText(LOCKED_MESSAGE + lockDate);
+		        } 
+		        
+			}
+		};
+		PostToServerAsyncTask task = new PostToServerAsyncTask(callback);
+		task.execute(request);
     }
     
 
@@ -108,6 +102,7 @@ public class RequestHistoryActivity extends Activity {
     }
 
     
+
     /**
      * Requesting to change the date
      * */
@@ -135,53 +130,41 @@ public class RequestHistoryActivity extends Activity {
     	requestParams.put("matchId", intent.getStringExtra("matchId"));
     	HttpPost request = RequestFactory.create(requestParams, "lockTheDateNative");
     	
-    	LockTheDate lock = new LockTheDate();
-    	lock.execute(request);
-    	
-    }
-	
-    
-    
-	private class LockTheDate extends PostToServerAsyncTask {
-		
-		public LockTheDate() {
-			super();			
-		}
-		
-		@Override
-		protected void onPostExecute(Object objResult) {
-			JSONArray resultArray = (JSONArray)objResult;
-			ArrayList<DateItem> responseList = new ArrayList<DateItem>();
-			ObjectMapper mapper = new ObjectMapper(); 
-			try {
-				for(int i = 0; i<resultArray.length(); i++) {
-					
-					JSONObject jsonObj = resultArray.getJSONObject(i);
-					System.out.println(jsonObj);
-					String record = jsonObj.toString(1);
-					DateItem dateItem = mapper.readValue(record, DateItem.class);
-					responseList.add(dateItem);
-					
-				} 
-			}catch (JSONException e) {
-				e.printStackTrace();
-			} catch (JsonParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+    	PostToServerCallback callback = new PostToServerCallback(){
+    		public void callback(Object objResult) {
+    			JSONArray resultArray = (JSONArray)objResult;
+    			ArrayList<DateItem> responseList = new ArrayList<DateItem>();
+    			ObjectMapper mapper = new ObjectMapper(); 
+    			try {
+    				for(int i = 0; i<resultArray.length(); i++) {
+    					
+    					JSONObject jsonObj = resultArray.getJSONObject(i);
+    					System.out.println(jsonObj);
+    					String record = jsonObj.toString(1);
+    					DateItem dateItem = mapper.readValue(record, DateItem.class);
+    					responseList.add(dateItem);
+    					
+    				} 
+    			}catch (JSONException e) {
+    				e.printStackTrace();
+    			} catch (JsonParseException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			} catch (JsonMappingException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			} catch (IOException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
 
-			TextView lock = (TextView)findViewById(R.id.lockDate);
-			lock.setText(LOCKED_MESSAGE + responseList.get(0).getTime());
-			
-		}
-		
-		
-	}
+    			TextView lock = (TextView)mainActivity.findViewById(R.id.lockDate);
+    			lock.setText(LOCKED_MESSAGE + responseList.get(0).getTime());
+    			
+    		}
+    	};
+    	PostToServerAsyncTask task = new PostToServerAsyncTask(callback);
+		task.execute(request);
+    }
     
 }

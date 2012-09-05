@@ -74,7 +74,8 @@ public class SignIn extends Activity implements PostToServerCallback {
 		// Show progress dialog.
 		dialog.setMessage("Signing in...");
 		dialog.show();
-		PostToServerAsyncTask.getInstance().executeWithCallback(request, this);
+		PostToServerAsyncTask task = new PostToServerAsyncTask(this);
+		task.execute(request);
 	}
 
 	/** Called when the user presses signUp button */

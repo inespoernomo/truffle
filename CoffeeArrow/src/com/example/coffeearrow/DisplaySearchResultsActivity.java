@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import com.example.coffeearrow.domain.SearchProfile;
 import com.example.coffeearrow.helpers.ImageLoader;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
+import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 
 import android.os.Bundle;
@@ -38,133 +39,76 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
-public class DisplaySearchResultsActivity extends ListActivity {
+public class DisplaySearchResultsActivity extends ListActivity implements PostToServerCallback {
 
-	private DisplaySearchResultsActivity mainActivity = null;
 	private String userId;
+	private ProgressDialog dialog;
+		
+	/**
+	 * This is the adapter for the DisplaySearchResultsActivity, which is a ListActiviy.
+	 * Given it the profile list, with just image url, not converted to bitmap, it can easy load each
+	 * picture and cache them when getView is called.
+	 * @author sunshi
+	 *
+	 */
+	public class DisplayCustomerAdapter extends ArrayAdapter<SearchProfile> {
 
-	private class ShowSearchResults extends PostToServerAsyncTask {
-
-		// This is the first progress dialog we display while fetching the search result.
-		private ProgressDialog dialog;
-
-		public ShowSearchResults(Intent intent,
-				DisplaySearchResultsActivity activity) {
-			super();
-			dialog = new ProgressDialog(activity);
-		}
-
-		@Override		
-		protected void onPreExecute() {
-			// Display the progress dialog.
-			this.dialog.setMessage("Populating results...");
-			this.dialog.show();
+		private ArrayList<SearchProfile> profileList;
+		public ImageLoader imageLoader;
+		
+		public DisplayCustomerAdapter(Context context,
+				ArrayList<SearchProfile> profileList) {
+			super(context, R.layout.activity_display_search_results,
+					profileList);
+			this.profileList = profileList;
+			imageLoader=new ImageLoader(DisplaySearchResultsActivity.this.getApplicationContext());
 		}
 
 		@Override
-		protected void onPostExecute(Object objResult) {
-			if (objResult != null) {
-				JSONArray resultArray = (JSONArray) objResult;
-				ArrayList<SearchProfile> profileList = new ArrayList<SearchProfile>();
-				ObjectMapper mapper = new ObjectMapper();
-				try {
-					for (int i = 0; i < resultArray.length(); i++) {
-						JSONObject jsonObj = resultArray.getJSONObject(i);
-						String record = jsonObj.toString(1);
-						SearchProfile profile = mapper.readValue(record,
-								SearchProfile.class);
-
-						profileList.add(profile);
-					}
-					
-					mainActivity.setListAdapter(new DisplayCustomerAdapter(
-							DisplaySearchResultsActivity.this, profileList));
-
-				} catch (JSONException e) {
-					e.printStackTrace();
-				} catch (JsonParseException e) {
-
-					e.printStackTrace();
-				} catch (JsonMappingException e) {
-
-					e.printStackTrace();
-				} catch (IOException e) {
-
-					e.printStackTrace();
-				}
-
-				// Dismiss the progress dialog.
-				if (dialog.isShowing())
-					dialog.dismiss();
-			}
-		}
-		
-		/**
-		 * This is the adapter for the DisplaySearchResultsActivity, which is a ListActiviy.
-		 * Given it the profile list, with just image url, not converted to bitmap, it can easy load each
-		 * picture and cache them when getView is called.
-		 * @author sunshi
-		 *
-		 */
-		public class DisplayCustomerAdapter extends ArrayAdapter<SearchProfile> {
-
-			private ArrayList<SearchProfile> profileList;
-			public ImageLoader imageLoader;
+		public View getView(int position, View convertView, ViewGroup parent) {
+			// Find the profile
+			SearchProfile profile = profileList.get(position);
 			
-			public DisplayCustomerAdapter(Context context,
-					ArrayList<SearchProfile> profileList) {
-				super(context, R.layout.activity_display_search_results,
-						profileList);
-				this.profileList = profileList;
-				imageLoader=new ImageLoader(DisplaySearchResultsActivity.this.getApplicationContext());
-			}
-
-			@Override
-			public View getView(int position, View convertView, ViewGroup parent) {
-				// Find the profile
-				SearchProfile profile = profileList.get(position);
-				
-				// Get the empty row view from the xml.
-				LayoutInflater inflater = (LayoutInflater) DisplaySearchResultsActivity.this
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				View rowView = inflater
-						.inflate(R.layout.activity_display_search_results,
-								parent, false);
-				
-				// Get the size of the display.
-				Display display = getWindowManager().getDefaultDisplay();
-				Point size = new Point();
-				display.getSize(size);
-				
-				// We want to display 5 results each page.
-				int rowHeight = size.y / 5;
-				
-				// So we set the height of the row to 1/5 of the display height.
-				rowView.setLayoutParams(
-						new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, rowHeight));
-				
-				// This is the profile image and we want it to be square.
-				ImageView imageView = (ImageView) rowView
-						.findViewById(R.id.icon);
-				imageView.setLayoutParams(
-						new LinearLayout.LayoutParams(rowHeight, rowHeight));
-				
-				// Lazy load and cache the image.
-				imageLoader.DisplayImage(profile.getProfileImage(), imageView);
-				
-				// The is the label for name and city.
-				TextView textView = (TextView) rowView.findViewById(R.id.label);				
-				textView.setText(profile.toString());
-				
-				return rowView;
-			}
+			// Get the empty row view from the xml.
+			LayoutInflater inflater = (LayoutInflater) DisplaySearchResultsActivity.this
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View rowView = inflater
+					.inflate(R.layout.activity_display_search_results,
+							parent, false);
+			
+			// Get the size of the display.
+			Display display = getWindowManager().getDefaultDisplay();
+			Point size = new Point();
+			display.getSize(size);
+			
+			// We want to display 5 results each page.
+			int rowHeight = size.y / 5;
+			
+			// So we set the height of the row to 1/5 of the display height.
+			rowView.setLayoutParams(
+					new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, rowHeight));
+			
+			// This is the profile image and we want it to be square.
+			ImageView imageView = (ImageView) rowView
+					.findViewById(R.id.icon);
+			imageView.setLayoutParams(
+					new LinearLayout.LayoutParams(rowHeight, rowHeight));
+			
+			// Lazy load and cache the image.
+			imageLoader.DisplayImage(profile.getProfileImage(), imageView);
+			
+			// The is the label for name and city.
+			TextView textView = (TextView) rowView.findViewById(R.id.label);				
+			textView.setText(profile.toString());
+			
+			return rowView;
 		}
 	}
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mainActivity = this;
 		
 		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
 		userId = settings.getString("userId", null);
@@ -172,13 +116,14 @@ public class DisplaySearchResultsActivity extends ListActivity {
 		HashMap<String, String> requestParams = new HashMap<String, String>();
 	    requestParams.put("userId", userId);
 	    requestParams.put("ageRange", "19-30");
-		
 		HttpPost request = RequestFactory.create(requestParams, "getSearchResultsNative");
-		Intent destIntent = new Intent(this,
-				DisplaySearchResultsActivity.class);
-		ShowSearchResults searchResults = new ShowSearchResults(destIntent,
-				this);
-		searchResults.execute(request);
+		
+		// Display the progress dialog.		
+		dialog = new ProgressDialog(this);
+		this.dialog.setMessage("Populating results...");
+		this.dialog.show();
+		PostToServerAsyncTask task = new PostToServerAsyncTask(this);
+		task.execute(request);
 	}
 
 	@Override
@@ -212,6 +157,43 @@ public class DisplaySearchResultsActivity extends ListActivity {
 			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void callback(Object result) {
+		// Dismiss the progress dialog.
+		if (dialog.isShowing())
+			dialog.dismiss();
+		
+		if (result != null) {
+			JSONArray resultArray = (JSONArray) result;
+			ArrayList<SearchProfile> profileList = new ArrayList<SearchProfile>();
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				for (int i = 0; i < resultArray.length(); i++) {
+					JSONObject jsonObj = resultArray.getJSONObject(i);
+					String record = jsonObj.toString(1);
+					SearchProfile profile = mapper.readValue(record,
+							SearchProfile.class);
+
+					profileList.add(profile);
+				}
+				
+				this.setListAdapter(new DisplayCustomerAdapter(
+						DisplaySearchResultsActivity.this, profileList));
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (JsonParseException e) {
+
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+
+				e.printStackTrace();
+			} catch (IOException e) {
+
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
