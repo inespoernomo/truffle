@@ -82,6 +82,26 @@ public class EditImageActivity extends Activity {
 		task.execute(request);
     }
     
+    public void updateCaption(View view) {
+    	SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+		String userId = settings.getString("userId", null);
+		Log.i("EditImageActivity", "User id deleting the photo is: " + userId);
+		
+		EditText captionEdit = (EditText)findViewById(R.id.caption);
+		caption = captionEdit.getText().toString();
+		Log.i("UploadImageActivity", "Caption is: " + caption);
+		
+		HashMap<String, String> requestParams = new HashMap<String, String>();
+		requestParams.put("userId", userId);
+		requestParams.put("imgLink", s3url);
+		requestParams.put("imgCaption", caption);
+		
+		HttpPost request = RequestFactory.create(URL, requestParams, "editImageCaption");
+		
+		EditCaptionTask task = new EditCaptionTask();
+		task.execute(request);
+    }
+    
 
     private class DeleteImageTask extends AsyncTask<HttpPost, Integer, Object> {
     	
@@ -126,7 +146,6 @@ public class EditImageActivity extends Activity {
 						Toast.LENGTH_SHORT).show();
 			} else {
 				// Save information for SelfProfileActivity to remove the image
-				// we just uploaded.
 				Intent result = new Intent();
 				result.putExtra("s3url", s3url);
 				result.putExtra("type", "delete");
@@ -141,4 +160,65 @@ public class EditImageActivity extends Activity {
 			}
 		}
 	}
+
+
+    private class EditCaptionTask extends AsyncTask<HttpPost, Integer, Object> {
+    	
+    	// This is the first progress dialog we display while fetching the search result.
+		private ProgressDialog dialog;
+		
+		public EditCaptionTask() {
+			super();
+			dialog = new ProgressDialog(mainActivity);
+		}
+		
+		protected void onPreExecute() {
+			// Display the progress dialog.
+			this.dialog.setMessage("Updating caption...");
+			this.dialog.show();
+		}
+
+		@Override
+		protected Object doInBackground(HttpPost... params) {
+
+			return ServerInterface.executeHttpRequest(params[0]);
+		}
+
+		protected void onPostExecute(Object objResult) {
+			Log.i("UploadUserImage", "Got back to onPostExecute.");
+			Log.i("UploadUserImage", "The result is: " + objResult);
+			
+			JSONArray resultArray = (JSONArray) objResult;
+			String status = null;
+			try {
+				for (int i = 0; i < resultArray.length(); i++) {
+					JSONObject record = resultArray.getJSONObject(i);
+
+					status = record.getString("status");
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			if ("Failed".equals(status)) {
+				String message = "Something went wrong";
+				Toast.makeText(getApplicationContext(), message,
+						Toast.LENGTH_SHORT).show();
+			} else {
+				// Save information for SelfProfileActivity update caption
+				Intent result = new Intent();
+				result.putExtra("s3url", s3url);
+				result.putExtra("caption", caption);
+				result.putExtra("type", "edit");
+				setResult(RESULT_OK, result);
+				
+				// Dismiss the progress dialog.
+				if (dialog.isShowing())
+					dialog.dismiss();
+				
+				// Go back to the profile activity
+				finish();
+			}
+		}
+	}
+
 }
