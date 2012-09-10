@@ -19,10 +19,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.example.coffeearrow.adapter.DatesAdapter;
 import com.example.coffeearrow.domain.DateItem;
+import com.example.coffeearrow.helpers.ImageLoader;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
@@ -32,18 +34,29 @@ public class RequestHistoryActivity extends Activity{
 	private static final String LOCKED_MESSAGE = "You are going on a date at: ";
 	private String matchId;
 	private RequestHistoryActivity mainActivity;
+	private ImageLoader imageLoader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainActivity = this;
+        imageLoader = new ImageLoader(this);
     	
         Intent intent = getIntent();        
         matchId = intent.getStringExtra("matchId");
+    	String matchName = intent.getStringExtra("matchName");
+    	String matchProfileImage = intent.getStringExtra("matchProfileImage");
         
         HashMap<String, String> requestParams = new HashMap<String, String>();
 		requestParams.put("matchId", matchId);
-		HttpPost request = RequestFactory.create(requestParams, "getNotificationsForMatchNative");	
+		HttpPost request = RequestFactory.create(requestParams, "getNotificationsForMatchNative");
+		
+		setContentView(R.layout.activity_request_history);
+		ImageView profileImage = (ImageView)findViewById(R.id.icon);
+		imageLoader.DisplayImage(matchProfileImage, profileImage);
+		
+		TextView textView = (TextView) findViewById(R.id.label);
+		textView.setText(matchName);
 		
 		PostToServerCallback callback = new PostToServerCallback(){
 			public void callback(Object objResult) {
@@ -72,14 +85,12 @@ public class RequestHistoryActivity extends Activity{
 					e.printStackTrace();
 				}
 				
-				setContentView(R.layout.activity_request_history);
 				ListView listView = (ListView) mainActivity.findViewById(R.id.list);
 				DatesAdapter adapter = 	
 						new DatesAdapter(mainActivity, responseList);
 		        listView.setAdapter(adapter);
 		                    
 		        Intent intent = getIntent();        
-		        matchId = intent.getStringExtra("matchId");
 				String lockDate = intent.getStringExtra("lockedDate");
 				
 

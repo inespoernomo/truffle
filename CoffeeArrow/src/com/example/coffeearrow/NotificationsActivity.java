@@ -18,8 +18,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import com.example.coffeearrow.adapter.NotificationAdapter;
 import com.example.coffeearrow.domain.NotificationItem;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
@@ -49,15 +47,16 @@ public class NotificationsActivity extends ListActivity implements PostToServerC
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
     	NotificationItem item = (NotificationItem) getListAdapter().getItem(position);
-		Toast.makeText(this, item.getName() + " selected", Toast.LENGTH_LONG).show();
 		
 		Intent destIntent = new Intent(this, RequestHistoryActivity.class);
-	
+
 		if (item.getLatestInitiatorId().equals(item.getUserId())) {
 			destIntent.putExtra("showSure", "true");
 			
 		}
 		destIntent.putExtra("matchId", item.get_id());
+		destIntent.putExtra("matchName", item.getName());
+		destIntent.putExtra("matchProfileImage", item.getProfileImage());
 		destIntent.putExtra("lockedDate", item.getLocked());
 		destIntent.putExtra("dateName", item.getName());
 
