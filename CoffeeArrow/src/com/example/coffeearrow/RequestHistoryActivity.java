@@ -89,7 +89,7 @@ public class RequestHistoryActivity extends Activity{
 				DatesAdapter adapter = 	
 						new DatesAdapter(mainActivity, responseList);
 		        listView.setAdapter(adapter);
-		                    
+
 		        Intent intent = getIntent();        
 				String lockDate = intent.getStringExtra("lockedDate");
 				
