@@ -26,8 +26,6 @@ public class ChangeDateActivity extends Activity {
     }
     
     public void closeDialog(View view) {
-    	 
     	changeDateDialog.dismiss();
-    	
     }
 }

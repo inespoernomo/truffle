@@ -19,12 +19,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.coffeearrow.adapter.DatesAdapter;
 import com.example.coffeearrow.domain.DateItem;
+import com.example.coffeearrow.helpers.ImageLoader;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
@@ -35,137 +37,47 @@ public class RequestHistoryActivity extends Activity {
 	private static final String LOCKED_MESSAGE = "You are going on a date at: ";
 	private RequestHistoryActivity mainActivity = null;
 	private String matchId;
-	
-		
-/**	private class RequestHistory extends PostToServerAsyncTask {
-	
-		private String lockDate;
-		
-		public RequestHistory(String lockDate) {
-			super();
-			this.lockDate = lockDate;
-			
-		}
-		
-		
-		protected void onPostExecute(Object objResult) {
-			JSONArray resultArray = (JSONArray)objResult;
-			ArrayList<DateItem> responseList = new ArrayList<DateItem>();
-			ObjectMapper mapper = new ObjectMapper(); 
-			try {
-				for(int i = 0; i<resultArray.length(); i++) {
-					JSONObject jsonObj = resultArray.getJSONObject(i);
-					String record = jsonObj.toString(1);
-					DateItem dateItem = mapper.readValue(record, DateItem.class);
-					responseList.add(dateItem);
-					
-				} 
-			}catch (JSONException e) {
-				e.printStackTrace();
-			} catch (JsonParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			setContentView(R.layout.activity_request_history);
-			ListView listView = (ListView) findViewById(R.id.list);
-			DatesAdapter adapter = 	
-					new DatesAdapter(RequestHistoryActivity.this, responseList);
-            listView.setAdapter(adapter);
-                        
-            if (!lockDate.equals("None")) {
-            	TextView text = (TextView) findViewById(R.id.lockDate);
-            	text.setText(LOCKED_MESSAGE + lockDate);
-            }
-            
-            Button newDate = (Button) findViewById (R.id.changeDatebutton);
-            newDate.setClickable(true);
-            newDate.setFocusable(true);
-            newDate.setFocusableInTouchMode(true);
-            
-            newDate.setOnClickListener(new View.OnClickListener() {
-          
-            	// Requesting new date
-    			@Override
-    			public void onClick(View v) {
-    				
-    				Log.i("requestHistory", "Requesting new date");
-    				// set up dialog
-    				final Dialog dialog = new Dialog(mainActivity);
-    				dialog.setContentView(R.layout.activity_change_date);
-    				dialog.setTitle("Propose New Time");
-    				dialog.setCancelable(true);
-    				
-    				
-    				Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
-    				cancelButton.setOnClickListener(new View.OnClickListener() {
+	private ImageLoader imageLoader;
 
-    					@Override
-    					public void onClick(View v) {
-    						dialog.dismiss();
-    						
-    					}
-    					
-    				});
-    				
-    				Button button = (Button) dialog.findViewById(R.id.okButton);
-    				button.setOnClickListener(new View.OnClickListener() {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_request_history);
+		mainActivity = this;
+		imageLoader = new ImageLoader(this);
+		Intent intent = getIntent();
+		matchId = intent.getStringExtra("matchId");
+		String matchName = intent.getStringExtra("matchName");
+		String matchProfileImage = intent.getStringExtra("matchProfileImage");
 
-    					@Override
-    					public void onClick(View v) {
-    						dialog.dismiss();
-    						
-    					}
-    					
-    				});
-    				
-    				dialog.show();
-    				
-    			}
-            	
-            	
-            });
-            
-		}
-		
-	}
-*/
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_request_history);
-    	mainActivity = this;
-        Intent intent = getIntent();        
-        matchId = intent.getStringExtra("matchId");
-        
-        HashMap<String, String> requestParams = new HashMap<String, String>();
+		HashMap<String, String> requestParams = new HashMap<String, String>();
 		requestParams.put("matchId", matchId);
-		
-		HttpPost request = RequestFactory.create(requestParams, "getNotificationsForMatchNative");	
-		
-		
-        
-		PostToServerCallback callback = new PostToServerCallback(){
+		HttpPost request = RequestFactory.create(requestParams,
+				"getNotificationsForMatchNative");
+
+		setContentView(R.layout.activity_request_history);
+		ImageView profileImage = (ImageView) findViewById(R.id.icon);
+		imageLoader.DisplayImage(matchProfileImage, profileImage);
+
+		TextView textView = (TextView) findViewById(R.id.label);
+		textView.setText(matchName);
+
+		PostToServerCallback callback = new PostToServerCallback() {
 			public void callback(Object objResult) {
-				Log.i("requesthistory", "The objResult is: "+objResult);
-				JSONArray resultArray = (JSONArray)objResult;
+				Log.i("requesthistory", "The objResult is: " + objResult);
+				JSONArray resultArray = (JSONArray) objResult;
 				ArrayList<DateItem> responseList = new ArrayList<DateItem>();
-				ObjectMapper mapper = new ObjectMapper(); 
+				ObjectMapper mapper = new ObjectMapper();
 				try {
-					for(int i = 0; i<resultArray.length(); i++) {
+					for (int i = 0; i < resultArray.length(); i++) {
 						JSONObject jsonObj = resultArray.getJSONObject(i);
 						String record = jsonObj.toString(1);
-						DateItem dateItem = mapper.readValue(record, DateItem.class);
+						DateItem dateItem = mapper.readValue(record,
+								DateItem.class);
 						responseList.add(dateItem);
-						
-					} 
-				}catch (JSONException e) {
+
+					}
+				} catch (JSONException e) {
 					e.printStackTrace();
 				} catch (JsonParseException e) {
 					// TODO Auto-generated catch block
@@ -177,79 +89,73 @@ public class RequestHistoryActivity extends Activity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				setContentView(R.layout.activity_request_history);
-				ListView listView = (ListView) mainActivity.findViewById(R.id.list);
-				DatesAdapter adapter = 	
-						new DatesAdapter(mainActivity, responseList);
-		        listView.setAdapter(adapter);
-		                    
-		        Intent intent = getIntent();        
-		        matchId = intent.getStringExtra("matchId");
+
+				ListView listView = (ListView) mainActivity
+						.findViewById(R.id.list);
+				DatesAdapter adapter = new DatesAdapter(mainActivity,
+						responseList);
+				listView.setAdapter(adapter);
+
+				Intent intent = getIntent();
 				String lockDate = intent.getStringExtra("lockedDate");
-				
 
-		        if (!lockDate.equals("None")) {
-		        	TextView text = (TextView) mainActivity.findViewById(R.id.lockDate);
-		        	text.setText(LOCKED_MESSAGE + lockDate);
-		        } 
-		        
-
-	            Button newDate = (Button) findViewById (R.id.changeDatebutton);
-	            newDate.setClickable(true);
-	            newDate.setFocusable(true);
-	            newDate.setFocusableInTouchMode(true);
-	            
-	            newDate.setOnClickListener(new View.OnClickListener() {
-	          
-	            	// Requesting new date
-	    			@Override
-	    			public void onClick(View v) {
-	    				
-	    				Log.i("requestHistory", "Requesting new date");
-	    				// set up dialog
-	    				final Dialog dialog = new Dialog(mainActivity);
-	    				dialog.setContentView(R.layout.activity_change_date);
-	    				dialog.setTitle("Propose New Time");
-	    				dialog.setCancelable(true);
-	    				
-	    				
-	    				Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
-	    				cancelButton.setOnClickListener(new View.OnClickListener() {
-
-	    					@Override
-	    					public void onClick(View v) {
-	    						dialog.dismiss();
-	    						
-	    					}
-	    					
-	    				});
-	    				
-	    				Button button = (Button) dialog.findViewById(R.id.okButton);
-	    				button.setOnClickListener(new View.OnClickListener() {
-
-	    					@Override
-	    					public void onClick(View v) {
-	    						dialog.dismiss();
-	    						
-	    					}
-	    					
-	    				});
-	    				
-	    				dialog.show();
-	    				
+				if (!lockDate.equals("None")) {
+					TextView text = (TextView) mainActivity
+							.findViewById(R.id.lockDate);
+					text.setText(LOCKED_MESSAGE + lockDate);
 				}
-            		
-            });
-	           
+
+				Button newDate = (Button) findViewById(R.id.changeDatebutton);
+				newDate.setClickable(true);
+				newDate.setFocusable(true);
+				newDate.setFocusableInTouchMode(true);
+
+				newDate.setOnClickListener(new View.OnClickListener() {
+					// Requesting new date
+					public void onClick(View v) {
+
+						Log.i("requestHistory", "Requesting new date");
+						// set up dialog
+						final Dialog dialog = new Dialog(mainActivity);
+						dialog.setContentView(R.layout.activity_change_date);
+						dialog.setTitle("Propose New Time");
+						dialog.setCancelable(true);
+
+						Button cancelButton = (Button) dialog
+								.findViewById(R.id.cancelButton);
+						cancelButton
+								.setOnClickListener(new View.OnClickListener() {
+
+									public void onClick(View v) {
+										dialog.dismiss();
+
+									}
+
+								});
+
+						Button button = (Button) dialog
+								.findViewById(R.id.okButton);
+						button.setOnClickListener(new View.OnClickListener() {
+
+							public void onClick(View v) {
+								dialog.dismiss();
+
+							}
+
+						});
+
+						dialog.show();
+
+					}
+
+				});
 			}
 		};
-		
+
 		PostToServerAsyncTask task = new PostToServerAsyncTask(callback);
 		task.execute(request);
 
-
-    }
+	}
     
 
     @Override

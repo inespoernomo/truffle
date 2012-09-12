@@ -2,13 +2,13 @@
     
 
     
-    <DatePicker android:id="@+id/datePicker1" 
+    <android.widget.DatePicker android:id="@+id/datePicker1" 
             android:layout_width="0dip" 
             android:layout_height="wrap_content"
             android:layout_weight=".33"
             android:textSize="12sp">
             
-    </DatePicker>
+    </android.widget.DatePicker>
     
     <TimePicker
         android:id="@+id/timePicker1"
