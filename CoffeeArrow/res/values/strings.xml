@@ -40,6 +40,7 @@
     <string name="deleteImage">Delete Image</string>
     <string name="updateCaption">Update Caption</string>
     <string name="title_activity_ask_them_out">AskThemOut</string>
+    <string name="title_activity_authorize_amazon_payment">Amazon Payment</string>
     <string name="placesPrompt">Choose a place</string>
     <string-array name="placesList">
         <item>Uptown Espresso at Belltown</item>

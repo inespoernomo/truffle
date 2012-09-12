@@ -86,6 +86,15 @@
             android:name=".AskThemOut"
             android:label="@string/title_activity_ask_them_out" >
         </activity>
+        <activity
+            android:name=".AuthorizeAmazonPaymentActivity"
+            android:label="@string/title_activity_authorize_amazon_payment" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
