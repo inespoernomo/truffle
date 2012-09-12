@@ -203,7 +203,6 @@ public class RequestHistoryActivity extends Activity {
 	            newDate.setOnClickListener(new View.OnClickListener() {
 	          
 	            	// Requesting new date
-	    			@Override
 	    			public void onClick(View v) {
 	    				
 	    				Log.i("requestHistory", "Requesting new date");
@@ -217,7 +216,6 @@ public class RequestHistoryActivity extends Activity {
 	    				Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
 	    				cancelButton.setOnClickListener(new View.OnClickListener() {
 
-	    					@Override
 	    					public void onClick(View v) {
 	    						dialog.dismiss();
 	    						
@@ -228,7 +226,6 @@ public class RequestHistoryActivity extends Activity {
 	    				Button button = (Button) dialog.findViewById(R.id.okButton);
 	    				button.setOnClickListener(new View.OnClickListener() {
 
-	    					@Override
 	    					public void onClick(View v) {
 	    						dialog.dismiss();
 	    						
