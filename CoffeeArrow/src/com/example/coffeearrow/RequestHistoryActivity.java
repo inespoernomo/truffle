@@ -2,7 +2,6 @@ package com.example.coffeearrow;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
 import org.apache.http.client.methods.HttpPost;
@@ -14,28 +13,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.ListActivity;
-import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-<<<<<<< HEAD
-import android.view.ViewGroup.LayoutParams;
+import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-=======
->>>>>>> ee5e0cf340403efb540bed2e5a131c1fbb41a4c2
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.coffeearrow.adapter.DatesAdapter;
@@ -103,7 +91,55 @@ public class RequestHistoryActivity extends Activity {
             if (!lockDate.equals("None")) {
             	TextView text = (TextView) findViewById(R.id.lockDate);
             	text.setText(LOCKED_MESSAGE + lockDate);
-            } 
+            }
+            
+            Button newDate = (Button) findViewById (R.id.changeDatebutton);
+            newDate.setClickable(true);
+            newDate.setFocusable(true);
+            newDate.setFocusableInTouchMode(true);
+            
+            newDate.setOnClickListener(new View.OnClickListener() {
+          
+            	// Requesting new date
+    			@Override
+    			public void onClick(View v) {
+    				
+    				Log.i("requestHistory", "Requesting new date");
+    				// set up dialog
+    				final Dialog dialog = new Dialog(mainActivity);
+    				dialog.setContentView(R.layout.activity_change_date);
+    				dialog.setTitle("Propose New Time");
+    				dialog.setCancelable(true);
+    				
+    				
+    				Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
+    				cancelButton.setOnClickListener(new View.OnClickListener() {
+
+    					@Override
+    					public void onClick(View v) {
+    						dialog.dismiss();
+    						
+    					}
+    					
+    				});
+    				
+    				Button button = (Button) dialog.findViewById(R.id.okButton);
+    				button.setOnClickListener(new View.OnClickListener() {
+
+    					@Override
+    					public void onClick(View v) {
+    						dialog.dismiss();
+    						
+    					}
+    					
+    				});
+    				
+    				dialog.show();
+    				
+    			}
+            	
+            	
+            });
             
 		}
 		
@@ -112,7 +148,8 @@ public class RequestHistoryActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    	
+        setContentView(R.layout.activity_request_history);
+    	mainActivity = this;
         Intent intent = getIntent();        
         matchId = intent.getStringExtra("matchId");
         
@@ -123,7 +160,8 @@ public class RequestHistoryActivity extends Activity {
 		
 		String lockDate = intent.getStringExtra("lockedDate");
 		RequestHistory history = new RequestHistory(lockDate);
-        history.execute(request);
+        history.execute(request);        
+
 
     }
     
@@ -134,20 +172,6 @@ public class RequestHistoryActivity extends Activity {
         return true;
     }
 
-    
-    /**
-     * Requesting to change the date
-     * */
-    public void newDate(View view) {
-
-		HashMap<String, String> extendedData = new HashMap<String, String>();
-				
-		extendedData.put("matchId", matchId);
-
-		Intent destIntent = new Intent(this, ChangeDateActivity.class);
-		destIntent.putExtra("matchId", matchId);
-		startActivity(destIntent);
-    }
 
     
     /**
@@ -216,4 +240,6 @@ public class RequestHistoryActivity extends Activity {
 		
 	}
     
+	
+	
 }
