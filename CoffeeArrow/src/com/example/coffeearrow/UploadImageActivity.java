@@ -12,9 +12,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.coffeearrow.server.ServerInterface;
+import com.example.coffeearrow.server.PostToServerAsyncTask;
+import com.example.coffeearrow.server.PostToServerCallback;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -29,12 +29,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class UploadImageActivity extends Activity {
+/**
+ * This is the activity to upload a image from the phone.
+ * TODO: This and UploadImageActivity are almost identical, need to refactor.
+ * @author sunshi
+ *
+ */
+public class UploadImageActivity extends Activity implements PostToServerCallback {
 	private static final String URL = "http://coffeearrow.com/";
 	
 	private String filePath;
 	private String caption;
-	private UploadImageActivity mainActivity;
+	private ProgressDialog dialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +53,7 @@ public class UploadImageActivity extends Activity {
         ImageView imageToUpload = (ImageView)findViewById(R.id.imageToUpload);
         imageToUpload.setImageBitmap(yourSelectedImage);
         
-        mainActivity = this;
+        dialog = new ProgressDialog(this);
     }
 
     @Override
@@ -81,76 +87,54 @@ public class UploadImageActivity extends Activity {
 
 	        Log.i("UploadImageActivity", "http post generated successfully.");
 
-		    UploadUserImage uploadTask = new UploadUserImage();
-		    uploadTask.execute(request);
-		    
+			// Display the progress dialog.
+			dialog.setMessage("Uploading image...");
+			dialog.show();
+			PostToServerAsyncTask task = new PostToServerAsyncTask(this);
+			task.execute(request);
 	    } catch (IOException e) {
 	    	Log.i("UploadImageActivity", "Failed with exception:"+e);
 	        e.printStackTrace();
 	    }
 	}
 	
-	public class UploadUserImage extends AsyncTask<HttpPost, Integer, Object> {
-
-		// This is the first progress dialog we display while fetching the search result.
-		private ProgressDialog dialog;
+	public void callback(Object objResult) {
+		// Dismiss the progress dialog.
+		if (dialog.isShowing())
+			dialog.dismiss();
 		
-		public UploadUserImage() {
-			super();
-			dialog = new ProgressDialog(mainActivity);
-		}
-
-		@Override
-		protected Object doInBackground(HttpPost... params) {
-			return ServerInterface.executeHttpRequest(params[0]);
-		}
+		Log.i("UploadUserImage", "Got back to onPostExecute.");
+		Log.i("UploadUserImage", "The result is: " + objResult);
 		
-		protected void onPreExecute() {
-			// Display the progress dialog.
-			this.dialog.setMessage("Uploading image...");
-			this.dialog.show();
+		JSONArray resultArray = (JSONArray) objResult;
+		String status = null;
+		String s3url = null;
+		try {
+			for (int i = 0; i < resultArray.length(); i++) {
+				JSONObject record = resultArray.getJSONObject(i);
+
+				status = record.getString("status");
+				
+				// This is the s3 url of the file we just uploaded.
+				s3url = record.getString("imgLink");
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
-
-		//TODO: Add preExecute for spinning wheel
-		protected void onPostExecute(Object objResult) {
-			Log.i("UploadUserImage", "Got back to onPostExecute.");
-			Log.i("UploadUserImage", "The result is: " + objResult);
+		if ("Failed".equals(status)) {
+			String message = "Something went wrong";
+			Toast.makeText(getApplicationContext(), message,
+					Toast.LENGTH_SHORT).show();
+		} else {
+			// Save information for SelfProfileActivity to display the new image
+			// we just uploaded.
+			Intent result = new Intent();
+			result.putExtra("s3url", s3url);
+			result.putExtra("caption", caption);
+			setResult(RESULT_OK, result);
 			
-			JSONArray resultArray = (JSONArray) objResult;
-			String status = null;
-			String s3url = null;
-			try {
-				for (int i = 0; i < resultArray.length(); i++) {
-					JSONObject record = resultArray.getJSONObject(i);
-
-					status = record.getString("status");
-					
-					// This is the s3 url of the file we just uploaded.
-					s3url = record.getString("imgLink");
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			if ("Failed".equals(status)) {
-				String message = "Something went wrong";
-				Toast.makeText(getApplicationContext(), message,
-						Toast.LENGTH_SHORT).show();
-			} else {
-				// Save information for SelfProfileActivity to display the new image
-				// we just uploaded.
-				Intent result = new Intent();
-				result.putExtra("s3url", s3url);
-				result.putExtra("caption", caption);
-				setResult(RESULT_OK, result);
-				
-				// Dismiss the progress dialog.
-				if (dialog.isShowing())
-					dialog.dismiss();
-				
-				// Go back to the profile activity
-				finish();
-			}
-			
+			// Go back to the profile activity
+			finish();
 		}
 	}
 }

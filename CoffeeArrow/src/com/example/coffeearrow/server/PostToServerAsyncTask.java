@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.example.coffeearrow.server;
 
 import java.io.BufferedReader;
@@ -16,22 +13,27 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
+public final class PostToServerAsyncTask extends AsyncTask<HttpPost, Integer, Object>{
+	
+	private static HttpClient client = null;
+	private PostToServerCallback caller = null;
+	
+	public PostToServerAsyncTask(PostToServerCallback caller) {
+		client = new DefaultHttpClient();
+		this.caller = caller;
+	}
 
-/**
- * @author Nishant
- *
- */
-public class ServerInterface {
-
-	public static JSONArray executeHttpRequest(HttpPost request) {
-		HttpClient httpClient = new DefaultHttpClient();
-        HttpResponse response = null;
+	@Override
+	protected JSONArray doInBackground(HttpPost... params) {
+		HttpPost request = params[0];
+		HttpResponse response = null;
         JSONArray finalResult = null;
 		try {
 			Log.i("SeverInterface", "request url is:"+request.getURI());
-			response = httpClient.execute(request);
+			response = client.execute(request);
 			Log.i("ServerInterface", "response code:"+response.getStatusLine());
 			BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
 			String json = reader.readLine();
@@ -52,4 +54,10 @@ public class ServerInterface {
 		return finalResult;
 	}
 	
+	@Override
+	protected void onPostExecute(Object objResult) {
+		caller.callback(objResult);
+		caller = null;
+	}
+
 }
