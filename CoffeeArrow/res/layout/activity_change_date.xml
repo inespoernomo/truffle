@@ -6,12 +6,14 @@
     
     
     
-    <DatePicker android:id="@+id/datePicker1" 
-            android:layout_width="0dip" 
-            android:layout_height="wrap_content"
-            android:textSize="12sp">
-    </DatePicker>
-    
+    <DatePicker
+        android:id="@+id/datePicker1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+       	android:focusable="true"
+        android:layout_marginTop="5dp" />
+     
     <TimePicker
         android:id="@+id/timePicker1"
         android:layout_width="0dip"
@@ -29,6 +31,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="@string/cancel" 
+        android:layout_below ="@+id/timePicker1"
         android:layout_toRightOf="@+id/okButton"
      />
 </RelativeLayout>
