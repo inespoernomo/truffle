@@ -39,5 +39,6 @@
     <string name="title_activity_edit_image">Edit Image</string>
     <string name="deleteImage">Delete Image</string>
     <string name="updateCaption">Update Caption</string>
+    <string name="title_activity_authorize_amazon_payment">AuthorizeAmazonPaymentActivity</string>
 
 </resources>

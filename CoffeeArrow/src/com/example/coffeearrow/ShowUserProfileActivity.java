@@ -20,9 +20,12 @@ import com.example.coffeearrow.helpers.SquareFrameLayout;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -79,6 +82,24 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 	public boolean onOptionsItemSelected(MenuItem item) {		
 		if(item.getItemId() == R.id.sendInvitation) {
 			//TODO: Hook up send invitation.
+			Log.i("ShowUserProfileActivity", "sendInvitation clicked.");
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("To send date invitation, we need you to authorize us using Amazon Payment. Nothing will be charged until the other person say yes. Go to the authorize page now?")
+			       .setCancelable(false)
+			       .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			                // Go to the payment activity
+			        	    Intent intent = new Intent(mainActivity, AuthorizeAmazonPaymentActivity.class);
+				       		startActivity(intent);
+			           }
+			       })
+			       .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			                //
+			           }
+			       });
+			AlertDialog alert = builder.create();
+			alert.show();
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -105,7 +126,7 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 		
 		// This is the image itself.
 		ImageView imageView = new ImageView(this);
-		imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);				
+		imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 		picFrame.addView(imageView);
 		
 		// Lazy load and cache the image.
