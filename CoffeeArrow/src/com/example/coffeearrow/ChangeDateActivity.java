@@ -14,8 +14,9 @@ public class ChangeDateActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         changeDateDialog = new Dialog(this);
-    	changeDateDialog.setContentView(R.layout.date_time_picker);
+    	changeDateDialog.setContentView(R.layout.activity_change_date);
     	changeDateDialog.setTitle("Change date and time");
+    	changeDateDialog.show();
     }
 
     @Override
@@ -25,8 +26,6 @@ public class ChangeDateActivity extends Activity {
     }
     
     public void closeDialog(View view) {
-    	 
     	changeDateDialog.dismiss();
-    	
     }
 }
