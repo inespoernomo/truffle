@@ -2,18 +2,21 @@ package com.example.coffeearrow;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.util.Log;
+import android.app.Dialog;
 import android.view.Menu;
 import android.view.View;
 
 public class ChangeDateActivity extends Activity {
+
+	Dialog changeDateDialog;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-    	setContentView(R.layout.activity_change_date);
-    	setTitle("Change date and time");
+        changeDateDialog = new Dialog(this);
+    	changeDateDialog.setContentView(R.layout.activity_change_date);
+    	changeDateDialog.setTitle("Change date and time");
+    	changeDateDialog.show();
     }
 
     @Override
@@ -23,8 +26,6 @@ public class ChangeDateActivity extends Activity {
     }
     
     public void closeDialog(View view) {
-    	 
-    	Log.i("ChangeDateActivity", "Dismiss");
-    	
+    	changeDateDialog.dismiss();
     }
 }
