@@ -8,7 +8,7 @@
 
     <uses-sdk
         android:minSdkVersion="16"
-        android:targetSdkVersion="15" />
+        android:targetSdkVersion="16" />
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -30,11 +30,9 @@
         <activity
             android:name=".NotificationsActivity"
             android:label="@string/title_activity_notifications" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.coffeearrow.NotificationsActivity" />
         </activity>
         <activity
             android:name=".DisplaySearchResultsActivity"
