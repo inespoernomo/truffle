@@ -78,7 +78,8 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {		
 		if(item.getItemId() == R.id.sendInvitation) {
-			//TODO: Hook up send invitation.
+			Intent intent = new Intent(this, AskThemOut.class);
+			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
 	}
