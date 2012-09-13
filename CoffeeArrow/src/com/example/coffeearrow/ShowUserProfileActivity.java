@@ -30,6 +30,7 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -89,8 +90,10 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 			       .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
 			                // Go to the payment activity
-			        	    Intent intent = new Intent(mainActivity, AuthorizeAmazonPaymentActivity.class);
-				       		startActivity(intent);
+			        	    //Intent intent = new Intent(mainActivity, AuthorizeAmazonPaymentActivity.class);
+				       		//startActivity(intent);
+			        	   WebView paymentWebView = new WebView(mainActivity);
+			        	   paymentWebView.loadUrl("http://coffeearrow.com/callPayments");
 			           }
 			       })
 			       .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
