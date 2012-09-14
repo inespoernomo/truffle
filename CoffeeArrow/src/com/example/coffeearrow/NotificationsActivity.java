@@ -59,6 +59,8 @@ public class NotificationsActivity extends ListActivity implements PostToServerC
 		destIntent.putExtra("matchProfileImage", item.getProfileImage());
 		destIntent.putExtra("lockedDate", item.getLocked());
 		destIntent.putExtra("dateName", item.getName());
+		destIntent.putExtra("userId", item.getUserId());
+		destIntent.putExtra("dateId", item.getDateId());
 
 		startActivity(destIntent);
 	}

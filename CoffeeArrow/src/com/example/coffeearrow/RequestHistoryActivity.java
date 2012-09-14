@@ -2,7 +2,9 @@ package com.example.coffeearrow;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.TimeZone;
 
 import org.apache.http.client.methods.HttpPost;
 import org.codehaus.jackson.JsonParseException;
@@ -19,10 +21,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.example.coffeearrow.adapter.DatesAdapter;
 import com.example.coffeearrow.domain.DateItem;
@@ -96,7 +100,7 @@ public class RequestHistoryActivity extends Activity {
 						responseList);
 				listView.setAdapter(adapter);
 
-				Intent intent = getIntent();
+				final Intent intent = getIntent();
 				String lockDate = intent.getStringExtra("lockedDate");
 
 				if (!lockDate.equals("None")) {
@@ -135,11 +139,39 @@ public class RequestHistoryActivity extends Activity {
 
 						Button button = (Button) dialog
 								.findViewById(R.id.okButton);
+						
+						
 						button.setOnClickListener(new View.OnClickListener() {
 
 							public void onClick(View v) {
+								
+								DatePicker datePicker = (DatePicker) dialog.findViewById(R.id.datePicker1);
+								int day = datePicker.getDayOfMonth();
+								int month = datePicker.getMonth() + 1;
+								int year = datePicker.getYear();
+								 
+								TimePicker timePicker = (TimePicker) dialog.findViewById(R.id.timePicker1);
+								int hour = timePicker.getCurrentHour();
+								int minute = timePicker.getCurrentMinute();
+								
+								Calendar calendar = Calendar.getInstance();
+								calendar.set(year, month, day, hour, minute, 0);
+								
+						    	HashMap<String, String> requestParams = new HashMap<String, String>();
+						    	requestParams.put("userId", intent.getStringExtra("userId"));
+						    	requestParams.put("dateId", intent.getStringExtra("dateId"));
+						    	requestParams.put("time", calendar.toString());
+						    	Log.i("RequestHistoryActivity", "Sending the new time to server: " + calendar.toString());
+						    	HttpPost request = RequestFactory.create(requestParams, "saveProposedMatchNative");
+
+
 								dialog.dismiss();
 
+						    	PostToServerAsyncTask task = new PostToServerAsyncTask(null);
+								task.execute(request);
+								
+								
+								
 							}
 
 						});
@@ -214,5 +246,24 @@ public class RequestHistoryActivity extends Activity {
     	PostToServerAsyncTask task = new PostToServerAsyncTask(callback);
 		task.execute(request);
     }
-    
+
+    public class NewDateCallback implements PostToServerCallback {
+
+    	Activity _mainActivity; 
+    	String _lockedDate;
+    	public NewDateCallback(Activity mainActivity, String lockedDate) {
+    		_mainActivity = mainActivity;
+    		_lockedDate = lockedDate;
+    		
+    	}
+		public void callback(Object result) {
+
+			TextView text = (TextView) _mainActivity
+					.findViewById(R.id.lockDate);
+			text.setText(LOCKED_MESSAGE + _lockedDate);
+		}
+    	
+    	
+    }
 }
+

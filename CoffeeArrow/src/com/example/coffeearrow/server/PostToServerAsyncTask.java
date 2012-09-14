@@ -56,8 +56,10 @@ public final class PostToServerAsyncTask extends AsyncTask<HttpPost, Integer, Ob
 	
 	@Override
 	protected void onPostExecute(Object objResult) {
-		caller.callback(objResult);
-		caller = null;
+		if (caller != null) {
+			caller.callback(objResult);
+			caller = null;
+		}
 	}
 
 }
