@@ -1,5 +1,7 @@
 package com.example.coffeearrow.domain;
 
+import org.codehaus.jackson.annotate.JsonAnySetter;
+
 
 /**
  * {"dates": 
@@ -50,5 +52,8 @@ public class DateItem {
 		this.time = time;
 	}
 
-
+	@JsonAnySetter
+	public void handleUnknown(String key, Object value) {
+	    // do something: put to a Map; log a warning, whatever
+    }
 }

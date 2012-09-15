@@ -1,5 +1,7 @@
 package com.example.coffeearrow.domain;
 
+import org.codehaus.jackson.annotate.JsonAnySetter;
+
 
 /*
  * 07-28 19:20:04.037: I/System.out(1158): 
@@ -70,5 +72,10 @@ public class NotificationItem {
 	String latestInitiatorId;
 	String _id;
 	String type;
+	
+	@JsonAnySetter
+	public void handleUnknown(String key, Object value) {
+	    // do something: put to a Map; log a warning, whatever
+    }
 	
 }

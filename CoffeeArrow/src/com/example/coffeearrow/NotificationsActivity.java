@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -26,12 +27,19 @@ import com.example.coffeearrow.server.RequestFactory;
 
 public class NotificationsActivity extends ListActivity implements PostToServerCallback {
 
+	public String userId;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+		userId = settings.getString("userId", null);
+		
         HashMap<String, String> requestParams = new HashMap<String, String>();
-		requestParams.put("userId", "3495999573");
+		//requestParams.put("userId", userId);
+        requestParams.put("userId", "3495999573");
+        
 		HttpPost request = RequestFactory.create(requestParams, "getAllNotificationsNative");	
 		
 		PostToServerAsyncTask task = new PostToServerAsyncTask(this);
