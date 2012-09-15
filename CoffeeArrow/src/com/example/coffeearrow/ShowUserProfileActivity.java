@@ -81,7 +81,6 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {		
 		if(item.getItemId() == R.id.sendInvitation) {
-			//TODO: Hook up send invitation.
 			Log.i("ShowUserProfileActivity", "sendInvitation clicked.");
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setMessage("To send date invitation, we need you to authorize us using Amazon Payment. Nothing will be charged until the other person say yes. Go to the authorize page now?")
