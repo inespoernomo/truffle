@@ -39,6 +39,16 @@
     <string name="title_activity_edit_image">Edit Image</string>
     <string name="deleteImage">Delete Image</string>
     <string name="updateCaption">Update Caption</string>
+    <string name="title_activity_ask_them_out">AskThemOut</string>
     <string name="title_activity_authorize_amazon_payment">AuthorizeAmazonPaymentActivity</string>
+    <string name="placesPrompt">Choose a place</string>
+    <string-array name="placesList">
+        <item>Uptown Espresso at Belltown</item>
+        <item>Monsoon Seattle at Capitol Hill</item>
+        <item>Revel</item>
+        <item>Din Tai Fung</item>
+    </string-array>
+    <string name="chooseDate">Choose Date</string>
+    <string name="chooseTime">Choose Time</string>
 
 </resources>
