@@ -5,6 +5,8 @@ import java.net.URL;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -21,6 +23,12 @@ public class AuthorizeAmazonPaymentActivity extends Activity {
         super.onCreate(savedInstanceState);
         mainActivity = this;
         setContentView(R.layout.activity_authorize_amazon_payment);
+        
+		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+		String userId = settings.getString("userId", null);
+		
+		Intent sourceIntent = getIntent();
+		String dateId = sourceIntent.getStringExtra("dateId");
         
         WebView view = (WebView)findViewById(R.id.webView1);
         view.setWebViewClient(new WebViewClient(){
@@ -48,7 +56,7 @@ public class AuthorizeAmazonPaymentActivity extends Activity {
                 return false;
             }
         });
-        view.loadUrl("http://coffeearrow.com/callPayments");
+        view.loadUrl("http://coffeearrow.com/callPayments?userid="+userId+"&dateId="+dateId);
     }
 
     @Override

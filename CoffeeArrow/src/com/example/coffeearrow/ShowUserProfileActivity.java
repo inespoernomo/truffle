@@ -90,6 +90,7 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 			           public void onClick(DialogInterface dialog, int id) {
 			                // Go to the payment activity
 			        	    Intent intent = new Intent(mainActivity, AuthorizeAmazonPaymentActivity.class);
+			        	    intent.putExtra("dateId", userId);
 				       		startActivity(intent);
 			           }
 			       })
