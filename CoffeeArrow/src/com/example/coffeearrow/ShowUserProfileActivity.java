@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.coffeearrow.domain.NotificationItem;
 import com.example.coffeearrow.domain.UserProfile;
 import com.example.coffeearrow.helpers.ImageLoader;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
@@ -24,6 +25,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.Display;
@@ -109,7 +111,66 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 			return true;
 		} else if (item.getItemId() == R.id.invited) {
 			Log.i("ShowUserProfileActivity", "invited clicked");
-			//TODO: go to the request history page.
+			
+			SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+			String loggedInUserId = settings.getString("userId", null);
+			
+	        HashMap<String, String> requestParams = new HashMap<String, String>();
+			requestParams.put("userId", loggedInUserId);
+	        
+			//TODO: Below need to be replaced with an different server method.
+			HttpPost request = RequestFactory.create(requestParams, "getAllNotificationsNative");
+			
+			PostToServerAsyncTask task = new PostToServerAsyncTask(
+				new PostToServerCallback() {
+					public void callback(Object objResult) {
+						JSONArray resultArray = (JSONArray)objResult;
+						
+						ObjectMapper mapper = new ObjectMapper(); 
+						NotificationItem notificationItem = null;
+						try {
+							for(int i = 0; i<resultArray.length(); i++) {
+								JSONObject jsonObj = resultArray.getJSONObject(i);
+								String record = jsonObj.toString(1);
+								notificationItem = mapper.readValue(record, NotificationItem.class);
+								
+								if (notificationItem.getDateId().equals(userId)) {
+									break;
+								}
+							} 
+						}catch (JSONException e) {
+							e.printStackTrace();
+						} catch (JsonParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (JsonMappingException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+
+						
+						Intent destIntent = new Intent(mainActivity, RequestHistoryActivity.class);
+
+						if (notificationItem.getLatestInitiatorId().equals(notificationItem.getUserId())) {
+							destIntent.putExtra("showSure", "true");
+							
+						}
+						destIntent.putExtra("matchId", notificationItem.get_id());
+						destIntent.putExtra("matchName", notificationItem.getName());
+						destIntent.putExtra("matchProfileImage", notificationItem.getProfileImage());
+						destIntent.putExtra("lockedDate", notificationItem.getLocked());
+						destIntent.putExtra("dateName", notificationItem.getName());
+
+						startActivity(destIntent);
+						
+					}
+				}
+			);
+			task.execute(request);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

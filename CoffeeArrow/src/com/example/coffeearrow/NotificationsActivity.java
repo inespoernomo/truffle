@@ -40,7 +40,7 @@ public class NotificationsActivity extends ListActivity implements PostToServerC
 		//requestParams.put("userId", userId);
         requestParams.put("userId", "3495999573");
         
-		HttpPost request = RequestFactory.create(requestParams, "getAllNotificationsNative");	
+		HttpPost request = RequestFactory.create(requestParams, "getAllNotificationsNative");
 		
 		PostToServerAsyncTask task = new PostToServerAsyncTask(this);
 		task.execute(request);
