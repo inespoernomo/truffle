@@ -50,5 +50,6 @@
     </string-array>
     <string name="chooseDate">Choose Date</string>
     <string name="chooseTime">Choose Time</string>
+    <string name="invitedMenuItem">Invited</string>
 
 </resources>

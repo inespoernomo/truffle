@@ -74,7 +74,13 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_show_user_profile, menu);
+		boolean invited = true;
+		//TODO: call server to get if it is invited.
+		if (invited) {
+			getMenuInflater().inflate(R.menu.activity_show_user_profile_invited, menu);
+		} else {
+			getMenuInflater().inflate(R.menu.activity_show_user_profile, menu);
+		}
 		return true;
 	}
 	
@@ -100,6 +106,11 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 			       });
 			AlertDialog alert = builder.create();
 			alert.show();
+			return true;
+		} else if (item.getItemId() == R.id.invited) {
+			Log.i("ShowUserProfileActivity", "invited clicked");
+			//TODO: go to the request history page.
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
