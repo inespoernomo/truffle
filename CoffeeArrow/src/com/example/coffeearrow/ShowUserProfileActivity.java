@@ -42,7 +42,6 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 	private int displayWidth;
 	private LinearLayout userImages;
 	private ProgressDialog dialog;
-	
 	protected String userId;
 	protected ShowUserProfileActivity mainActivity;
 
@@ -76,65 +75,49 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		boolean invited = true;
-		//TODO: call server to get if it is invited.
-		if (invited) {
-			getMenuInflater().inflate(R.menu.activity_show_user_profile_invited, menu);
-		} else {
-			getMenuInflater().inflate(R.menu.activity_show_user_profile, menu);
-		}
+		getMenuInflater().inflate(R.menu.activity_show_user_profile, menu);
 		return true;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {		
 		if(item.getItemId() == R.id.sendInvitation) {
-			Log.i("ShowUserProfileActivity", "sendInvitation clicked.");
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage("To send date invitation, we need you to authorize us using Amazon Payment. Nothing will be charged until the other person say yes. Go to the authorize page now?")
-			       .setCancelable(false)
-			       .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) {
-			                // Go to the payment activity
-			        	    Intent intent = new Intent(mainActivity, AuthorizeAmazonPaymentActivity.class);
-			        	    intent.putExtra("dateId", userId);
-				       		startActivity(intent);
-			           }
-			       })
-			       .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) {
-			                //
-			           }
-			       });
-			AlertDialog alert = builder.create();
-			alert.show();
-			return true;
-		} else if (item.getItemId() == R.id.invited) {
-			Log.i("ShowUserProfileActivity", "invited clicked");
+			Log.i("ShowUserProfileActivity", "Invite menu item clicked.");
 			
+			//TODO: Below need to be replaced with an different server method.
+			//TODO: When the other user has invited you, we should also not charge the user.
 			SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
 			String loggedInUserId = settings.getString("userId", null);
 			
 	        HashMap<String, String> requestParams = new HashMap<String, String>();
 			requestParams.put("userId", loggedInUserId);
 	        
-			//TODO: Below need to be replaced with an different server method.
 			HttpPost request = RequestFactory.create(requestParams, "getAllNotificationsNative");
 			
 			PostToServerAsyncTask task = new PostToServerAsyncTask(
 				new PostToServerCallback() {
 					public void callback(Object objResult) {
+						Log.i("ShowUserProfileActivity", "getAllNotificationsNative called back with: " + objResult);
 						JSONArray resultArray = (JSONArray)objResult;
-						
-						ObjectMapper mapper = new ObjectMapper(); 
+						Log.i("ShowUserProfileActivity", "got here 1");
+						ObjectMapper mapper = new ObjectMapper();
+						Log.i("ShowUserProfileActivity", "got here 2");
 						NotificationItem notificationItem = null;
+						boolean invited = false;
+						Log.i("ShowUserProfileActivity", "got here 3");
 						try {
+							Log.i("ShowUserProfileActivity", "got here 4 array size: "+resultArray.length());
+							
 							for(int i = 0; i<resultArray.length(); i++) {
+								
 								JSONObject jsonObj = resultArray.getJSONObject(i);
 								String record = jsonObj.toString(1);
 								notificationItem = mapper.readValue(record, NotificationItem.class);
 								
+								Log.i("ShowUserProfileActivity", "Loop: " + i + " userId: " + notificationItem.getUserId() + " dateId: " + notificationItem.getDateId());
+								
 								if (notificationItem.getDateId().equals(userId)) {
+									invited = true;
 									break;
 								}
 							} 
@@ -142,38 +125,63 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 							e.printStackTrace();
 						} catch (JsonParseException e) {
 							// TODO Auto-generated catch block
+							Log.i("ShowUserProfileActivity", "exception 1");
 							e.printStackTrace();
 						} catch (JsonMappingException e) {
 							// TODO Auto-generated catch block
+							Log.i("ShowUserProfileActivity", "exception 2");
 							e.printStackTrace();
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
+							Log.i("ShowUserProfileActivity", "exception 3");
 							e.printStackTrace();
 						}
 						
+						if (invited) {
 
-						
-						Intent destIntent = new Intent(mainActivity, RequestHistoryActivity.class);
-
-						if (notificationItem.getLatestInitiatorId().equals(notificationItem.getUserId())) {
-							destIntent.putExtra("showSure", "true");
+							Intent destIntent = new Intent(mainActivity, RequestHistoryActivity.class);
+	
+							if (notificationItem.getLatestInitiatorId().equals(notificationItem.getUserId())) {
+								destIntent.putExtra("showSure", "true");
+								
+							}
+							destIntent.putExtra("matchId", notificationItem.get_id());
+							destIntent.putExtra("matchName", notificationItem.getName());
+							destIntent.putExtra("matchProfileImage", notificationItem.getProfileImage());
+							destIntent.putExtra("lockedDate", notificationItem.getLocked());
+							destIntent.putExtra("dateName", notificationItem.getName());
+	
+							startActivity(destIntent);
 							
+						} else {
+							
+							AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
+							builder.setMessage("To send date invitation, we need you to authorize us using Amazon Payment. Nothing will be charged until the other person say yes. Go to the authorize page now?")
+							       .setCancelable(false)
+							       .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+							           public void onClick(DialogInterface dialog, int id) {
+							                // Go to the payment activity
+							        	    Intent intent = new Intent(mainActivity, AuthorizeAmazonPaymentActivity.class);
+							        	    intent.putExtra("dateId", userId);
+								       		startActivity(intent);
+							           }
+							       })
+							       .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+							           public void onClick(DialogInterface dialog, int id) {
+							                //
+							           }
+							       });
+							AlertDialog alert = builder.create();
+							alert.show();
+						
 						}
-						destIntent.putExtra("matchId", notificationItem.get_id());
-						destIntent.putExtra("matchName", notificationItem.getName());
-						destIntent.putExtra("matchProfileImage", notificationItem.getProfileImage());
-						destIntent.putExtra("lockedDate", notificationItem.getLocked());
-						destIntent.putExtra("dateName", notificationItem.getName());
-
-						startActivity(destIntent);
 						
 					}
 				}
 			);
 			task.execute(request);
-			return true;
 		}
-		return super.onOptionsItemSelected(item);
+		return true;
 	}
 	
 	/**
