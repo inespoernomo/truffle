@@ -37,8 +37,7 @@ public class NotificationsActivity extends ListActivity implements PostToServerC
 		userId = settings.getString("userId", null);
 		
         HashMap<String, String> requestParams = new HashMap<String, String>();
-		//requestParams.put("userId", userId);
-        requestParams.put("userId", "3495999573");
+		requestParams.put("userId", userId);
         
 		HttpPost request = RequestFactory.create(requestParams, "getAllNotificationsNative");
 		
