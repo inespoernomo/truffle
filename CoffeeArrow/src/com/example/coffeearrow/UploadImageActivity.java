@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
+import com.example.coffeearrow.server.RequestFactory;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -36,8 +37,7 @@ import android.widget.Toast;
  *
  */
 public class UploadImageActivity extends Activity implements PostToServerCallback {
-	private static final String URL = "http://coffeearrow.com/";
-	
+
 	private String filePath;
 	private String caption;
 	private ProgressDialog dialog;
@@ -74,7 +74,7 @@ public class UploadImageActivity extends Activity implements PostToServerCallbac
 		Log.i("UploadImageActivity", "User id uploading to is: " + userId);
 		
 	    try {
-	    	String filePostUrl = URL+"uploadUserImage";
+	    	String filePostUrl = RequestFactory.URL+"uploadUserImage";
 	    	Log.i("UploadImageActivity", "Posting to: " + filePostUrl);
 	        HttpPost request = new HttpPost(filePostUrl);
 			

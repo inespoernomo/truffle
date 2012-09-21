@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import com.example.coffeearrow.domain.UserProfile;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
+import com.example.coffeearrow.server.RequestFactory;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -101,7 +102,7 @@ public class AuthorizeAmazonPaymentActivity extends Activity {
             }
         });
         
-        String paymentUrl = "http://coffeearrow.com/callPayments?userId="+userId+"&dateId="+dateId;
+        String paymentUrl = RequestFactory.URL+"callPayments?userId="+userId+"&dateId="+dateId;
         Log.i("Payment", "Payment url is: "+paymentUrl);
         view.loadUrl(paymentUrl);
     }
