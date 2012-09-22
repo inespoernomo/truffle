@@ -17,7 +17,7 @@ public class RequestFactory {
 	
     //TODO: Put these in config
 	//public static final String URL = "http://coffeearrow.com/";
-    public static final String URL = "http://truffleserver.herokuapp.com/";
+    public static final String URL = "http://truffleapp.herokuapp.com/";
     
     // This is equal to 127.0.0.1 but 127.0.0.1 will fail
     // http://stackoverflow.com/questions/2301560/java-net-connectexception-127-0-0-18080-an-android-emulator

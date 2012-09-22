@@ -44,11 +44,6 @@
         <activity
             android:name=".ShowUserProfileActivity"
             android:label="@string/title_activity_show_user_profile" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".SelfProfileActivity"
@@ -79,21 +74,16 @@
             android:label="@string/title_activity_change_date" >
         </activity>
         <activity
+            android:name=".NewDateActivity"
+            android:label="@string/title_activity_new_date" >
+        </activity>
+        <activity
             android:name=".EditImageActivity"
             android:label="@string/title_activity_edit_image" >
         </activity>
         <activity
-            android:name=".AskThemOut"
-            android:label="@string/title_activity_ask_them_out" >
-        </activity>
-        <activity
             android:name=".AuthorizeAmazonPaymentActivity"
             android:label="@string/title_activity_authorize_amazon_payment" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
