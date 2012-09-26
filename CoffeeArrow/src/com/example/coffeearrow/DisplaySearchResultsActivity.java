@@ -26,7 +26,9 @@ import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
 public class DisplaySearchResultsActivity extends ListActivity implements PostToServerCallback {
@@ -37,7 +39,9 @@ public class DisplaySearchResultsActivity extends ListActivity implements PostTo
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);
+        
 		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
 		userId = settings.getString("userId", null);
 		

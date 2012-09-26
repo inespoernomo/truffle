@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">CoffeeArrow</string>
+    <string name="appName">truffle</string>
     <string name="notifications">My Notifications</string>
     <string name="title_activity_notifications">My dates</string>
     <string name="title_activity_request_history">Date requests with:</string>
@@ -50,5 +50,11 @@
     </string-array>
     <string name="chooseDate">Choose Date</string>
     <string name="chooseTime">Choose Time</string>
+    <color name="button">#0101DF</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gainsboro">#DCDCDC</color>
+    <color name="pink">#DC143C</color>
+    <color name="background">#3B0B0B</color>
 
 </resources>

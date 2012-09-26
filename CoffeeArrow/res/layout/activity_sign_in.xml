@@ -2,39 +2,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/login"
     android:orientation="vertical"
-    android:paddingTop="50dp"
-    android:paddingLeft="10dp"  >
-    
-    <EditText android:id="@+id/email"
-        android:layout_width="300dp"
+    android:layout_gravity="center_horizontal"
+    android:paddingTop="30dp" >
+
+    <TextView
+        android:id="@+id/appName"
+        style="@style/appNameStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/email" />
-    
-    <EditText android:id="@+id/password"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="@string/password" />
-    
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:gravity="center_horizontal" 
+        android:layout_gravity="center_horizontal"
+        android:text="@string/appName" />
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="10dp">
-     
-     <Button android:id="@+id/signInButton"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="@string/signIn" 
-        android:onClick="signIn"/>
-     
-      <Button android:id="@+id/signUpButton"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="@string/signUp"
-        android:onClick="signUp" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="30dp"
+        style="@style/loginbox"
+        android:layout_gravity="center_horizontal"
+        >
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:hint="@string/email" 
+            style="@style/email"
+            android:background="@drawable/borderemail"/>
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="300dp"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            style="@style/email"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
+         <TextView
+            android:id="@+id/signInButton"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:onClick="signIn"
+            style = "@style/email"            
+            android:text="@string/signIn" />
     </LinearLayout>
+
+        <Button
+            android:id="@+id/signUpButton"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:onClick="signUp"
+            android:layout_marginTop="30dp"
+            style = "@style/button" 
+            android:layout_gravity="center_horizontal"
+            android:text="@string/signUp" />
 
 </LinearLayout>
