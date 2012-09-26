@@ -72,6 +72,8 @@ public class RequestHistoryActivity extends Activity {
 				String lastestInitiatorId = null;
 				String epoch = null;
 				String place = null;
+				String preEpoch = null;
+				String prePlace = null;
                 String lockDate = null;
 				try {
 					for (int i = 0; i < resultArray.length(); i++) {
@@ -82,6 +84,10 @@ public class RequestHistoryActivity extends Activity {
 						place = record.getString("currPlace");
 						lockDate = record.getString("locked");
                         lastestInitiatorId = record.getString("latestInitiatorId");
+                        if (record.has("prevEpoch")) {
+                            preEpoch = record.getString("prevEpoch");
+                            prePlace = record.getString("prevPlace");
+                        }
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -115,6 +121,24 @@ public class RequestHistoryActivity extends Activity {
 					TextView text = (TextView) mainActivity
 							.findViewById(R.id.lockDate);
 					text.setText(LOCKED_MESSAGE + lockDate);
+				}
+				
+				TextView preModifierTextView = (TextView) mainActivity.findViewById(R.id.preModifierTextView);
+				TextView preTimeTextView = (TextView) mainActivity.findViewById(R.id.preTimeTextView);
+				TextView prePlaceTextView = (TextView) mainActivity.findViewById(R.id.prePlaceTextView);
+				if(preEpoch == null) {
+				    preModifierTextView.setVisibility(View.GONE);
+				    preTimeTextView.setVisibility(View.GONE);
+				    prePlaceTextView.setVisibility(View.GONE);
+				} else {
+				    preTimeTextView.setText(preTimeTextView.getText() + preEpoch);
+				    prePlaceTextView.setText(prePlaceTextView.getText() + prePlace);
+				    
+				    if(lastestInitiatorId.equals(userId)){
+				        preModifierTextView.setText(matchName + " proposed the following time and location.");
+	                } else {
+	                    preModifierTextView.setText("You proposed the following time and location.");
+	                }
 				}
 
 			}
