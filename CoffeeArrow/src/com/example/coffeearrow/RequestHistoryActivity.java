@@ -95,13 +95,14 @@ public class RequestHistoryActivity extends Activity {
 				}
 				
 				TextView lastModifierTextView = (TextView) mainActivity.findViewById(R.id.lastModifierTextView);
+				Button agreeButton = (Button) mainActivity.findViewById(R.id.surebutton);
 				if(lastestInitiatorId.equals(userId)){
 				    lastModifierTextView.setText("You proposed the following time and location.");
-				    Button agreeButton = (Button) mainActivity.findViewById(R.id.surebutton);
 				    agreeButton.setEnabled(false);
 				    
 				} else {
 				    lastModifierTextView.setText(matchName + " proposed the following time and location.");
+				    agreeButton.setEnabled(true);
 				}
 				
 				TextView timeTextView = (TextView) mainActivity.findViewById(R.id.timeTextView);
