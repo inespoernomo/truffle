@@ -1,18 +1,13 @@
 package com.example.coffeearrow;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.http.client.methods.HttpPost;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.coffeearrow.domain.UserProfile;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
@@ -26,7 +21,6 @@ import android.view.Menu;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 public class AuthorizeAmazonPaymentActivity extends Activity {
 	
@@ -59,11 +53,15 @@ public class AuthorizeAmazonPaymentActivity extends Activity {
 					
 					if(host.equals("truffle.io")) {
 						view.setVisibility(View.GONE);
-						HttpPost request = new HttpPost(urlStr);
+						
+						urlStr = urlStr.replace("http://truffle.io/", RequestFactory.URL);
+                        Log.i("Payment", "url after replace host is: " + urlStr);
+                        HttpPost request = new HttpPost(urlStr);
 						
 						PostToServerCallback callback = new PostToServerCallback() {
 							public void callback(Object objResult) {
 								String status = "failed";
+								String matchId = "";
 								if (objResult != null) {
 									// Parse the JSON
 									JSONArray resultArray = (JSONArray) objResult;
@@ -72,18 +70,20 @@ public class AuthorizeAmazonPaymentActivity extends Activity {
 											JSONObject record = resultArray.getJSONObject(i);
 
 											status = record.getString("status");
+											matchId = record.getString("matchId");
 										}
 									} catch (JSONException e) {
 										e.printStackTrace();
 									}
 								}
-								Log.i("Payment", "Server got token?: "+status);
+								Log.i("Payment", "Server got token?: " + status);
+								Log.i("Payment", "Server created matchId: " + matchId);
 								
 								if(status.equals("OK")) {
-									Intent intent = new Intent(mainActivity, AskThemOut.class);
-									intent.putExtra("userId", mainActivity.userId);
-									intent.putExtra("dateId", mainActivity.dateId);
-									mainActivity.startActivity(intent);
+									Intent intent = new Intent();
+									intent.putExtra("matchId", matchId);
+									setResult(Activity.RESULT_OK, intent);
+									mainActivity.finish();
 								}
 							}
 						};

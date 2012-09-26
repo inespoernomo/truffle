@@ -13,18 +13,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.coffeearrow.adapter.DatesAdapter;
 import com.example.coffeearrow.domain.DateItem;
 import com.example.coffeearrow.helpers.ImageLoader;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
@@ -33,11 +31,12 @@ import com.example.coffeearrow.server.RequestFactory;
 
 public class RequestHistoryActivity extends Activity {
 
-
 	private static final String LOCKED_MESSAGE = "You are going on a date at: ";
 	private RequestHistoryActivity mainActivity = null;
 	private String matchId;
+	private String userId;
 	private ImageLoader imageLoader;
+	String matchName;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,8 +46,10 @@ public class RequestHistoryActivity extends Activity {
 		imageLoader = new ImageLoader(this);
 		Intent intent = getIntent();
 		matchId = intent.getStringExtra("matchId");
-		String matchName = intent.getStringExtra("matchName");
+		matchName = intent.getStringExtra("matchName");
 		String matchProfileImage = intent.getStringExtra("matchProfileImage");
+		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+        userId = settings.getString("userId", null);
 
 		HashMap<String, String> requestParams = new HashMap<String, String>();
 		requestParams.put("matchId", matchId);
@@ -66,38 +67,48 @@ public class RequestHistoryActivity extends Activity {
 			public void callback(Object objResult) {
 				Log.i("requesthistory", "The objResult is: " + objResult);
 				JSONArray resultArray = (JSONArray) objResult;
-				ArrayList<DateItem> responseList = new ArrayList<DateItem>();
-				ObjectMapper mapper = new ObjectMapper();
+				
+				String initiater = null;
+				String lastestInitiatorId = null;
+				String epoch = null;
+				String place = null;
+                String lockDate = null;
 				try {
 					for (int i = 0; i < resultArray.length(); i++) {
-						JSONObject jsonObj = resultArray.getJSONObject(i);
-						String record = jsonObj.toString(1);
-						DateItem dateItem = mapper.readValue(record,
-								DateItem.class);
-						responseList.add(dateItem);
-
+						JSONObject record = resultArray.getJSONObject(i);
+						Log.i("RequestHistoryActivity", "record is: " + record);
+						initiater = record.getString("userId");
+						epoch = record.getString("currEpoch");
+						place = record.getString("currPlace");
+						lockDate = record.getString("locked");
+                        lastestInitiatorId = record.getString("latestInitiatorId");
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
-				} catch (JsonParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (JsonMappingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
-
-				ListView listView = (ListView) mainActivity
-						.findViewById(R.id.list);
-				DatesAdapter adapter = new DatesAdapter(mainActivity,
-						responseList);
-				listView.setAdapter(adapter);
-
-				Intent intent = getIntent();
-				String lockDate = intent.getStringExtra("lockedDate");
+				
+				TextView initiaterTextView = (TextView) mainActivity.findViewById(R.id.initiaterTextView);
+				if(initiater.equals(userId)) {
+				    initiaterTextView.setText("You invited " + matchName + " to meet.");
+				} else {
+				    initiaterTextView.setText(matchName + " invited you to meet.");
+				}
+				
+				TextView lastModifierTextView = (TextView) mainActivity.findViewById(R.id.lastModifierTextView);
+				if(lastestInitiatorId.equals(userId)){
+				    lastModifierTextView.setText("You proposed the following time and location.");
+				    Button agreeButton = (Button) mainActivity.findViewById(R.id.surebutton);
+				    agreeButton.setEnabled(false);
+				    
+				} else {
+				    lastModifierTextView.setText(matchName + " proposed the following time and location.");
+				}
+				
+				TextView timeTextView = (TextView) mainActivity.findViewById(R.id.timeTextView);
+				//TODO: convert to proper string for display
+				timeTextView.setText(timeTextView.getText() + epoch);
+				TextView placeTextView = (TextView) mainActivity.findViewById(R.id.placeTextView);
+				placeTextView.setText(placeTextView.getText() + place);
 
 				if (!lockDate.equals("None")) {
 					TextView text = (TextView) mainActivity
@@ -105,50 +116,6 @@ public class RequestHistoryActivity extends Activity {
 					text.setText(LOCKED_MESSAGE + lockDate);
 				}
 
-				Button newDate = (Button) findViewById(R.id.changeDatebutton);
-				newDate.setClickable(true);
-				newDate.setFocusable(true);
-				newDate.setFocusableInTouchMode(true);
-
-				newDate.setOnClickListener(new View.OnClickListener() {
-					// Requesting new date
-					public void onClick(View v) {
-
-						Log.i("requestHistory", "Requesting new date");
-						// set up dialog
-						final Dialog dialog = new Dialog(mainActivity);
-						dialog.setContentView(R.layout.activity_change_date);
-						dialog.setTitle("Propose New Time");
-						dialog.setCancelable(true);
-
-						Button cancelButton = (Button) dialog
-								.findViewById(R.id.cancelButton);
-						cancelButton
-								.setOnClickListener(new View.OnClickListener() {
-
-									public void onClick(View v) {
-										dialog.dismiss();
-
-									}
-
-								});
-
-						Button button = (Button) dialog
-								.findViewById(R.id.okButton);
-						button.setOnClickListener(new View.OnClickListener() {
-
-							public void onClick(View v) {
-								dialog.dismiss();
-
-							}
-
-						});
-
-						dialog.show();
-
-					}
-
-				});
 			}
 		};
 
@@ -215,4 +182,9 @@ public class RequestHistoryActivity extends Activity {
 		task.execute(request);
     }
     
+    public void changeDate(View v) {
+        Intent intent = new Intent(this, ChangeDateActivity.class);
+        intent.putExtra("matchId", matchId);
+        startActivity(intent);
+    }
 }

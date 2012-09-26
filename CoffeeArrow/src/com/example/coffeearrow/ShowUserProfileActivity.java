@@ -21,9 +21,7 @@ import com.example.coffeearrow.helpers.SquareFrameLayout;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
@@ -154,26 +152,9 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 							startActivity(destIntent);
 							
 						} else {
-							
-							AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
-							builder.setMessage("To send date invitation, we need you to authorize us using Amazon Payment. Nothing will be charged until the other person say yes. Go to the authorize page now?")
-							       .setCancelable(false)
-							       .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-							           public void onClick(DialogInterface dialog, int id) {
-							                // Go to the payment activity
-							        	    Intent intent = new Intent(mainActivity, AuthorizeAmazonPaymentActivity.class);
-							        	    intent.putExtra("dateId", userId);
-								       		startActivity(intent);
-							           }
-							       })
-							       .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-							           public void onClick(DialogInterface dialog, int id) {
-							                //
-							           }
-							       });
-							AlertDialog alert = builder.create();
-							alert.show();
-						
+						    Intent intent = new Intent(mainActivity, NewDateActivity.class);
+                            intent.putExtra("dateId", mainActivity.userId);
+                            mainActivity.startActivity(intent);
 						}
 						
 					}
