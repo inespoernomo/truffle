@@ -1,13 +1,8 @@
 package com.example.coffeearrow;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.http.client.methods.HttpPost;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +18,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.coffeearrow.domain.DateItem;
 import com.example.coffeearrow.helpers.ImageLoader;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
@@ -31,7 +25,7 @@ import com.example.coffeearrow.server.RequestFactory;
 
 public class RequestHistoryActivity extends Activity {
 
-	private static final String LOCKED_MESSAGE = "You are going on a date at: ";
+	private static final String LOCKED_MESSAGE = "The date and location is locked.";
 	private RequestHistoryActivity mainActivity = null;
 	private String matchId;
 	private String userId;
@@ -144,7 +138,10 @@ public class RequestHistoryActivity extends Activity {
 				if (!lockDate.equals("None")) {
 					TextView text = (TextView) mainActivity
 							.findViewById(R.id.lockDate);
-					text.setText("This date is settled: " + lockDate);
+					text.setText(LOCKED_MESSAGE);
+					agreeButton.setEnabled(false);
+					Button changeDateButton = (Button) mainActivity.findViewById(R.id.changeDatebutton);
+					changeDateButton.setEnabled(false);
 				}
 			}
 		};
@@ -178,33 +175,27 @@ public class RequestHistoryActivity extends Activity {
     	PostToServerCallback callback = new PostToServerCallback(){
     		public void callback(Object objResult) {
     			JSONArray resultArray = (JSONArray)objResult;
-    			ArrayList<DateItem> responseList = new ArrayList<DateItem>();
-    			ObjectMapper mapper = new ObjectMapper(); 
+    			
+    			String status = null;
     			try {
     				for(int i = 0; i<resultArray.length(); i++) {
     					
     					JSONObject jsonObj = resultArray.getJSONObject(i);
-    					System.out.println(jsonObj);
-    					String record = jsonObj.toString(1);
-    					DateItem dateItem = mapper.readValue(record, DateItem.class);
-    					responseList.add(dateItem);
+    					status = jsonObj.getString("status");
     					
     				} 
     			}catch (JSONException e) {
     				e.printStackTrace();
-    			} catch (JsonParseException e) {
-    				// TODO Auto-generated catch block
-    				e.printStackTrace();
-    			} catch (JsonMappingException e) {
-    				// TODO Auto-generated catch block
-    				e.printStackTrace();
-    			} catch (IOException e) {
-    				// TODO Auto-generated catch block
-    				e.printStackTrace();
     			}
 
-    			TextView lock = (TextView)mainActivity.findViewById(R.id.lockDate);
-    			lock.setText(LOCKED_MESSAGE + responseList.get(0).getTime());
+    			if (status.equals("OK")) {
+    			    TextView lock = (TextView)mainActivity.findViewById(R.id.lockDate);
+    			    lock.setText(LOCKED_MESSAGE);
+    			    Button agreeButton = (Button) mainActivity.findViewById(R.id.surebutton);
+    			    agreeButton.setEnabled(false);
+                    Button changeDateButton = (Button) mainActivity.findViewById(R.id.changeDatebutton);
+                    changeDateButton.setEnabled(false);
+    			}
     		}
     	};
     	PostToServerAsyncTask task = new PostToServerAsyncTask(callback);
