@@ -1,5 +1,6 @@
 package com.example.coffeearrow;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -54,6 +55,9 @@ public class NewDateActivity extends ChangeDateActivity {
                 matchId = returnedIntent.getStringExtra("matchId");
                 Log.i("NewDateActivity", "The matchId returned is: " + matchId);
                 
+                Intent intent = new Intent();
+                setResult(Activity.RESULT_OK, intent);
+
                 super.submit(null);
             } 
             else if (resultCode == 0)

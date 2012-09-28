@@ -14,6 +14,7 @@ import com.example.coffeearrow.server.RequestFactory;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,7 +29,7 @@ public class ChangeDateActivity extends Activity implements OnItemSelectedListen
     
     protected ChangeDateActivity mainActivity;
     protected String matchId;
-    
+    private String userId;
     private String place;
 	
     @Override
@@ -41,6 +42,8 @@ public class ChangeDateActivity extends Activity implements OnItemSelectedListen
         spinner.setOnItemSelectedListener(this);
         Intent intent = getIntent();
         matchId = intent.getStringExtra("matchId");
+        SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+        userId = settings.getString("userId", null);
     }
 
     @Override
@@ -90,7 +93,7 @@ public class ChangeDateActivity extends Activity implements OnItemSelectedListen
         requestParams.put("matchId", matchId);
         requestParams.put("epoch", epoch);
         requestParams.put("place", place);
-        
+        requestParams.put("userId", userId);
         HttpPost request = RequestFactory.create(requestParams, "saveDate");
         PostToServerAsyncTask task = new PostToServerAsyncTask(this);
         task.execute(request);
