@@ -38,6 +38,7 @@
             android:paddingLeft="5dp"
             android:hint="@string/email" 
             style="@style/email"
+            android:textCursorDrawable="@drawable/black_cursor"
             android:background="@drawable/borderemail"/>
 
         <EditText
