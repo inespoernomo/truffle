@@ -118,8 +118,8 @@ public class RequestHistoryActivity extends Activity {
                     preTimeTextView.setVisibility(View.GONE);
                     prePlaceTextView.setVisibility(View.GONE);
                 } else {
-                    //TODO: convert to proper string for display                    
-                    preTimeTextView.setText(preTimeTextView.getText() + preEpoch);
+                    String date = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date (Long.parseLong(preEpoch)*1000));
+                    preTimeTextView.setText(preTimeTextView.getText() + date);
                     prePlaceTextView.setText(prePlaceTextView.getText() + prePlace);
                     preModifierTextView.setText(preDateAndLocationSetter + " proposed the following time and location.");
                 }
@@ -129,8 +129,8 @@ public class RequestHistoryActivity extends Activity {
 				TextView timeTextView = (TextView) mainActivity.findViewById(R.id.timeTextView);
 				TextView placeTextView = (TextView) mainActivity.findViewById(R.id.placeTextView);
 				
-				//TODO: convert to proper string for display
-				timeTextView.setText(timeTextView.getText() + epoch);
+				String date = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date (Long.parseLong(epoch)*1000));
+				timeTextView.setText(timeTextView.getText() + date);
 				placeTextView.setText(placeTextView.getText() + place);
 				lastModifierTextView.setText(curDateAndLocationSetter + " proposed the following time and location.");
 
