@@ -101,6 +101,20 @@ public class RequestHistoryActivity extends Activity {
 				    initiaterTextView.setText(matchName + " invited you to meet.");
 				}
 				
+				// Logic to figure out latest and previous date and location setter.
+				Button agreeButton = (Button) mainActivity.findViewById(R.id.surebutton);
+				String preDateAndLocationSetter;
+				String curDateAndLocationSetter;
+				if(lastestInitiatorId.equals(userId)){
+				    preDateAndLocationSetter = matchName;
+				    curDateAndLocationSetter = "You";
+				    agreeButton.setEnabled(false);
+                } else {
+                    preDateAndLocationSetter = "You";
+                    curDateAndLocationSetter = matchName;
+                    agreeButton.setEnabled(true);
+                }
+				
 				// Previous time and location section
 				TextView preModifierTextView = (TextView) mainActivity.findViewById(R.id.preModifierTextView);
                 TextView preTimeTextView = (TextView) mainActivity.findViewById(R.id.preTimeTextView);
@@ -113,30 +127,18 @@ public class RequestHistoryActivity extends Activity {
                     //TODO: convert to proper string for display                    
                     preTimeTextView.setText(preTimeTextView.getText() + preEpoch);
                     prePlaceTextView.setText(prePlaceTextView.getText() + prePlace);
-                    
-                    if(lastestInitiatorId.equals(userId)){
-                        preModifierTextView.setText(matchName + " proposed the following time and location.");
-                    } else {
-                        preModifierTextView.setText("You proposed the following time and location.");
-                    }
+                    preModifierTextView.setText(preDateAndLocationSetter + " proposed the following time and location.");
                 }
 				
                 // Current time and location section.
 				TextView lastModifierTextView = (TextView) mainActivity.findViewById(R.id.lastModifierTextView);
-				Button agreeButton = (Button) mainActivity.findViewById(R.id.surebutton);
-				if(lastestInitiatorId.equals(userId)){
-				    lastModifierTextView.setText("You proposed the following time and location.");
-				    agreeButton.setEnabled(false);
-				    
-				} else {
-				    lastModifierTextView.setText(matchName + " proposed the following time and location.");
-				    agreeButton.setEnabled(true);
-				}
 				TextView timeTextView = (TextView) mainActivity.findViewById(R.id.timeTextView);
+				TextView placeTextView = (TextView) mainActivity.findViewById(R.id.placeTextView);
+				
 				//TODO: convert to proper string for display
 				timeTextView.setText(timeTextView.getText() + epoch);
-				TextView placeTextView = (TextView) mainActivity.findViewById(R.id.placeTextView);
 				placeTextView.setText(placeTextView.getText() + place);
+				lastModifierTextView.setText(curDateAndLocationSetter + " proposed the following time and location.");
 
 				// Lock date section.
 				if (!lockDate.equals("None")) {
@@ -203,7 +205,6 @@ public class RequestHistoryActivity extends Activity {
 
     			TextView lock = (TextView)mainActivity.findViewById(R.id.lockDate);
     			lock.setText(LOCKED_MESSAGE + responseList.get(0).getTime());
-    			
     		}
     	};
     	PostToServerAsyncTask task = new PostToServerAsyncTask(callback);
