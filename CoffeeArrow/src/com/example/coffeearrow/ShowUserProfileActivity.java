@@ -35,7 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ShowUserProfileActivity extends Activity implements PostToServerCallback {
-    private static final int INVITE_REQUEST_CODE = 1234;
+    private static final int INVITE_REQUEST_CODE = 4567;
 
 	private ImageLoader imageLoader;
 	private int displayWidth;
