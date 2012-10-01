@@ -1,6 +1,7 @@
 package com.example.coffeearrow;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.text.format.DateFormat;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -154,14 +156,19 @@ public class RequestHistoryActivity extends Activity {
 								int hour = timePicker.getCurrentHour();
 								int minute = timePicker.getCurrentMinute();
 								
-								Calendar calendar = Calendar.getInstance();
-								calendar.set(year, month, day, hour, minute, 0);
+								Calendar nowLocal = Calendar.getInstance(TimeZone.getDefault());
+								nowLocal.set(year, month, day, hour, minute);
+						
+								Calendar utcTime = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+								utcTime.setTime(nowLocal.getTime());
+																
+								Log.i("requesthistory", DateFormat.format("YYYY-MM-DD", utcTime).toString());
+								
 								
 						    	HashMap<String, String> requestParams = new HashMap<String, String>();
 						    	requestParams.put("userId", intent.getStringExtra("userId"));
 						    	requestParams.put("dateId", intent.getStringExtra("dateId"));
-						    	requestParams.put("time", calendar.toString());
-						    	Log.i("RequestHistoryActivity", "Sending the new time to server: " + calendar.toString());
+						    	requestParams.put("time", DateFormat.format("YYYY-MM-DD", utcTime).toString());
 						    	HttpPost request = RequestFactory.create(requestParams, "saveProposedMatchNative");
 
 
