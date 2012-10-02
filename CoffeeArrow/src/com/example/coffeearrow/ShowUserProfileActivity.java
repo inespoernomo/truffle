@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.coffeearrow.domain.NotificationItem;
 import com.example.coffeearrow.domain.UserProfile;
 import com.example.coffeearrow.helpers.ImageLoader;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
@@ -22,7 +23,9 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,12 +35,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ShowUserProfileActivity extends Activity implements PostToServerCallback {
+    private static final int INVITE_REQUEST_CODE = 4567;
 
 	private ImageLoader imageLoader;
 	private int displayWidth;
 	private LinearLayout userImages;
 	private ProgressDialog dialog;
-	
 	protected String userId;
 	protected ShowUserProfileActivity mainActivity;
 
@@ -76,13 +79,108 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 	}
 	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {		
-		if(item.getItemId() == R.id.sendInvitation) {
-			//TODO: Hook up send invitation.
-		}
-		return super.onOptionsItemSelected(item);
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.i("ShowUserProfileActivity", "Invite menu item clicked.");
+		
+		//TODO: Below need to be replaced with an different server method.
+		//TODO: When the other user has invited you, we should also not charge the user.
+		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+		String loggedInUserId = settings.getString("userId", null);
+		
+        HashMap<String, String> requestParams = new HashMap<String, String>();
+		requestParams.put("userId", loggedInUserId);
+        
+		HttpPost request = RequestFactory.create(requestParams, "getAllNotificationsNative");
+		
+		PostToServerAsyncTask task = new PostToServerAsyncTask(
+			new PostToServerCallback() {
+				public void callback(Object objResult) {
+					Log.i("ShowUserProfileActivity", "getAllNotificationsNative called back with: " + objResult);
+					JSONArray resultArray = (JSONArray)objResult;
+					Log.i("ShowUserProfileActivity", "got here 1");
+					ObjectMapper mapper = new ObjectMapper();
+					Log.i("ShowUserProfileActivity", "got here 2");
+					NotificationItem notificationItem = null;
+					boolean invited = false;
+					Log.i("ShowUserProfileActivity", "got here 3");
+					try {
+						Log.i("ShowUserProfileActivity", "got here 4 array size: "+resultArray.length());
+						
+						for(int i = 0; i<resultArray.length(); i++) {
+							
+							JSONObject jsonObj = resultArray.getJSONObject(i);
+							String record = jsonObj.toString(1);
+							notificationItem = mapper.readValue(record, NotificationItem.class);
+							
+							Log.i("ShowUserProfileActivity", "Loop: " + i + " userId: " + notificationItem.getUserId() + " dateId: " + notificationItem.getDateId());
+							
+							if (notificationItem.getDateId().equals(userId)) {
+								invited = true;
+								break;
+							}
+						} 
+					}catch (JSONException e) {
+						e.printStackTrace();
+					} catch (JsonParseException e) {
+						// TODO Auto-generated catch block
+						Log.i("ShowUserProfileActivity", "exception 1");
+						e.printStackTrace();
+					} catch (JsonMappingException e) {
+						// TODO Auto-generated catch block
+						Log.i("ShowUserProfileActivity", "exception 2");
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						Log.i("ShowUserProfileActivity", "exception 3");
+						e.printStackTrace();
+					}
+					
+					if (invited) {
+
+						Intent destIntent = new Intent(mainActivity, RequestHistoryActivity.class);
+
+						if (notificationItem.getLatestInitiatorId().equals(notificationItem.getUserId())) {
+							destIntent.putExtra("showSure", "true");
+							
+						}
+						destIntent.putExtra("matchId", notificationItem.get_id());
+						destIntent.putExtra("matchName", notificationItem.getName());
+						destIntent.putExtra("matchProfileImage", notificationItem.getProfileImage());
+						destIntent.putExtra("lockedDate", notificationItem.getLocked());
+						destIntent.putExtra("dateName", notificationItem.getName());
+
+						startActivity(destIntent);
+						
+					} else {
+					    Intent intent = new Intent(mainActivity, NewDateActivity.class);
+                        intent.putExtra("dateId", mainActivity.userId);
+                        mainActivity.startActivityForResult(intent, INVITE_REQUEST_CODE);
+					}
+					
+				}
+			}
+		);
+		task.execute(request);
+		return true;
 	}
 	
+	protected void onActivityResult(int requestCode, int resultCode, Intent returnedIntent) { 
+        super.onActivityResult(requestCode, resultCode, returnedIntent);
+        
+        // Get back from the payment activity.
+        Log.i("ShowUserProfileActivity", "Got back from payment with requestCode: " + requestCode + " and resultCode: " + resultCode);
+        
+        switch(requestCode) {
+        case INVITE_REQUEST_CODE:
+            if(resultCode == RESULT_OK){
+                Log.i("ShowUserProfileActivity", "still ok");
+                onOptionsItemSelected(null);
+            }
+            break;
+        default:
+            break;
+        }
+	}
 	/**
 	 * Add one image to the end of all the images we ar displaying
 	 * @param s3url The url to the image. Currently it's from s3
@@ -105,7 +203,7 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 		
 		// This is the image itself.
 		ImageView imageView = new ImageView(this);
-		imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);				
+		imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 		picFrame.addView(imageView);
 		
 		// Lazy load and cache the image.

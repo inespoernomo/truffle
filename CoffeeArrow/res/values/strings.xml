@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">CoffeeArrow</string>
+    <string name="appName">truffle</string>
     <string name="notifications">My Notifications</string>
     <string name="title_activity_notifications">My dates</string>
     <string name="title_activity_request_history">Date requests with:</string>
@@ -34,10 +34,30 @@
     <string name="title_activity_upload_image">Upload Image</string>
     <string name="imageCaptionLabel">Caption:</string>
     <string name="title_activity_change_date">Change Date Request</string>
-    <string name="changeDateButton">Change Date</string>
-    <string name="sureButton">Sure</string>
+    <string name="changeDateButton">Change Date or Place</string>
+    <string name="sureButton">Agree</string>
     <string name="title_activity_edit_image">Edit Image</string>
     <string name="deleteImage">Delete Image</string>
     <string name="updateCaption">Update Caption</string>
+    <string name="title_activity_authorize_amazon_payment">Amazon Payment</string>
+    <string name="placesPrompt">Choose a place</string>
+    <string-array name="placesList">
+        <item>Uptown Espresso at Belltown</item>
+        <item>Monsoon Seattle at Capitol Hill</item>
+        <item>Revel</item>
+        <item>Din Tai Fung</item>
+    </string-array>
+    <string name="chooseDate">Choose Date</string>
+    <string name="chooseTime">Choose Time</string>
+    <color name="button">#0101DF</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gainsboro">#DCDCDC</color>
+    <color name="pink">#DC143C</color>
+    <color name="background">#3B0B0B</color>
+    <string name="chooseDayLabel">Choose Date:</string>
+    <string name="chooseTimeLabel">Choose Time:</string>
+    <string name="chooseLocationLabel">Choose Location:</string>
+    <string name="title_activity_new_date">New Date</string>
 
 </resources>

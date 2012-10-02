@@ -20,6 +20,8 @@ import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -28,18 +30,22 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 
 public class SignIn extends Activity implements PostToServerCallback {
-	
+
 	private ProgressDialog dialog;
 
 	public final static String EMAIL = "com.coffeearrow.signIn.Email";
 	public final static String PASSWORD = "com.coffeearrow.signIn.Password";
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_sign_in);
-		Button signInButton = (Button) findViewById(R.id.signInButton);
-		signInButton.getBackground().setColorFilter(Color.DKGRAY, PorterDuff.Mode.MULTIPLY);
+		//Button signInButton = (Button) findViewById(R.id.signInButton);
+		//signInButton.getBackground().setColorFilter(Color.DKGRAY,
+		//		PorterDuff.Mode.MULTIPLY);
 		dialog = new ProgressDialog(this);
 	}
 
@@ -60,17 +66,17 @@ public class SignIn extends Activity implements PostToServerCallback {
 
 	/** Called when the user presses signIn button */
 	public void signIn(View view) {
-		
+
 		EditText emailText = (EditText) findViewById(R.id.email);
 		String email = emailText.getText().toString();
 		EditText passwordText = (EditText) findViewById(R.id.password);
 		String password = passwordText.getText().toString();
-		
+
 		HashMap<String, String> requestParams = new HashMap<String, String>();
-	    requestParams.put("email", email);
-	    requestParams.put("password", password);
+		requestParams.put("email", email);
+		requestParams.put("password", password);
 		HttpPost request = RequestFactory.create(requestParams, "signInNative");
-		
+
 		// Show progress dialog.
 		dialog.setMessage("Signing in...");
 		dialog.show();
@@ -84,34 +90,36 @@ public class SignIn extends Activity implements PostToServerCallback {
 		startActivity(intent);
 	}
 
-	public void callback(Object result){
+	public void callback(Object result) {
 		// Dismiss the progress dialog.
 		if (dialog.isShowing())
 			dialog.dismiss();
-		
-		JSONArray resultArray = (JSONArray)result;
+
+		JSONArray resultArray = (JSONArray) result;
 		String userId = null;
 		try {
-			for(int i = 0; i<resultArray.length(); i++) {
+			for (int i = 0; i < resultArray.length(); i++) {
 				JSONObject record = resultArray.getJSONObject(i);
 
 				userId = record.getString("userId");
-			} 
-		}catch (JSONException e) {
+			}
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		if ("Failed".equals(userId)) {
 			String message = "Invalid Username/Password";
-			Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-		} else if("NotVerified".equals(userId))  {
+			Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT)
+					.show();
+		} else if ("NotVerified".equals(userId)) {
 			String message = "Account not verfied, check your work email for verification link";
-			Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT)
+					.show();
 		} else {
 			SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
-			SharedPreferences.Editor editor = settings.edit();			
+			SharedPreferences.Editor editor = settings.edit();
 			editor.putString("userId", userId);
 			editor.commit();
-			
+
 			Intent intent = new Intent(this, DisplaySearchResultsActivity.class);
 			startActivity(intent);
 		}

@@ -1,37 +1,27 @@
 package com.example.coffeearrow;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.TimeZone;
 
 import org.apache.http.client.methods.HttpPost;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.text.format.DateFormat;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
-import com.example.coffeearrow.adapter.DatesAdapter;
-import com.example.coffeearrow.domain.DateItem;
 import com.example.coffeearrow.helpers.ImageLoader;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
@@ -39,238 +29,214 @@ import com.example.coffeearrow.server.RequestFactory;
 
 public class RequestHistoryActivity extends Activity {
 
-
-	private static final String LOCKED_MESSAGE = "You are going on a date at: ";
+	private static final String LOCKED_MESSAGE = "The date and location is locked.";
 	private RequestHistoryActivity mainActivity = null;
 	private String matchId;
+	private String userId;
 	private ImageLoader imageLoader;
+	String matchName;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_request_history);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		
 		mainActivity = this;
 		imageLoader = new ImageLoader(this);
 		Intent intent = getIntent();
 		matchId = intent.getStringExtra("matchId");
-		String matchName = intent.getStringExtra("matchName");
+		matchName = intent.getStringExtra("matchName");
 		String matchProfileImage = intent.getStringExtra("matchProfileImage");
-
+		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+		userId = settings.getString("userId", null);
+		setContentView(R.layout.activity_request_history);
 		HashMap<String, String> requestParams = new HashMap<String, String>();
 		requestParams.put("matchId", matchId);
 		HttpPost request = RequestFactory.create(requestParams,
 				"getNotificationsForMatchNative");
 
 		setContentView(R.layout.activity_request_history);
-		ImageView profileImage = (ImageView) findViewById(R.id.icon);
+		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.container);
+		linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+				LinearLayout.LayoutParams.MATCH_PARENT));
+		ImageView profileImage = new ImageView(mainActivity);
 		imageLoader.DisplayImage(matchProfileImage, profileImage);
+		linearLayout.setBackgroundDrawable(profileImage.getDrawable());
 
-		TextView textView = (TextView) findViewById(R.id.label);
-		textView.setText(matchName);
+		// TextView textView = (TextView) findViewById(R.id.label);
+		// textView.setText(matchName);
 
 		PostToServerCallback callback = new PostToServerCallback() {
 			public void callback(Object objResult) {
 				Log.i("requesthistory", "The objResult is: " + objResult);
 				JSONArray resultArray = (JSONArray) objResult;
-				ArrayList<DateItem> responseList = new ArrayList<DateItem>();
-				ObjectMapper mapper = new ObjectMapper();
+
+				String initiater = null;
+				String lastestInitiatorId = null;
+				String epoch = null;
+				String place = null;
+				String preEpoch = null;
+				String prePlace = null;
+				String lockDate = null;
 				try {
 					for (int i = 0; i < resultArray.length(); i++) {
-						JSONObject jsonObj = resultArray.getJSONObject(i);
-						String record = jsonObj.toString(1);
-						DateItem dateItem = mapper.readValue(record,
-								DateItem.class);
-						responseList.add(dateItem);
-
+						JSONObject record = resultArray.getJSONObject(i);
+						Log.i("RequestHistoryActivity", "record is: " + record);
+						initiater = record.getString("userId");
+						epoch = record.getString("currEpoch");
+						place = record.getString("currPlace");
+						lockDate = record.getString("locked");
+						lastestInitiatorId = record
+								.getString("latestInitiatorId");
+						if (record.has("prevEpoch")) {
+							preEpoch = record.getString("prevEpoch");
+							prePlace = record.getString("prevPlace");
+						}
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
-				} catch (JsonParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (JsonMappingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 
-				ListView listView = (ListView) mainActivity
-						.findViewById(R.id.list);
-				DatesAdapter adapter = new DatesAdapter(mainActivity,
-						responseList);
-				listView.setAdapter(adapter);
+				// Initiator section
+				/*
+				 * TextView initiaterTextView = (TextView)
+				 * mainActivity.findViewById(R.id.initiaterTextView);
+				 * if(initiater.equals(userId)) {
+				 * initiaterTextView.setText("You invited " + matchName +
+				 * " to meet."); } else { initiaterTextView.setText(matchName +
+				 * " invited you to meet."); }
+				 */
 
-				final Intent intent = getIntent();
-				String lockDate = intent.getStringExtra("lockedDate");
+				// Logic to figure out latest and previous date and location
+				// setter.
+				Button agreeButton = (Button) mainActivity
+						.findViewById(R.id.surebutton);
+				String preDateAndLocationSetter;
+				String curDateAndLocationSetter;
+				if (lastestInitiatorId.equals(userId)) {
+					preDateAndLocationSetter = matchName;
+					curDateAndLocationSetter = "You";
+					agreeButton.setEnabled(false);
+				} else {
+					preDateAndLocationSetter = "You";
+					curDateAndLocationSetter = matchName;
+					agreeButton.setEnabled(true);
+				}
 
+				// Previous time and location section
+				TextView preModifierTextView = (TextView) mainActivity
+						.findViewById(R.id.preModifierTextView);
+				TextView preTimeTextView = (TextView) mainActivity
+						.findViewById(R.id.preTimeTextView);
+				TextView prePlaceTextView = (TextView) mainActivity
+						.findViewById(R.id.prePlaceTextView);
+				if (preEpoch == null) {
+					preModifierTextView.setVisibility(View.GONE);
+					preTimeTextView.setVisibility(View.GONE);
+					prePlaceTextView.setVisibility(View.GONE);
+				} else {
+					String date = new java.text.SimpleDateFormat(
+							"MM/dd/yyyy HH:mm:ss").format(new java.util.Date(
+							Long.parseLong(preEpoch) * 1000));
+					preTimeTextView.setText(preTimeTextView.getText() + date);
+					prePlaceTextView.setText(prePlaceTextView.getText()
+							+ prePlace);
+					preModifierTextView.setText(preModifierTextView.getText() + preDateAndLocationSetter);
+				}
+
+				// Current time and location section.
+				//TextView lastModifierTextView = (TextView) mainActivity
+					//	.findViewById(R.id.lastModifierTextView);
+				TextView timeTextView = (TextView) mainActivity
+						.findViewById(R.id.timeTextView);
+				TextView placeTextView = (TextView) mainActivity
+						.findViewById(R.id.placeTextView);
+
+				String date = new java.text.SimpleDateFormat(
+						"MM/dd/yyyy HH:mm:ss").format(new java.util.Date(Long
+						.parseLong(epoch) * 1000));
+				timeTextView.setText(timeTextView.getText() + date);
+				placeTextView.setText(placeTextView.getText() + place);
+				//lastModifierTextView.setText("Update time/place");
+
+				// Lock date section.
 				if (!lockDate.equals("None")) {
 					TextView text = (TextView) mainActivity
 							.findViewById(R.id.lockDate);
-					text.setText(LOCKED_MESSAGE + lockDate);
+					text.setText(LOCKED_MESSAGE);
+					agreeButton.setEnabled(false);
+					Button changeDateButton = (Button) mainActivity
+							.findViewById(R.id.changeDatebutton);
+					changeDateButton.setEnabled(false);
 				}
-
-				Button newDate = (Button) findViewById(R.id.changeDatebutton);
-				newDate.setClickable(true);
-				newDate.setFocusable(true);
-				newDate.setFocusableInTouchMode(true);
-
-				newDate.setOnClickListener(new View.OnClickListener() {
-					// Requesting new date
-					public void onClick(View v) {
-
-						Log.i("requestHistory", "Requesting new date");
-						// set up dialog
-						final Dialog dialog = new Dialog(mainActivity);
-						dialog.setContentView(R.layout.activity_change_date);
-						dialog.setTitle("Propose New Time");
-						dialog.setCancelable(true);
-
-						Button cancelButton = (Button) dialog
-								.findViewById(R.id.cancelButton);
-						cancelButton
-								.setOnClickListener(new View.OnClickListener() {
-
-									public void onClick(View v) {
-										dialog.dismiss();
-
-									}
-
-								});
-
-						Button button = (Button) dialog
-								.findViewById(R.id.okButton);
-						
-						
-						button.setOnClickListener(new View.OnClickListener() {
-
-							public void onClick(View v) {
-								
-								DatePicker datePicker = (DatePicker) dialog.findViewById(R.id.datePicker1);
-								int day = datePicker.getDayOfMonth();
-								int month = datePicker.getMonth() + 1;
-								int year = datePicker.getYear();
-								 
-								TimePicker timePicker = (TimePicker) dialog.findViewById(R.id.timePicker1);
-								int hour = timePicker.getCurrentHour();
-								int minute = timePicker.getCurrentMinute();
-								
-								Calendar nowLocal = Calendar.getInstance(TimeZone.getDefault());
-								nowLocal.set(year, month, day, hour, minute);
-						
-								Calendar utcTime = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-								utcTime.setTime(nowLocal.getTime());
-																
-								Log.i("requesthistory", DateFormat.format("YYYY-MM-DD", utcTime).toString());
-								
-								
-						    	HashMap<String, String> requestParams = new HashMap<String, String>();
-						    	requestParams.put("userId", intent.getStringExtra("userId"));
-						    	requestParams.put("dateId", intent.getStringExtra("dateId"));
-						    	requestParams.put("time", DateFormat.format("YYYY-MM-DD", utcTime).toString());
-						    	HttpPost request = RequestFactory.create(requestParams, "saveProposedMatchNative");
-
-
-								dialog.dismiss();
-
-						    	PostToServerAsyncTask task = new PostToServerAsyncTask(null);
-								task.execute(request);
-								
-								
-								
-							}
-
-						});
-
-						dialog.show();
-
-					}
-
-				});
 			}
 		};
-
+		
 		PostToServerAsyncTask task = new PostToServerAsyncTask(callback);
 		task.execute(request);
 
 	}
-    
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_request_history, menu);
-        return true;
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_request_history, menu);
+		return true;
+	}
 
-    
-    
-    /**
-     * This method confirms the date request from another person. "Locking" the date.
-     * @param view - the view object
-     * */
-    public void lockTheDate(View view) {
-    	
-    	Intent intent = getIntent();
-    	
-    	HashMap<String, String> requestParams = new HashMap<String, String>();
-    	requestParams.put("matchId", intent.getStringExtra("matchId"));
-    	HttpPost request = RequestFactory.create(requestParams, "lockTheDateNative");
-    	
-    	PostToServerCallback callback = new PostToServerCallback(){
-    		public void callback(Object objResult) {
-    			JSONArray resultArray = (JSONArray)objResult;
-    			ArrayList<DateItem> responseList = new ArrayList<DateItem>();
-    			ObjectMapper mapper = new ObjectMapper(); 
-    			try {
-    				for(int i = 0; i<resultArray.length(); i++) {
-    					
-    					JSONObject jsonObj = resultArray.getJSONObject(i);
-    					System.out.println(jsonObj);
-    					String record = jsonObj.toString(1);
-    					DateItem dateItem = mapper.readValue(record, DateItem.class);
-    					responseList.add(dateItem);
-    					
-    				} 
-    			}catch (JSONException e) {
-    				e.printStackTrace();
-    			} catch (JsonParseException e) {
-    				// TODO Auto-generated catch block
-    				e.printStackTrace();
-    			} catch (JsonMappingException e) {
-    				// TODO Auto-generated catch block
-    				e.printStackTrace();
-    			} catch (IOException e) {
-    				// TODO Auto-generated catch block
-    				e.printStackTrace();
-    			}
+	/**
+	 * This method confirms the date request from another person. "Locking" the
+	 * date.
+	 * 
+	 * @param view
+	 *            - the view object
+	 * */
+	public void lockTheDate(View view) {
 
-    			TextView lock = (TextView)mainActivity.findViewById(R.id.lockDate);
-    			lock.setText(LOCKED_MESSAGE + responseList.get(0).getTime());
-    			
-    		}
-    	};
-    	PostToServerAsyncTask task = new PostToServerAsyncTask(callback);
+		Intent intent = getIntent();
+
+		HashMap<String, String> requestParams = new HashMap<String, String>();
+		requestParams.put("matchId", intent.getStringExtra("matchId"));
+		HttpPost request = RequestFactory.create(requestParams,
+				"lockTheDateNative");
+
+		PostToServerCallback callback = new PostToServerCallback() {
+			public void callback(Object objResult) {
+				JSONArray resultArray = (JSONArray) objResult;
+
+				String status = null;
+				try {
+					for (int i = 0; i < resultArray.length(); i++) {
+
+						JSONObject jsonObj = resultArray.getJSONObject(i);
+						status = jsonObj.getString("status");
+
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+				if (status.equals("OK")) {
+					TextView lock = (TextView) mainActivity
+							.findViewById(R.id.lockDate);
+					lock.setText(LOCKED_MESSAGE);
+					Button agreeButton = (Button) mainActivity
+							.findViewById(R.id.surebutton);
+					agreeButton.setEnabled(false);
+					Button changeDateButton = (Button) mainActivity
+							.findViewById(R.id.changeDatebutton);
+					changeDateButton.setEnabled(false);
+				}
+			}
+		};
+		PostToServerAsyncTask task = new PostToServerAsyncTask(callback);
 		task.execute(request);
-    }
+	}
 
-    public class NewDateCallback implements PostToServerCallback {
-
-    	Activity _mainActivity; 
-    	String _lockedDate;
-    	public NewDateCallback(Activity mainActivity, String lockedDate) {
-    		_mainActivity = mainActivity;
-    		_lockedDate = lockedDate;
-    		
-    	}
-		public void callback(Object result) {
-
-			TextView text = (TextView) _mainActivity
-					.findViewById(R.id.lockDate);
-			text.setText(LOCKED_MESSAGE + _lockedDate);
-		}
-    	
-    	
-    }
+	public void changeDate(View v) {
+		Intent intent = new Intent(this, ChangeDateActivity.class);
+		intent.putExtra("matchId", matchId);
+		startActivity(intent);
+	}
 }
-

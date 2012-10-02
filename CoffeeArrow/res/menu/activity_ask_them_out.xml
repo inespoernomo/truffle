@@ -3,10 +3,4 @@
         android:title="@string/menu_settings"
         android:orderInCategory="100"
         android:showAsAction="never" />
-    
-    <item android:id="@+id/sendInvitation"
-        android:title="@string/sendInvitationMenuItemTitle"
-        android:orderInCategory="0"
-        android:showAsAction="always" />
-
 </menu>

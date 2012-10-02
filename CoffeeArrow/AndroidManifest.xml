@@ -7,14 +7,15 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-sdk
-        android:minSdkVersion="16"
+        android:minSdkVersion="15"
         android:targetSdkVersion="15" />
 
     <application
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <!--activity
+        android:label="@string/appName"
+        android:theme="@style/AppTheme"
+        android:debuggable="true" >
+        <activity
             android:name=".SignIn"
             android:label="@string/signIn" >
             <meta-data
@@ -26,21 +27,17 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity-->
+        </activity>
         <activity
             android:name=".NotificationsActivity"
             android:label="@string/title_activity_notifications" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.coffeearrow.NotificationsActivity" />
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".DisplaySearchResultsActivity"
+            
             android:label="@string/title_activity_display_search_results" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -49,83 +46,46 @@
         <activity
             android:name=".ShowUserProfileActivity"
             android:label="@string/title_activity_show_user_profile" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".SelfProfileActivity"
             android:label="@string/title_activity_show_user_profile" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".SignUpActivity"
             android:label="@string/title_activity_sign_up" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".PendingVerificationActivity"
             android:label="@string/title_activity_pending_verification" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".RequestHistoryActivity"
             android:label="@string/title_activity_request_history" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".TestActivity"
             android:label="@string/title_activity_test" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".UploadImageActivity"
             android:label="@string/title_activity_upload_image" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ChangeDateActivity"
             android:label="@string/title_activity_change_date" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        </activity>
+        <activity
+            android:name=".NewDateActivity"
+            android:label="@string/title_activity_new_date" >
         </activity>
         <activity
             android:name=".EditImageActivity"
             android:label="@string/title_activity_edit_image" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AuthorizeAmazonPaymentActivity"
+            android:label="@string/title_activity_authorize_amazon_payment" >
         </activity>
     </application>
 

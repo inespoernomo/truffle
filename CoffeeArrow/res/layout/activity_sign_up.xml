@@ -1,138 +1,155 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:orientation="vertical" >
+    android:layout_height="match_parent"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentRight="true"
+    style="@style/login"
+    android:orientation="vertical" >
+    
+    
 
-        <EditText
-            android:id="@+id/name"
-            android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/loginbox"
+    android:orientation="vertical" >
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/name"
+        style="@style/customEditText"
+        android:inputType="textPersonName" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        style="@style/customEditText"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        style="@style/email"
+        android:hint="@string/password"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/confirmPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        style="@style/email"
+        android:hint="@string/confirmPassword"
+        android:inputType="textPassword" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:layout_marginTop="10dp" >
+
+        <TextView
+            android:id="@+id/gender"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"  
+            android:text="@string/gender"
+            android:layout_gravity="center_vertical"
+            style="@style/email"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <RadioGroup
+            android:id="@+id/radioGender"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:ems="10"
-            android:hint="@string/name"
-            android:inputType="textPersonName" >
+            android:baselineAligned="false"
+            android:orientation="horizontal" >
 
-            <requestFocus />
-        </EditText>
-
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress" />
-
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:hint="@string/password"
-            android:inputType="textPassword" />
-
-        <EditText
-            android:id="@+id/confirmPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:hint="@string/confirmPassword"
-            android:inputType="textPassword" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/gender"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="15dp"
-                android:text="@string/gender"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <RadioGroup
-                android:id="@+id/radioGender"
+            <RadioButton
+                android:id="@+id/genderRadio1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal" >
-
-                <RadioButton
-                    android:id="@+id/genderRadio1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="@string/male" />
-
-                <RadioButton
-                    android:id="@+id/genderRadio2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/female" />
-            </RadioGroup>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/lookingFor"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="15dp"
-                android:text="@string/lookingFor"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <RadioGroup
-                android:id="@+id/radioLookingFor"
+                android:checked="true"
+                style="@style/radioButton"
+                android:text="@string/male" />
+            <RadioButton
+                android:id="@+id/genderRadio2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="horizontal" >
+                style="@style/radioButton"
+                android:text="@string/female" />
+        </RadioGroup>
+    </LinearLayout>
 
-                <RadioButton
-                    android:id="@+id/lookingForRadio1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/male" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:layout_marginTop="10dp" >
 
-                <RadioButton
-                    android:id="@+id/lookingForRadio2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="@string/female" />
-            </RadioGroup>
-
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/zipCode"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/lookingFor"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:hint="@string/zipCode"
-            android:inputType="number" />
+            android:text="@string/lookingFor"
+            style="@style/email"
+            android:layout_gravity="center_vertical"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <Button
-            android:id="@+id/submit"
-            android:layout_width="match_parent"
+        <RadioGroup
+            android:id="@+id/radioLookingFor"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center_vertical|center_horizontal"
-            android:onClick="submit"
-            android:text="@string/submit" />
+            android:orientation="horizontal" >
 
+            <RadioButton
+                android:id="@+id/lookingForRadio1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/radioButton"
+                android:text="@string/male" />
+
+            <RadioButton
+                android:id="@+id/lookingForRadio2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                style="@style/radioButton"
+                android:text="@string/female" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/zipCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        style="@style/email"
+        android:hint="@string/zipCode"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:onClick="submit"
+        style = "@style/button"
+        android:text="@string/submit" />
+</LinearLayout>
 </LinearLayout>
