@@ -4,19 +4,14 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -36,7 +31,8 @@ public class UserRowsAdapter extends ArrayAdapter<SearchProfile> {
 
 	private ArrayList<SearchProfile> profileList;
 	private Activity activity;
-	public ImageLoader imageLoader;
+	private ImageLoader imageLoader;
+	private int imageSize;
 
 	public UserRowsAdapter(Activity activity,
 			ArrayList<SearchProfile> profileList) {
@@ -44,78 +40,40 @@ public class UserRowsAdapter extends ArrayAdapter<SearchProfile> {
 		this.profileList = profileList;
 		this.activity = activity;
 		imageLoader = new ImageLoader(activity);
+		
+		// Get the size of the display.
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        // Set image size to the size of the display and max to 300
+        imageSize = Math.min(400, size.x);
+        Log.i("UserRowsAdapter", "Screen size is: "+size.x);
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+	    Log.i("UserRowsAdapter", "getView image size is: " + imageSize);
 		// Find the profile
 		SearchProfile profile = profileList.get(position);
 
-		// Get the empty row view from the xml.
+		// Get the row view from the xml.
 		LayoutInflater inflater = (LayoutInflater) activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(
 				R.layout.activity_display_search_results, parent, false);
 
-		// Get the size of the display.
-		Display display = activity.getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-
-		// size 480*300 is pretty good for all the android phones
-		int rowHeight = 480;
-		int rowWidth = 300;
-		// So we set the height of the row to 1/5 of the display height.
-		rowView.setLayoutParams(new AbsListView.LayoutParams(rowWidth, rowHeight-150));
-
-		// This is the profile image and we want it to be square.
-		// RelativeLayout rLayout = new RelativeLayout(activity);
-		// LayoutParams rlParams = new LayoutParams(LayoutParams.FILL_PARENT
-		// ,LayoutParams.FILL_PARENT);
-		// rLayout.setLayoutParams(rlParams);
-
-		ImageView image = new ImageView(activity);
-		image.setScaleType(ImageView.ScaleType.CENTER);
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-				rowWidth - 5, LinearLayout.LayoutParams.MATCH_PARENT);
-
-		image.setLayoutParams(layoutParams);
-		LinearLayout linearLayout = (LinearLayout) rowView
-				.findViewById(R.id.container);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(imageSize, imageSize);
+		params.setMargins(2, 2, 2, 2);
+		params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		RelativeLayout imageFrame = (RelativeLayout) rowView.findViewById(R.id.imageFrame);
+		imageFrame.setLayoutParams(params);
 		
-		linearLayout.setLayoutParams(new LinearLayout.LayoutParams(rowWidth,
-				rowHeight-150));
-		// LinearLayout imageLayout = new LinearLayout(activity);
-		// Lazy load and cache the image.
+		ImageView image = (ImageView) rowView.findViewById(R.id.icon);
 		imageLoader.DisplayImage(profile.getProfileImage(), image);
-		linearLayout.setBackgroundDrawable(image.getDrawable());
-		//linearLayout.addView(image);
-		/*
-		 * RelativeLayout.LayoutParams tParams = new RelativeLayout.LayoutParams
-		 * (LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-		 * tParams.addRule(RelativeLayout.CENTER_HORIZONTAL,
-		 * RelativeLayout.TRUE);
-		 * tParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,
-		 * RelativeLayout.TRUE);
-		 */
-		LinearLayout.LayoutParams introText = new LinearLayout.LayoutParams(
-				AbsListView.LayoutParams.MATCH_PARENT, 70);
-		LinearLayout textLayout = (LinearLayout) linearLayout
-				.findViewById(R.id.textContainer);
-		textLayout.setLayoutParams(introText);
-		TextView text = new TextView(activity);
-		//text.setLayoutParams(introText);
-		//text.setTextAppearance(activity, R.style.transparency);
+		
+		TextView text = (TextView) rowView.findViewById(R.id.nameOnImage);
 		text.setText(profile.toString());
-		text.setTextColor(Color.WHITE);
-		text.setTypeface(Typeface.SANS_SERIF);
-		// text.setLayoutParams(tParams);
-		textLayout.addView(text);
-		//linearLayout.addView(textLayout);
-
-		// The is the label for name and city.
-		// TextView textView = (TextView) rowView.findViewById(R.id.label);
-		// textView.setText(profile.toString());
 
 		return rowView;
 	}

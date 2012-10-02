@@ -22,13 +22,16 @@ import com.example.coffeearrow.helpers.SquareFrameLayout;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
@@ -190,6 +193,7 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 	 * @param caption The caption string for the image.
 	 */
 	protected void addImageWithCaption(String s3url, String caption) {
+	    /*
 		// A vertical linear layout with one picture (square) and caption for the picture.
 		// Width set to the width of the display
 		RelativeLayout onePicWithCaption = new RelativeLayout(this);
@@ -227,6 +231,25 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 		captionTextView.setText(caption);
 		
 		onePicWithCaption.addView(captionTextView);
+		*/
+	    
+	    LayoutInflater inflater = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View rowView = inflater.inflate(
+                R.layout.activity_display_search_results, userImages, false);
+        
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(displayWidth - 30, RelativeLayout.LayoutParams.MATCH_PARENT);
+        params.setMargins(5, 5, 5, 5);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        RelativeLayout imageFrame = (RelativeLayout) rowView.findViewById(R.id.imageFrame);
+        imageFrame.setLayoutParams(params);
+         
+        ImageView image = (ImageView) rowView.findViewById(R.id.icon);
+        imageLoader.DisplayImage(s3url, image);
+        
+        TextView text = (TextView) rowView.findViewById(R.id.nameOnImage);
+        text.setText(caption);
+        userImages.addView(rowView);
 	}
 	
 	protected void addImageClickListener(ImageView view, String s3url, String caption) {
@@ -278,13 +301,13 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 			userImages = (LinearLayout) findViewById(R.id.container);
 			
 			//This is the name and profile picture.
-			//TextView textView = (TextView) findViewById(R.id.label);
-			//ImageView imageView = (ImageView)findViewById(R.id.icon);
-			//textView.setText(userProfile.getFirstName());
+			TextView textView = (TextView) findViewById(R.id.label);
+			ImageView imageView = (ImageView)findViewById(R.id.icon);
+			textView.setText(userProfile.getFirstName());
 
 			//Lazy load and cache the image.
-			//imageLoader.DisplayImage(userProfile.getProfileImage(), imageView);
-			//imageView.setAdjustViewBounds(true);
+			imageLoader.DisplayImage(userProfile.getProfileImage(), imageView);
+			imageView.setAdjustViewBounds(true);
 			
 			for(final UserProfile.Image image : userProfile.getImages()) {
 				addImageWithCaption(image.getImgLink(), image.getImgCaption());
