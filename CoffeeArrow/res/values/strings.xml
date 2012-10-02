@@ -54,10 +54,12 @@
     <color name="white">#FFFFFF</color>
     <color name="gainsboro">#DCDCDC</color>
     <color name="pink">#DC143C</color>
+    <color name="brown">#A52A2A</color>
     <color name="background">#3B0B0B</color>
     <string name="chooseDayLabel">Choose Date:</string>
     <string name="chooseTimeLabel">Choose Time:</string>
     <string name="chooseLocationLabel">Choose Location:</string>
     <string name="title_activity_new_date">New Date</string>
+    <color name="blue">#0B3861</color>
 
 </resources>

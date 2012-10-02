@@ -23,6 +23,14 @@
         <item name="android:background">@drawable/background</item>
     </style>
     
+    <style name="transparency" parent="@android:style/TextAppearance">
+        <item name="android:background">@drawable/transparenttext</item>
+    </style>
+    
+     <style name="appBackground" parent="@android:style/TextAppearance">
+        <item name="android:background">@drawable/appbackground</item>
+    </style>
+    
     <style name="signUp" parent="@android:style/TextAppearance">
         <item name="android:background">@drawable/border</item>
     </style>
@@ -31,12 +39,27 @@
         <item name="android:background">@drawable/border</item>
     </style>
 
+    <style name="whiteBorder" parent="@android:style/TextAppearance">
+        <item name="android:background">@drawable/whiteborder</item>
+    </style>
+    
     <style name="button" parent="@android:style/TextAppearance">
         <item name="android:background">@drawable/buttonbackground</item>
+    </style>
+    
+     <style name="bluebutton" parent="@android:style/TextAppearance">
+        <item name="android:background">@drawable/bluebuttonbackground</item>
+    </style>
+    <style name="textColor" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@drawable/buttonbackground</item>
     </style>
 
     <style name="signInbutton" parent="@android:style/TextAppearance">
         <item name="android:background">@drawable/signinbuttonbackground</item>
+    </style>
+    
+    <style name="whitetext" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="email" parent="@android:style/TextAppearance">
@@ -52,7 +75,7 @@
     </style>
 
     <style name="WindowTitleBackground">
-        <item name="android:background">@color/pink</item>
+      
     </style>
 
     <style name="customEditText" parent="@android:style/Widget.EditText">

@@ -239,4 +239,5 @@ public class RequestHistoryActivity extends Activity {
 		intent.putExtra("matchId", matchId);
 		startActivity(intent);
 	}
+
 }
