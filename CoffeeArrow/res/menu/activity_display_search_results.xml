@@ -14,5 +14,4 @@
         android:showAsAction="always"
         android:orderInCategory="1" />
    
-    
 </menu>

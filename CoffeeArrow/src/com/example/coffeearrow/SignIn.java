@@ -79,6 +79,8 @@ public class SignIn extends Activity implements PostToServerCallback {
 
 		// Show progress dialog.
 		dialog.setMessage("Signing in...");
+		dialog.setIndeterminate(true);
+		dialog.setIndeterminateDrawable(getResources().getDrawable(R.drawable.progressdialog));
 		dialog.show();
 		PostToServerAsyncTask task = new PostToServerAsyncTask(this);
 		task.execute(request);

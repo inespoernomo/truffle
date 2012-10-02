@@ -37,7 +37,7 @@
         </activity>
         <activity
             android:name=".DisplaySearchResultsActivity"
-            android:theme="@style/customTheme"
+            
             android:label="@string/title_activity_display_search_results" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -73,10 +73,12 @@
         </activity>
         <activity
             android:name=".ChangeDateActivity"
+            android:theme="@style/Theme.SelectDate"
             android:label="@string/title_activity_change_date" >
         </activity>
         <activity
             android:name=".NewDateActivity"
+            android:theme="@style/Theme.SelectDate"
             android:label="@string/title_activity_new_date" >
         </activity>
         <activity

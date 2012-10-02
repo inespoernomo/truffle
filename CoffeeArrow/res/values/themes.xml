@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <style name="customTheme" parent="android:Theme"> 
         <item name="android:windowTitleBackgroundStyle">@style/WindowTitleBackground</item>   
     </style> 
+    <style name="customBlackTheme" parent="android:Theme"> 
+        <item name="android:background">@color/black</item>   
+    </style>
     <style name="mytheme" parent="@android:style/Theme" >
 		<item name="android:editTextStyle">@style/customEditText</item>
 	</style>
+	<style name="Theme.SelectDate" parent="@android:style/Theme.Holo.NoActionBar">
+        <item name="android:editTextStyle">@style/Widget.EditText.White</item>
+    </style>
+
+    <style name="Widget.EditText.White" parent="@android:style/Widget.EditText">
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>
