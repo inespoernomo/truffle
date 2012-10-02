@@ -29,7 +29,7 @@ import com.example.coffeearrow.server.RequestFactory;
 
 public class RequestHistoryActivity extends Activity {
 
-	private static final String LOCKED_MESSAGE = "The date and location is locked.";
+	private static final String LOCKED_MESSAGE = "Date accepted :)";
 	private RequestHistoryActivity mainActivity = null;
 	private String matchId;
 	private String userId;
@@ -117,33 +117,37 @@ public class RequestHistoryActivity extends Activity {
 				String curDateAndLocationSetter;
 				if (lastestInitiatorId.equals(userId)) {
 					preDateAndLocationSetter = matchName;
-					curDateAndLocationSetter = "You";
+					curDateAndLocationSetter = matchName;
 					agreeButton.setEnabled(false);
 				} else {
-					preDateAndLocationSetter = "You";
+					preDateAndLocationSetter = matchName;
 					curDateAndLocationSetter = matchName;
 					agreeButton.setEnabled(true);
 				}
 
 				// Previous time and location section
-				TextView preModifierTextView = (TextView) mainActivity
-						.findViewById(R.id.preModifierTextView);
+				TextView matchName = (TextView) mainActivity
+						.findViewById(R.id.matchName);
 				TextView preTimeTextView = (TextView) mainActivity
 						.findViewById(R.id.preTimeTextView);
 				TextView prePlaceTextView = (TextView) mainActivity
 						.findViewById(R.id.prePlaceTextView);
+				TextView prePlaceMsgView = (TextView) mainActivity
+						.findViewById(R.id.prePlaceMsgView);
+				matchName.setText(preDateAndLocationSetter);
 				if (preEpoch == null) {
-					preModifierTextView.setVisibility(View.GONE);
+					prePlaceMsgView.setVisibility(View.GONE);
+					//preModifierTextView.setVisibility(View.GONE);
 					preTimeTextView.setVisibility(View.GONE);
 					prePlaceTextView.setVisibility(View.GONE);
+					
 				} else {
 					String date = new java.text.SimpleDateFormat(
 							"MM/dd/yyyy HH:mm:ss").format(new java.util.Date(
 							Long.parseLong(preEpoch) * 1000));
 					preTimeTextView.setText(preTimeTextView.getText() + date);
 					prePlaceTextView.setText(prePlaceTextView.getText()
-							+ prePlace);
-					preModifierTextView.setText(preModifierTextView.getText() + preDateAndLocationSetter);
+							+ prePlace);		
 				}
 
 				// Current time and location section.
@@ -162,14 +166,17 @@ public class RequestHistoryActivity extends Activity {
 				//lastModifierTextView.setText("Update time/place");
 
 				// Lock date section.
+				TextView text = (TextView) mainActivity
+						.findViewById(R.id.lockDate);
 				if (!lockDate.equals("None")) {
-					TextView text = (TextView) mainActivity
-							.findViewById(R.id.lockDate);
+					text.setVisibility(View.VISIBLE);
 					text.setText(LOCKED_MESSAGE);
 					agreeButton.setEnabled(false);
 					Button changeDateButton = (Button) mainActivity
 							.findViewById(R.id.changeDatebutton);
 					changeDateButton.setEnabled(false);
+				} else {
+					text.setVisibility(View.GONE);
 				}
 			}
 		};
