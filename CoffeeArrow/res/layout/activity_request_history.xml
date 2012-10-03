@@ -6,36 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <!--
-            <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"            
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <com.example.coffeearrow.helpers.SquareFrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <ImageView
-                    android:id="@+id/icon"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="2dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_launcher" />
-
-            </com.example.coffeearrow.helpers.SquareFrameLayout>
-
-            <TextView
-                android:id="@+id/label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@+id/label"
-                android:textSize="20dp" />
-        </LinearLayout>
-    -->
-
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -44,16 +14,6 @@
         android:fillViewport="true"
         android:orientation="vertical" >
 
-        <!--
-              <TextView
-            android:id="@+id/initiaterTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="is asking you out / is asked out by you"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-        -->
-
         <LinearLayout
             android:id="@+id/textContainer"            
             android:layout_width="match_parent"
@@ -61,26 +21,37 @@
             android:layout_weight="1"
             style="@style/loginbox"
             android:orientation="vertical" >
+            
+            <TextView	
+                android:layout_marginTop="5dp"
+                android:id="@+id/lockDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:visibility="gone"
+                style="@style/loginbox"
+                android:textColor="#FFFFFF" />
+            
             <TextView
+                android:layout_marginTop="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="With"
-                android:textStyle="bold"
-                android:textColor="@color/brown"
+                android:textColor="#58D3F7"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
             
             <TextView
-                android:id="@+id/preModifierTextView"
+                android:id="@+id/matchName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
+                android:id="@+id/prePlaceMsgView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/brown"
+                android:textColor="#58D3F7"
                 android:text="Prev Meeting info"
                 android:layout_marginTop="15dp"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -102,7 +73,7 @@
                 android:id="@+id/lastModifierTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/brown"
+                android:textColor="#58D3F7"
                 android:text="New Meeting info"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
  
@@ -111,8 +82,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-            
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
             <TextView
                 android:id="@+id/timeTextView"
                 android:layout_width="wrap_content"
@@ -120,17 +91,11 @@
                 android:textColor="@android:color/white"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <TextView	
-                android:layout_marginTop="15dp"
-                android:id="@+id/lockDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="This date is not settled."
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#006400" />
+            
 
             <Button
                 android:id="@+id/surebutton"
+                android:layout_marginTop="15dp"
                 style="@style/bluebutton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
