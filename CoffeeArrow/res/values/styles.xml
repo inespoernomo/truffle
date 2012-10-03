@@ -64,9 +64,9 @@
 
     <style name="email" parent="@android:style/TextAppearance">
         <item name="android:background">@drawable/borderemail</item>
-        <item name="android:textColorHint">@color/white</item>
-        <item name="android:textColorHighlight">@color/white</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/lightgray</item>
+        <item name="android:textColorHighlight">@color/lightgray</item>
+        <item name="android:textColor">@color/lightgray</item>
     </style>
      <style name="radioButton" parent="@android:style/TextAppearance">
         <item name="android:textColorHint">@color/white</item>

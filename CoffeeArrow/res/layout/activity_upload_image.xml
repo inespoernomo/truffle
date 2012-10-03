@@ -47,3 +47,4 @@
         android:onClick="submit" />
 
 </LinearLayout>
+</ScrollView>
