@@ -1,20 +1,23 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" >
+
+<LinearLayout 
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentRight="true"
     style="@style/login"
     android:orientation="vertical" >
-    
-    
-
+            
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/loginbox"
     android:orientation="vertical" >
+
     <EditText
         android:id="@+id/name"
         android:layout_width="match_parent"
@@ -151,5 +154,8 @@
         android:onClick="submit"
         style = "@style/button"
         android:text="@string/submit" />
+     
 </LinearLayout>
 </LinearLayout>
+
+</ScrollView>
