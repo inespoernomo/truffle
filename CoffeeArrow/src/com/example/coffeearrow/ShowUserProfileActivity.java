@@ -11,34 +11,30 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.coffeearrow.domain.NotificationItem;
-import com.example.coffeearrow.domain.UserProfile;
-import com.example.coffeearrow.helpers.ImageLoader;
-import com.example.coffeearrow.server.PostToServerAsyncTask;
-import com.example.coffeearrow.server.PostToServerCallback;
-import com.example.coffeearrow.server.RequestFactory;
-import com.example.coffeearrow.helpers.SquareFrameLayout;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.example.coffeearrow.domain.NotificationItem;
+import com.example.coffeearrow.domain.UserProfile;
+import com.example.coffeearrow.helpers.ImageLoader;
+import com.example.coffeearrow.server.PostToServerAsyncTask;
+import com.example.coffeearrow.server.PostToServerCallback;
+import com.example.coffeearrow.server.RequestFactory;
 
 public class ShowUserProfileActivity extends Activity implements PostToServerCallback {
     private static final int INVITE_REQUEST_CODE = 4567;
