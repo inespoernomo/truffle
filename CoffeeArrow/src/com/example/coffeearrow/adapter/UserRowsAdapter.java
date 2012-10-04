@@ -46,9 +46,8 @@ public class UserRowsAdapter extends ArrayAdapter<SearchProfile> {
         Point size = new Point();
         display.getSize(size);
 
-        // Set image size to the size of the display and max to 300
-        imageSize = Math.min(400, size.x);
-        Log.i("UserRowsAdapter", "Screen size is: "+size.x);
+        imageSize = size.x;
+        Log.i("UserRowsAdapter", "Screen size is: " + imageSize);
 	}
 
 	@Override
