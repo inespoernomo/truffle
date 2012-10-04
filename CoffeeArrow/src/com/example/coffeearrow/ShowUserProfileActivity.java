@@ -243,6 +243,9 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
         ImageView image = (ImageView) rowView.findViewById(R.id.icon);
         imageLoader.DisplayImage(s3url, image);
         
+        // Add click handler for the image
+        addImageClickListener(image, s3url, caption);
+        
         TextView text = (TextView) rowView.findViewById(R.id.nameOnImage);
         text.setText(caption);
         userImages.addView(rowView);
