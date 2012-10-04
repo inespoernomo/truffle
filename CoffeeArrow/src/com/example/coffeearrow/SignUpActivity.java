@@ -51,13 +51,10 @@ public class SignUpActivity extends Activity implements PostToServerCallback {
 		EditText zipCodeText = (EditText) findViewById(R.id.zipCode);
 		String zipCode = zipCodeText.getText().toString();
 		RadioGroup radioGenderGroup = (RadioGroup) findViewById(R.id.radioGender);
-		RadioGroup radioLookingForGroup = (RadioGroup) findViewById(R.id.radioLookingFor);
 		
 		int selectedGender = radioGenderGroup.getCheckedRadioButtonId();
 		RadioButton checkedGender = (RadioButton) findViewById(selectedGender);
 
-		int selectedLookingFor = radioLookingForGroup.getCheckedRadioButtonId();
-		RadioButton checkedLookingFor = (RadioButton) findViewById(selectedLookingFor);
 		
 		HashMap<String, String> requestParams = new HashMap<String, String>();
 	    requestParams.put("firstName", name);
@@ -65,7 +62,7 @@ public class SignUpActivity extends Activity implements PostToServerCallback {
 	    requestParams.put("password", password);
 	    requestParams.put("zipCode", zipCode);
 	    requestParams.put("gender", checkedGender.getText().toString());
-	    requestParams.put("looking", checkedLookingFor.getText().toString());
+	    requestParams.put("looking", "NONE");
 
 		HttpPost request = RequestFactory.create(requestParams, "submitUserInfoNative");
 

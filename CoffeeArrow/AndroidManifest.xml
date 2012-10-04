@@ -17,7 +17,8 @@
         android:debuggable="true" >
         <activity
             android:name=".SignIn"
-            android:label="@string/signIn" >
+            android:label="@string/signIn" 
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.coffeearrow.SignIn" />
@@ -30,64 +31,76 @@
         </activity>
         <activity
             android:name=".NotificationsActivity"
-            android:label="@string/title_activity_notifications" >
+            android:label="@string/title_activity_notifications" 
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.coffeearrow.NotificationsActivity" />
         </activity>
         <activity
             android:name=".DisplaySearchResultsActivity"
-            
-            android:label="@string/title_activity_display_search_results" >
+            android:label="@string/title_activity_display_search_results" 
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="android.app.ListActivity" />
         </activity>
         <activity
             android:name=".ShowUserProfileActivity"
-            android:label="@string/title_activity_show_user_profile" >
+            android:label="@string/title_activity_show_user_profile" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".SelfProfileActivity"
-            android:label="@string/title_activity_show_user_profile" >
+            android:label="@string/title_activity_show_user_profile" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".SignUpActivity"
-            android:label="@string/title_activity_sign_up" >
+            android:label="@string/title_activity_sign_up" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".PendingVerificationActivity"
-            android:label="@string/title_activity_pending_verification" >
+            android:label="@string/title_activity_pending_verification" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".RequestHistoryActivity"
-            android:label="@string/title_activity_request_history" >
+            android:label="@string/title_activity_request_history" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".TestActivity"
-            android:label="@string/title_activity_test" >
+            android:label="@string/title_activity_test" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".UploadImageActivity"
-            android:label="@string/title_activity_upload_image" >
+            android:label="@string/title_activity_upload_image" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".ChangeDateActivity"
             android:theme="@style/Theme.SelectDate"
-            android:label="@string/title_activity_change_date" >
+            android:label="@string/title_activity_change_date" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".NewDateActivity"
             android:theme="@style/Theme.SelectDate"
-            android:label="@string/title_activity_new_date" >
+            android:label="@string/title_activity_new_date" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".EditImageActivity"
-            android:label="@string/title_activity_edit_image" >
+            android:label="@string/title_activity_edit_image" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".AuthorizeAmazonPaymentActivity"
-            android:label="@string/title_activity_authorize_amazon_payment" >
+            android:label="@string/title_activity_authorize_amazon_payment" 
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
