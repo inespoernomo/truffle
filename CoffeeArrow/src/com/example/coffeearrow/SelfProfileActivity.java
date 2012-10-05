@@ -1,6 +1,7 @@
 package com.example.coffeearrow;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -28,11 +29,20 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 		Log.i("selfprofile", "got option item selected and menu item is: " + item.toString());
 		switch(item.getItemId()){
 		case R.id.uploadPhoto:
-		Intent i = new Intent(Intent.ACTION_PICK,
-	               android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-		startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
+    		Intent i = new Intent(Intent.ACTION_PICK,
+    	               android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+    		startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
 		break;
 		case R.id.logout:
+		    SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+		    SharedPreferences.Editor editor = settings.edit();
+	        editor.remove("userId");
+	        editor.commit();
+	        
+	        Intent intent = new Intent(this, SignIn.class);
+	        // These flags clear the whole thing, so back button will not come back.
+	        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+	        startActivity(intent);
 		    break;
 		default:
 		    Log.i("SelfProfile", "Unknown menu item.");
