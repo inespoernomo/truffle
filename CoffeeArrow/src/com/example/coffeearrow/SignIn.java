@@ -120,6 +120,9 @@ public class SignIn extends Activity implements PostToServerCallback {
 
 			Intent intent = new Intent(this, DisplaySearchResultsActivity.class);
 			startActivity(intent);
+			
+			// Do not come back to the login page when user press back button
+			finish();
 		}
 	}
 }
