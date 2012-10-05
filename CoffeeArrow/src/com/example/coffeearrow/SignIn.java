@@ -31,10 +31,13 @@ public class SignIn extends Activity implements PostToServerCallback {
 
 	public final static String EMAIL = "com.coffeearrow.signIn.Email";
 	public final static String PASSWORD = "com.coffeearrow.signIn.Password";
+	private SharedPreferences settings;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		settings = getSharedPreferences("MyPrefsFile", 0);
+		
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -122,7 +125,6 @@ public class SignIn extends Activity implements PostToServerCallback {
 	 * @param userId The user's id.
 	 */
     private void goToNextActivity(String userId) {
-        SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("userId", userId);
         editor.commit();
