@@ -113,16 +113,24 @@ public class SignIn extends Activity implements PostToServerCallback {
 			Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT)
 					.show();
 		} else {
-			SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
-			SharedPreferences.Editor editor = settings.edit();
-			editor.putString("userId", userId);
-			editor.commit();
-
-			Intent intent = new Intent(this, DisplaySearchResultsActivity.class);
-			startActivity(intent);
-			
-			// Do not come back to the login page when user press back button
-			finish();
+			goToNextActivity(userId);
 		}
 	}
+
+	/**
+	 * Save userId in the shared preference and then go to the next activity.
+	 * @param userId The user's id.
+	 */
+    private void goToNextActivity(String userId) {
+        SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("userId", userId);
+        editor.commit();
+
+        Intent intent = new Intent(this, DisplaySearchResultsActivity.class);
+        startActivity(intent);
+        
+        // Do not come back to the login page when user press back button
+        finish();
+    }
 }
