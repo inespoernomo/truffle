@@ -116,7 +116,8 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 							
 							Log.i("ShowUserProfileActivity", "Loop: " + i + " userId: " + notificationItem.getUserId() + " dateId: " + notificationItem.getDateId());
 							
-							if (notificationItem.getDateId().equals(userId)) {
+							// Check both if user is inviting the user or being invited.
+							if (notificationItem.getUserId().equals(userId) || notificationItem.getDateId().equals(userId)) {
 								invited = true;
 								break;
 							}
