@@ -289,8 +289,7 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 
 				e.printStackTrace();
 			}
-			System.out.println("Got back the user profile:");
-			System.out.println(userProfile);
+			Log.i("ShowUserProfileActivity", "Got back the user profile: " + userProfile);
 			
 			// We setup the content view here instead of in the onCreate method of the main activity because
 			// If we put it in onCreate, we do not have enough information at that time and will display 

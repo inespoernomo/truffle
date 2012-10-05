@@ -96,11 +96,14 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 	    case ACTIVITY_UPLOAD_IMAGE:
 	    	Log.i("selfprofile", "Call back from upload image activity with resultCode:"+resultCode);
 	    	if(resultCode == RESULT_OK){
+	    	    // TODO: Currently refresh the whole thing, this is easy for when user updated their profile image. But maybe we can do better.
 				//TODO: We can use the local file path. But right now, using s3 url is 
 				// easier with the lazy loading and image caching, etc.
-	    		String s3url = returnedIntent.getStringExtra("s3url");
-	    		String caption = returnedIntent.getStringExtra("caption");
-	        	addImageWithCaption(s3url, caption);
+	    		//String s3url = returnedIntent.getStringExtra("s3url");
+	    		//String caption = returnedIntent.getStringExtra("caption");
+	        	//addImageWithCaption(s3url, caption);
+	    		startActivity(getIntent());
+	            finish();
 	        } 
 	        else if (resultCode == 0)
 	        {
