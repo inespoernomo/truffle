@@ -37,6 +37,13 @@ public class SignIn extends Activity implements PostToServerCallback {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		settings = getSharedPreferences("MyPrefsFile", 0);
+		String userId = settings.getString("userId", null);
+		
+		// User already logged in.
+		if (userId != null){
+		    goToNextActivity(userId);
+		    return;
+		}
 		
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
