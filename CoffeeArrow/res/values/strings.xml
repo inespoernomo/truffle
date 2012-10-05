@@ -60,5 +60,6 @@
     <string name="chooseLocationLabel">Choose Location:</string>
     <string name="title_activity_new_date">New Date</string>
     <color name="blue">#0B3861</color>
+    <string name="logoutString">Logout</string>
 
 </resources>

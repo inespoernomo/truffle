@@ -8,5 +8,9 @@
         android:orderInCategory="0" 
         android:title="@string/uploadPhotoMenuItem" 
         android:showAsAction="always"></item>
+    <item android:id="@+id/logout" 
+        android:showAsAction="always" 
+        android:orderInCategory="1" 
+        android:title="@string/logoutString"></item>
     
 </menu>
