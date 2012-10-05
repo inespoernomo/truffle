@@ -17,7 +17,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -72,21 +72,22 @@ public class DisplaySearchResultsActivity extends ListActivity implements PostTo
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+	    Log.i("DisplaySearchResultsActivity", "Got option item selected and menu item is: " + item.toString());
 		switch (item.getItemId()) {
-		case android.R.id.home:
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
+		case R.id.notifications:
+			Intent intent1 = new Intent(this, NotificationsActivity.class);
+			startActivity(intent1);
+			break;
+		case R.id.userProfile:
+			Intent intent2 = new Intent(this, SelfProfileActivity.class);
+			intent2.putExtra("userId", userId);
+			startActivity(intent2);
+			break;
+		default:
+		    Log.i("DisplaySearchResultsActivity", "Unknow menu item clicked.");
+		    break;
 		}
-		if(item.getItemId() == R.id.notifications) {
-			Intent intent = new Intent(this, NotificationsActivity.class);
-			startActivity(intent);
-		}
-		if(item.getItemId() == R.id.userProfile) {
-			Intent intent = new Intent(this, SelfProfileActivity.class);
-			intent.putExtra("userId", userId);
-			startActivity(intent);
-		}
-		return super.onOptionsItemSelected(item);
+		return true;
 	}
 	
 	public void callback(Object result) {

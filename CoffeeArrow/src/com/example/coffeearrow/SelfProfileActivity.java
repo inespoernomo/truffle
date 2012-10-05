@@ -26,7 +26,7 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.i("selfprofile", "got option item selected and menu item is: " + item.toString());
+		Log.i("selfprofile", "Got option item selected and menu item is: " + item.toString());
 		switch(item.getItemId()){
 		case R.id.uploadPhoto:
     		Intent i = new Intent(Intent.ACTION_PICK,
