@@ -81,16 +81,30 @@
             android:textColor="@android:color/white"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        
-
-        <Button
-            android:id="@+id/surebutton"
-            android:layout_marginTop="15dp"
-            style="@style/bluebutton"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="lockTheDate"
-            android:text="@string/sureButton" />
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/noButton"
+                style="@style/bluebutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:text="@string/noString" />
+
+            <Button
+                android:id="@+id/surebutton"
+                style="@style/bluebutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:onClick="lockTheDate"
+                android:text="@string/sureButton" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/changeDatebutton"
