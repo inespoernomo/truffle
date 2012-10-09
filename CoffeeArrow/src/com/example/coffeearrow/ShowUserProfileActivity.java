@@ -29,7 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.coffeearrow.domain.NotificationItem;
+import com.example.coffeearrow.domain.InvitationItem;
 import com.example.coffeearrow.domain.UserProfile;
 import com.example.coffeearrow.helpers.ImageLoader;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
@@ -102,7 +102,7 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 					Log.i("ShowUserProfileActivity", "got here 1");
 					ObjectMapper mapper = new ObjectMapper();
 					Log.i("ShowUserProfileActivity", "got here 2");
-					NotificationItem notificationItem = null;
+					InvitationItem notificationItem = null;
 					boolean invited = false;
 					Log.i("ShowUserProfileActivity", "got here 3");
 					try {
@@ -112,7 +112,7 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 							
 							JSONObject jsonObj = resultArray.getJSONObject(i);
 							String record = jsonObj.toString(1);
-							notificationItem = mapper.readValue(record, NotificationItem.class);
+							notificationItem = mapper.readValue(record, InvitationItem.class);
 							
 							Log.i("ShowUserProfileActivity", "Loop: " + i + " userId: " + notificationItem.getUserId() + " dateId: " + notificationItem.getDateId());
 							

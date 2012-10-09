@@ -20,7 +20,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ListView;
 import com.example.coffeearrow.adapter.NotificationAdapter;
-import com.example.coffeearrow.domain.NotificationItem;
+import com.example.coffeearrow.domain.InvitationItem;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
@@ -53,7 +53,7 @@ public class NotificationsActivity extends ListActivity implements PostToServerC
     
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-    	NotificationItem item = (NotificationItem) getListAdapter().getItem(position);
+    	InvitationItem item = (InvitationItem) getListAdapter().getItem(position);
 		
 		Intent destIntent = new Intent(this, RequestHistoryActivity.class);
 
@@ -74,13 +74,13 @@ public class NotificationsActivity extends ListActivity implements PostToServerC
     
     public void callback(Object objResult) {
 		JSONArray resultArray = (JSONArray)objResult;
-		ArrayList<NotificationItem> responseList = new ArrayList<NotificationItem>();
+		ArrayList<InvitationItem> responseList = new ArrayList<InvitationItem>();
 		ObjectMapper mapper = new ObjectMapper(); 
 		try {
 			for(int i = 0; i<resultArray.length(); i++) {
 				JSONObject jsonObj = resultArray.getJSONObject(i);
 				String record = jsonObj.toString(1);
-				NotificationItem notificationItem = mapper.readValue(record, NotificationItem.class);
+				InvitationItem notificationItem = mapper.readValue(record, InvitationItem.class);
 				responseList.add(notificationItem);
 				
 			} 

@@ -15,7 +15,7 @@ import org.codehaus.jackson.annotate.JsonAnySetter;
  * "_id": "3680348388", 
  * "type": "match"}]}
 */
-public class NotificationItem {
+public class InvitationItem {
 	String profileImage; 
 	public String getProfileImage() {
 		return profileImage;
