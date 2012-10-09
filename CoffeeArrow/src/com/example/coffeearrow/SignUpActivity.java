@@ -82,9 +82,9 @@ public class SignUpActivity extends Activity implements PostToServerCallback {
         RadioButton checkedGender = (RadioButton) findViewById(selectedGender);
 
         HashMap<String, String> requestParams = new HashMap<String, String>();
-        requestParams.put("firstName", name);
-        requestParams.put("email", email);
-        requestParams.put("password", password);
+        requestParams.put("firstName", name.trim());
+        requestParams.put("email", email.trim());
+        requestParams.put("password", password.trim());
         requestParams.put("zipCode", zipCode);
         requestParams.put("gender", checkedGender.getText().toString());
 
