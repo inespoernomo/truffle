@@ -1,5 +1,7 @@
 package com.example.coffeearrow.domain;
 
+import java.io.Serializable;
+
 import org.codehaus.jackson.annotate.JsonAnySetter;
 
 
@@ -15,8 +17,13 @@ import org.codehaus.jackson.annotate.JsonAnySetter;
  * "_id": "3680348388", 
  * "type": "match"}]}
 */
-public class InvitationItem {
-	String profileImage; 
+public class InvitationItem implements Serializable {
+	/**
+     * This is auto generated. I have no idea what is it for. 
+     */
+    private static final long serialVersionUID = -6945657293809464262L;
+    
+    String profileImage; 
 	public String getProfileImage() {
 		return profileImage;
 	}
