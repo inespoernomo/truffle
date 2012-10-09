@@ -17,7 +17,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".SignIn"
-            android:label="@string/signIn" >
+            android:label="@string/signIn"
+            android:theme="@style/notitle" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.coffeearrow.SignIn" />
@@ -52,7 +53,8 @@
         </activity>
         <activity
             android:name=".SignUpActivity"
-            android:label="@string/title_activity_sign_up" >
+            android:label="@string/title_activity_sign_up"
+            android:theme="@style/notitle" >
         </activity>
         <activity
             android:name=".PendingVerificationActivity"
@@ -90,12 +92,8 @@
         </activity>
         <activity
             android:name=".SendForgetPasswordLinkActivity"
-            android:label="@string/title_activity_send_forget_password_link" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:label="@string/title_activity_send_forget_password_link"
+            android:theme="@style/notitle" >
         </activity>
     </application>
 
