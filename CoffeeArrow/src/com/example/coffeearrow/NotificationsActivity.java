@@ -19,7 +19,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ListView;
-import com.example.coffeearrow.adapter.NotificationAdapter;
+import com.example.coffeearrow.adapter.InvitationsAdapter;
 import com.example.coffeearrow.domain.InvitationItem;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
@@ -97,8 +97,8 @@ public class NotificationsActivity extends ListActivity implements PostToServerC
 			e.printStackTrace();
 		}
 		
-		NotificationAdapter notificationAdapter = 
-					new NotificationAdapter(NotificationsActivity.this, 
+		InvitationsAdapter notificationAdapter = 
+					new InvitationsAdapter(NotificationsActivity.this, 
 							responseList);
         NotificationsActivity.this.setListAdapter(notificationAdapter);
 	}

@@ -19,13 +19,13 @@ import com.example.coffeearrow.R;
 import com.example.coffeearrow.domain.InvitationItem;
 import com.example.coffeearrow.helpers.ImageLoader;
 
-public class NotificationAdapter extends ArrayAdapter<InvitationItem> {
+public class InvitationsAdapter extends ArrayAdapter<InvitationItem> {
 	
 	private Activity activity; 
 	private List<InvitationItem> profileList;
 	public ImageLoader imageLoader;
 	
-	public NotificationAdapter(Activity activity, List<InvitationItem> profileList) {
+	public InvitationsAdapter(Activity activity, List<InvitationItem> profileList) {
 		super(activity, R.layout.activity_notifications, profileList);
 		this.profileList = profileList;
 		this.activity = activity;
