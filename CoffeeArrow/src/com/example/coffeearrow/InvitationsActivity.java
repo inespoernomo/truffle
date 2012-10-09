@@ -39,7 +39,7 @@ public class InvitationsActivity extends ListActivity implements PostToServerCal
         HashMap<String, String> requestParams = new HashMap<String, String>();
 		requestParams.put("userId", userId);
         
-		HttpPost request = RequestFactory.create(requestParams, "getAllNotificationsNative");
+		HttpPost request = RequestFactory.create(requestParams, "getAllInvitationsNative");
 		
 		PostToServerAsyncTask task = new PostToServerAsyncTask(this);
 		task.execute(request);

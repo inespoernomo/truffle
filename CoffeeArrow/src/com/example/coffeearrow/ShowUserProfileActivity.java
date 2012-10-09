@@ -92,29 +92,22 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
         HashMap<String, String> requestParams = new HashMap<String, String>();
 		requestParams.put("userId", loggedInUserId);
         
-		HttpPost request = RequestFactory.create(requestParams, "getAllNotificationsNative");
+		HttpPost request = RequestFactory.create(requestParams, "getAllInvitationsNative");
 		
 		PostToServerAsyncTask task = new PostToServerAsyncTask(
 			new PostToServerCallback() {
 				public void callback(Object objResult) {
-					Log.i("ShowUserProfileActivity", "getAllNotificationsNative called back with: " + objResult);
+					Log.i("ShowUserProfileActivity", "getAllInvitationsNative called back with: " + objResult);
 					JSONArray resultArray = (JSONArray)objResult;
-					Log.i("ShowUserProfileActivity", "got here 1");
 					ObjectMapper mapper = new ObjectMapper();
-					Log.i("ShowUserProfileActivity", "got here 2");
 					InvitationItem invitationItem = null;
 					boolean invited = false;
-					Log.i("ShowUserProfileActivity", "got here 3");
 					try {
-						Log.i("ShowUserProfileActivity", "got here 4 array size: "+resultArray.length());
-						
 						for(int i = 0; i<resultArray.length(); i++) {
 							
 							JSONObject jsonObj = resultArray.getJSONObject(i);
 							String record = jsonObj.toString(1);
 							invitationItem = mapper.readValue(record, InvitationItem.class);
-							
-							Log.i("ShowUserProfileActivity", "Loop: " + i + " userId: " + invitationItem.getUserId() + " dateId: " + invitationItem.getDateId());
 							
 							// Check both if user is inviting the user or being invited.
 							if (invitationItem.getUserId().equals(userId) || invitationItem.getDateId().equals(userId)) {
