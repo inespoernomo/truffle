@@ -47,7 +47,7 @@ public class InvitationsActivity extends ListActivity implements PostToServerCal
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_notifications, menu);
+        getMenuInflater().inflate(R.menu.activity_invitations, menu);
         return true;
     }
     

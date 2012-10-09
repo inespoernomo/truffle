@@ -26,7 +26,7 @@ public class InvitationsAdapter extends ArrayAdapter<InvitationItem> {
 	public ImageLoader imageLoader;
 	
 	public InvitationsAdapter(Activity activity, List<InvitationItem> profileList) {
-		super(activity, R.layout.activity_notifications, profileList);
+		super(activity, R.layout.activity_invitations, profileList);
 		this.profileList = profileList;
 		this.activity = activity;
 		imageLoader=new ImageLoader(activity);
@@ -42,7 +42,7 @@ public class InvitationsAdapter extends ArrayAdapter<InvitationItem> {
 		LayoutInflater inflater = (LayoutInflater) activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater
-				.inflate(R.layout.activity_notifications,
+				.inflate(R.layout.activity_invitations,
 						parent, false);
 		
 		// Get the size of the display.
