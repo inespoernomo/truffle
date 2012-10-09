@@ -7,14 +7,15 @@
     <RelativeLayout 
         android:layout_width="match_parent"
     	android:layout_height="wrap_content">
+    	
         <ImageView 
             android:layout_width="match_parent"
     		android:layout_height="match_parent"
     		android:src="@drawable/newbackground"
-    		android:scaleType="fitCenter"
+    		android:scaleType="centerInside"
     		android:adjustViewBounds="true"/>
+        
 	    <LinearLayout
-	        xmlns:tools="http://schemas.android.com/tools"
 	        style="@style/loginbox"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
