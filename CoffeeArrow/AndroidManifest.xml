@@ -62,7 +62,8 @@
         </activity>
         <activity
             android:name=".RequestHistoryActivity"
-            android:label="@string/title_activity_request_history" >
+            android:label="@string/title_activity_request_history"
+            android:theme="@style/notitle" >
         </activity>
         <activity
             android:name=".TestActivity"
