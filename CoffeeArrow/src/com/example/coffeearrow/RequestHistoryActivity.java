@@ -15,11 +15,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.coffeearrow.helpers.ImageLoader;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
@@ -30,7 +27,6 @@ public class RequestHistoryActivity extends Activity {
 	private RequestHistoryActivity mainActivity = null;
 	private String matchId;
 	private String userId;
-	private ImageLoader imageLoader;
 	String matchName;
 
 	@Override
@@ -38,11 +34,9 @@ public class RequestHistoryActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		mainActivity = this;
-		imageLoader = new ImageLoader(this);
 		Intent intent = getIntent();
 		matchId = intent.getStringExtra("matchId");
 		matchName = intent.getStringExtra("matchName");
-		String matchProfileImage = intent.getStringExtra("matchProfileImage");
 		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
 		userId = settings.getString("userId", null);
 		setContentView(R.layout.activity_request_history);
@@ -50,17 +44,6 @@ public class RequestHistoryActivity extends Activity {
 		requestParams.put("matchId", matchId);
 		HttpPost request = RequestFactory.create(requestParams,
 				"getNotificationsForMatchNative");
-
-		setContentView(R.layout.activity_request_history);
-		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.container);
-		linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-				LinearLayout.LayoutParams.MATCH_PARENT));
-		ImageView profileImage = new ImageView(mainActivity);
-		imageLoader.DisplayImage(matchProfileImage, profileImage);
-		linearLayout.setBackgroundDrawable(profileImage.getDrawable());
-
-		// TextView textView = (TextView) findViewById(R.id.label);
-		// textView.setText(matchName);
 
 		PostToServerCallback callback = new PostToServerCallback() {
 			public void callback(Object objResult) {
