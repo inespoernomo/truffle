@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NotificationsActivity"
+            android:name=".InvitationsActivity"
             android:label="@string/title_activity_notifications" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

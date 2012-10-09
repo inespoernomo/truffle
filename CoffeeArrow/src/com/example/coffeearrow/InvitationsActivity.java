@@ -25,7 +25,7 @@ import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 
-public class NotificationsActivity extends ListActivity implements PostToServerCallback {
+public class InvitationsActivity extends ListActivity implements PostToServerCallback {
 
 	public String userId;
 	
@@ -98,9 +98,9 @@ public class NotificationsActivity extends ListActivity implements PostToServerC
 		}
 		
 		InvitationsAdapter notificationAdapter = 
-					new InvitationsAdapter(NotificationsActivity.this, 
+					new InvitationsAdapter(InvitationsActivity.this, 
 							responseList);
-        NotificationsActivity.this.setListAdapter(notificationAdapter);
+        InvitationsActivity.this.setListAdapter(notificationAdapter);
 	}
 
 }
