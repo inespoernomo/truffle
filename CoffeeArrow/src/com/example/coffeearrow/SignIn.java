@@ -97,6 +97,11 @@ public class SignIn extends Activity implements PostToServerCallback {
 		Intent intent = new Intent(this, SignUpActivity.class);
 		startActivity(intent);
 	}
+	
+	public void sendForgetPasswordLink(View view) {
+		Intent intent = new Intent(this, SendForgetPasswordLinkActivity.class);
+		startActivity(intent);
+	}
 
 	public void callback(Object result) {
 		// Dismiss the progress dialog.
