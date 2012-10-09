@@ -72,6 +72,42 @@ public class InvitationItem implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	public String getCurrEpoch() {
+        return currEpoch;
+    }
+    public void setCurrEpoch(String currEpoch) {
+        this.currEpoch = currEpoch;
+    }
+    
+    public String getCurrPlace() {
+        return currPlace;
+    }
+    public void setCurrPlace(String currPlace) {
+        this.currPlace = currPlace;
+    }
+    
+    public String getPrevEpoch() {
+        return prevEpoch;
+    }
+    public void setPrevEpoch(String prevEpoch) {
+        this.prevEpoch = prevEpoch;
+    }
+    
+    public String getPrevPlace() {
+        return prevPlace;
+    }
+    public void setPrevPlace(String prevPlace) {
+        this.prevPlace = prevPlace;
+    }
+    
+    public String getMatchId() {
+        return matchId;
+    }
+    public void setMatchId(String matchId) {
+        this.matchId = matchId;
+    }
+    
 	String locked;
 	String name;
 	String userId;
@@ -79,6 +115,11 @@ public class InvitationItem implements Serializable {
 	String latestInitiatorId;
 	String _id;
 	String type;
+    String currEpoch;
+    String currPlace;
+    String prevEpoch;
+    String prevPlace;
+    String matchId;
 	
 	@JsonAnySetter
 	public void handleUnknown(String key, Object value) {

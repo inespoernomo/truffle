@@ -54,21 +54,8 @@ public class InvitationsActivity extends ListActivity implements PostToServerCal
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
     	InvitationItem item = (InvitationItem) getListAdapter().getItem(position);
-		
 		Intent destIntent = new Intent(this, RequestHistoryActivity.class);
-
-		if (item.getLatestInitiatorId().equals(item.getUserId())) {
-			destIntent.putExtra("showSure", "true");
-			
-		}
-		destIntent.putExtra("matchId", item.get_id());
-		destIntent.putExtra("matchName", item.getName());
-		destIntent.putExtra("matchProfileImage", item.getProfileImage());
-		destIntent.putExtra("lockedDate", item.getLocked());
-		destIntent.putExtra("dateName", item.getName());
-		destIntent.putExtra("userId", item.getUserId());
-		destIntent.putExtra("dateId", item.getDateId());
-
+		destIntent.putExtra("invitationItem", item);
 		startActivity(destIntent);
 	}
     

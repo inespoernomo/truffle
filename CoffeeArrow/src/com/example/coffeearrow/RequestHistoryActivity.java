@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.coffeearrow.domain.InvitationItem;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
@@ -25,9 +26,8 @@ public class RequestHistoryActivity extends Activity {
 
 	private static final String LOCKED_MESSAGE = "Date accepted :)";
 	private RequestHistoryActivity mainActivity = null;
-	private String matchId;
 	private String userId;
-	String matchName;
+	private InvitationItem invitation;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -35,131 +35,82 @@ public class RequestHistoryActivity extends Activity {
 		
 		mainActivity = this;
 		Intent intent = getIntent();
-		matchId = intent.getStringExtra("matchId");
-		matchName = intent.getStringExtra("matchName");
+		invitation = (InvitationItem)intent.getSerializableExtra("invitationItem");
+		
 		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
 		userId = settings.getString("userId", null);
 		setContentView(R.layout.activity_request_history);
-		HashMap<String, String> requestParams = new HashMap<String, String>();
-		requestParams.put("matchId", matchId);
-		HttpPost request = RequestFactory.create(requestParams,
-				"getNotificationsForMatchNative");
 
-		PostToServerCallback callback = new PostToServerCallback() {
-			public void callback(Object objResult) {
-				Log.i("requesthistory", "The objResult is: " + objResult);
-				JSONArray resultArray = (JSONArray) objResult;
+		// Logic to figure out latest and previous date and location
+        // setter.
+        Button agreeButton = (Button) mainActivity
+                .findViewById(R.id.surebutton);
+        
+        String preDateAndLocationSetter;
+        if (invitation.getLatestInitiatorId().equals(userId)) {
+            preDateAndLocationSetter = invitation.getName();
+            //curDateAndLocationSetter = matchName;
+            agreeButton.setEnabled(false);
+        } else {
+            preDateAndLocationSetter = invitation.getName();
+            //curDateAndLocationSetter = matchName;
+            agreeButton.setEnabled(true);
+        }
 
-				String lastestInitiatorId = null;
-				String epoch = null;
-				String place = null;
-				String preEpoch = null;
-				String prePlace = null;
-				String lockDate = null;
-				try {
-					for (int i = 0; i < resultArray.length(); i++) {
-						JSONObject record = resultArray.getJSONObject(i);
-						Log.i("RequestHistoryActivity", "record is: " + record);
-						//initiater = record.getString("userId");
-						epoch = record.getString("currEpoch");
-						place = record.getString("currPlace");
-						lockDate = record.getString("locked");
-						lastestInitiatorId = record
-								.getString("latestInitiatorId");
-						if (record.has("prevEpoch")) {
-							preEpoch = record.getString("prevEpoch");
-							prePlace = record.getString("prevPlace");
-						}
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
+        // Previous time and location section
+        TextView matchName = (TextView) mainActivity
+                .findViewById(R.id.matchName);
+        TextView preTimeTextView = (TextView) mainActivity
+                .findViewById(R.id.preTimeTextView);
+        TextView prePlaceTextView = (TextView) mainActivity
+                .findViewById(R.id.prePlaceTextView);
+        TextView prePlaceMsgView = (TextView) mainActivity
+                .findViewById(R.id.prePlaceMsgView);
+        matchName.setText(preDateAndLocationSetter);
+        if (invitation.getPrevEpoch() == null) {
+            prePlaceMsgView.setVisibility(View.GONE);
+            //preModifierTextView.setVisibility(View.GONE);
+            preTimeTextView.setVisibility(View.GONE);
+            prePlaceTextView.setVisibility(View.GONE);
+            
+        } else {
+            String date = new java.text.SimpleDateFormat(
+                    "MM/dd/yyyy HH:mm:ss").format(new java.util.Date(
+                    Long.parseLong(invitation.getPrevEpoch()) * 1000));
+            preTimeTextView.setText(preTimeTextView.getText() + date);
+            prePlaceTextView.setText(prePlaceTextView.getText()
+                    + invitation.getPrevPlace());        
+        }
 
-				// Initiator section
-				/*
-				 * TextView initiaterTextView = (TextView)
-				 * mainActivity.findViewById(R.id.initiaterTextView);
-				 * if(initiater.equals(userId)) {
-				 * initiaterTextView.setText("You invited " + matchName +
-				 * " to meet."); } else { initiaterTextView.setText(matchName +
-				 * " invited you to meet."); }
-				 */
+        // Current time and location section.
+        //TextView lastModifierTextView = (TextView) mainActivity
+            //  .findViewById(R.id.lastModifierTextView);
+        TextView timeTextView = (TextView) mainActivity
+                .findViewById(R.id.timeTextView);
+        TextView placeTextView = (TextView) mainActivity
+                .findViewById(R.id.placeTextView);
 
-				// Logic to figure out latest and previous date and location
-				// setter.
-				Button agreeButton = (Button) mainActivity
-						.findViewById(R.id.surebutton);
-				
-				String preDateAndLocationSetter;
-				if (lastestInitiatorId.equals(userId)) {
-					preDateAndLocationSetter = matchName;
-					//curDateAndLocationSetter = matchName;
-					agreeButton.setEnabled(false);
-				} else {
-					preDateAndLocationSetter = matchName;
-					//curDateAndLocationSetter = matchName;
-					agreeButton.setEnabled(true);
-				}
+        Log.i("RequestHistoryActivity", "epoch is: "+invitation.getCurrEpoch());
+        String date = new java.text.SimpleDateFormat(
+                "MM/dd/yyyy HH:mm:ss").format(new java.util.Date(Long
+                .parseLong(invitation.getCurrEpoch()) * 1000));
+        timeTextView.setText(timeTextView.getText() + date);
+        placeTextView.setText(placeTextView.getText() + invitation.getPrevPlace());
+        //lastModifierTextView.setText("Update time/place");
 
-				// Previous time and location section
-				TextView matchName = (TextView) mainActivity
-						.findViewById(R.id.matchName);
-				TextView preTimeTextView = (TextView) mainActivity
-						.findViewById(R.id.preTimeTextView);
-				TextView prePlaceTextView = (TextView) mainActivity
-						.findViewById(R.id.prePlaceTextView);
-				TextView prePlaceMsgView = (TextView) mainActivity
-						.findViewById(R.id.prePlaceMsgView);
-				matchName.setText(preDateAndLocationSetter);
-				if (preEpoch == null) {
-					prePlaceMsgView.setVisibility(View.GONE);
-					//preModifierTextView.setVisibility(View.GONE);
-					preTimeTextView.setVisibility(View.GONE);
-					prePlaceTextView.setVisibility(View.GONE);
-					
-				} else {
-					String date = new java.text.SimpleDateFormat(
-							"MM/dd/yyyy HH:mm:ss").format(new java.util.Date(
-							Long.parseLong(preEpoch) * 1000));
-					preTimeTextView.setText(preTimeTextView.getText() + date);
-					prePlaceTextView.setText(prePlaceTextView.getText()
-							+ prePlace);		
-				}
-
-				// Current time and location section.
-				//TextView lastModifierTextView = (TextView) mainActivity
-					//	.findViewById(R.id.lastModifierTextView);
-				TextView timeTextView = (TextView) mainActivity
-						.findViewById(R.id.timeTextView);
-				TextView placeTextView = (TextView) mainActivity
-						.findViewById(R.id.placeTextView);
-
-				String date = new java.text.SimpleDateFormat(
-						"MM/dd/yyyy HH:mm:ss").format(new java.util.Date(Long
-						.parseLong(epoch) * 1000));
-				timeTextView.setText(timeTextView.getText() + date);
-				placeTextView.setText(placeTextView.getText() + place);
-				//lastModifierTextView.setText("Update time/place");
-
-				// Lock date section.
-				TextView text = (TextView) mainActivity
-						.findViewById(R.id.lockDate);
-				if (!lockDate.equals("None")) {
-					text.setVisibility(View.VISIBLE);
-					text.setText(LOCKED_MESSAGE);
-					agreeButton.setEnabled(false);
-					Button changeDateButton = (Button) mainActivity
-							.findViewById(R.id.changeDatebutton);
-					changeDateButton.setEnabled(false);
-				} else {
-					text.setVisibility(View.GONE);
-				}
-			}
-		};
-		
-		PostToServerAsyncTask task = new PostToServerAsyncTask(callback);
-		task.execute(request);
-
+        // Lock date section.
+        TextView text = (TextView) mainActivity
+                .findViewById(R.id.lockDate);
+        if (!invitation.getLocked().equals("None")) {
+            text.setVisibility(View.VISIBLE);
+            text.setText(LOCKED_MESSAGE);
+            agreeButton.setEnabled(false);
+            Button changeDateButton = (Button) mainActivity
+                    .findViewById(R.id.changeDatebutton);
+            changeDateButton.setEnabled(false);
+        } else {
+            text.setVisibility(View.GONE);
+        }
 	}
 
 	@Override
@@ -176,11 +127,8 @@ public class RequestHistoryActivity extends Activity {
 	 *            - the view object
 	 * */
 	public void lockTheDate(View view) {
-
-		Intent intent = getIntent();
-
 		HashMap<String, String> requestParams = new HashMap<String, String>();
-		requestParams.put("matchId", intent.getStringExtra("matchId"));
+		requestParams.put("matchId", invitation.getMatchId());
 		HttpPost request = RequestFactory.create(requestParams,
 				"lockTheDateNative");
 
@@ -219,7 +167,7 @@ public class RequestHistoryActivity extends Activity {
 
 	public void changeDate(View v) {
 		Intent intent = new Intent(this, ChangeDateActivity.class);
-		intent.putExtra("matchId", matchId);
+		intent.putExtra("matchId", invitation.getMatchId());
 		startActivity(intent);
 	}
 
