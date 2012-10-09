@@ -141,17 +141,7 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 					if (invited) {
 
 						Intent destIntent = new Intent(mainActivity, RequestHistoryActivity.class);
-
-						if (invitationItem.getLatestInitiatorId().equals(invitationItem.getUserId())) {
-							destIntent.putExtra("showSure", "true");
-							
-						}
-						destIntent.putExtra("matchId", invitationItem.get_id());
-						destIntent.putExtra("matchName", invitationItem.getName());
-						destIntent.putExtra("matchProfileImage", invitationItem.getProfileImage());
-						destIntent.putExtra("lockedDate", invitationItem.getLocked());
-						destIntent.putExtra("dateName", invitationItem.getName());
-
+						destIntent.putExtra("invitationItem", invitationItem);
 						startActivity(destIntent);
 						
 					} else {
@@ -190,46 +180,6 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 	 * @param caption The caption string for the image.
 	 */
 	protected void addImageWithCaption(String s3url, String caption) {
-	    /*
-		// A vertical linear layout with one picture (square) and caption for the picture.
-		// Width set to the width of the display
-		RelativeLayout onePicWithCaption = new RelativeLayout(this);
-		//onePicWithCaption.setOrientation(LinearLayout.VERTICAL);
-		onePicWithCaption.setLayoutParams(
-				new LinearLayout.LayoutParams(displayWidth, LinearLayout.LayoutParams.MATCH_PARENT));
-		userImages.addView(onePicWithCaption);
-		
-		// This the frame that make sure the picture is in a square frame.
-		//SquareFrameLayout picFrame = new SquareFrameLayout(this, null);
-		//picFrame.setLayoutParams(
-			//	new ViewGroup.LayoutParams(displayWidth, ViewGroup.LayoutParams.MATCH_PARENT));
-		//onePicWithCaption.addView(picFrame);
-		
-		// This is the image itself.
-		ImageView imageView = new ImageView(this);
-		imageView.setScaleType(ImageView.ScaleType.CENTER);
-		//picFrame.addView(imageView);
-		onePicWithCaption.addView(imageView);
-		// Lazy load and cache the image.
-		imageLoader.DisplayImage(s3url, imageView);
-		
-		// Add click handler for the image
-		addImageClickListener(imageView, s3url, caption);
-	
-		// This is the caption for the image.
-		RelativeLayout.LayoutParams tParams = new RelativeLayout.LayoutParams
-		        (LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-		tParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-		tParams.addRule(RelativeLayout.ALIGN_TOP, RelativeLayout.TRUE);
-		TextView captionTextView = new TextView(this);
-		
-		captionTextView.setTextAppearance(this, R.style.transparency);
-		captionTextView.setLayoutParams(tParams);
-		captionTextView.setText(caption);
-		
-		onePicWithCaption.addView(captionTextView);
-		*/
-	    
 	    LayoutInflater inflater = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(
