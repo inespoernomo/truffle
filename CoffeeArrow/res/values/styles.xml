@@ -77,6 +77,10 @@
     <style name="WindowTitleBackground">
       
     </style>
+    
+    <style name="notitle" parent="AppTheme">
+	    <item name="android:windowNoTitle">true</item>
+	</style>
 
     <style name="customEditText" parent="@android:style/Widget.EditText">
         <item name="android:focusable">true</item>

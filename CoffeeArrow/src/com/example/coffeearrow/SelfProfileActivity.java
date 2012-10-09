@@ -1,6 +1,7 @@
 package com.example.coffeearrow;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -25,11 +26,28 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.i("selfprofile", "got option item selected and menu item is:");
-		Log.i("selfprofile", item.toString());
-		Intent i = new Intent(Intent.ACTION_PICK,
-	               android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-		startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
+		Log.i("selfprofile", "Got option item selected and menu item is: " + item.toString());
+		switch(item.getItemId()){
+		case R.id.uploadPhoto:
+    		Intent i = new Intent(Intent.ACTION_PICK,
+    	               android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+    		startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
+		break;
+		case R.id.logout:
+		    SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+		    SharedPreferences.Editor editor = settings.edit();
+	        editor.remove("userId");
+	        editor.commit();
+	        
+	        Intent intent = new Intent(this, SignIn.class);
+	        // These flags clear the whole thing, so back button will not come back.
+	        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+	        startActivity(intent);
+		    break;
+		default:
+		    Log.i("SelfProfile", "Unknown menu item.");
+		    break;
+		}
 		return true;
 	}
 	
@@ -78,11 +96,14 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 	    case ACTIVITY_UPLOAD_IMAGE:
 	    	Log.i("selfprofile", "Call back from upload image activity with resultCode:"+resultCode);
 	    	if(resultCode == RESULT_OK){
+	    	    // TODO: Currently refresh the whole thing, this is easy for when user updated their profile image. But maybe we can do better.
 				//TODO: We can use the local file path. But right now, using s3 url is 
 				// easier with the lazy loading and image caching, etc.
-	    		String s3url = returnedIntent.getStringExtra("s3url");
-	    		String caption = returnedIntent.getStringExtra("caption");
-	        	addImageWithCaption(s3url, caption);
+	    		//String s3url = returnedIntent.getStringExtra("s3url");
+	    		//String caption = returnedIntent.getStringExtra("caption");
+	        	//addImageWithCaption(s3url, caption);
+	    		startActivity(getIntent());
+	            finish();
 	        } 
 	        else if (resultCode == 0)
 	        {

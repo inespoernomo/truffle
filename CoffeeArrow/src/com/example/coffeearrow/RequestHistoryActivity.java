@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AbsListView.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -73,7 +72,6 @@ public class RequestHistoryActivity extends Activity {
 				Log.i("requesthistory", "The objResult is: " + objResult);
 				JSONArray resultArray = (JSONArray) objResult;
 
-				String initiater = null;
 				String lastestInitiatorId = null;
 				String epoch = null;
 				String place = null;
@@ -84,7 +82,7 @@ public class RequestHistoryActivity extends Activity {
 					for (int i = 0; i < resultArray.length(); i++) {
 						JSONObject record = resultArray.getJSONObject(i);
 						Log.i("RequestHistoryActivity", "record is: " + record);
-						initiater = record.getString("userId");
+						//initiater = record.getString("userId");
 						epoch = record.getString("currEpoch");
 						place = record.getString("currPlace");
 						lockDate = record.getString("locked");
@@ -113,15 +111,15 @@ public class RequestHistoryActivity extends Activity {
 				// setter.
 				Button agreeButton = (Button) mainActivity
 						.findViewById(R.id.surebutton);
+				
 				String preDateAndLocationSetter;
-				String curDateAndLocationSetter;
 				if (lastestInitiatorId.equals(userId)) {
 					preDateAndLocationSetter = matchName;
-					curDateAndLocationSetter = matchName;
+					//curDateAndLocationSetter = matchName;
 					agreeButton.setEnabled(false);
 				} else {
 					preDateAndLocationSetter = matchName;
-					curDateAndLocationSetter = matchName;
+					//curDateAndLocationSetter = matchName;
 					agreeButton.setEnabled(true);
 				}
 

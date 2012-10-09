@@ -46,9 +46,8 @@ public class UserRowsAdapter extends ArrayAdapter<SearchProfile> {
         Point size = new Point();
         display.getSize(size);
 
-        // Set image size to the size of the display and max to 300
-        imageSize = Math.min(400, size.x);
-        Log.i("UserRowsAdapter", "Screen size is: "+size.x);
+        imageSize = size.x;
+        Log.i("UserRowsAdapter", "Screen size is: " + imageSize);
 	}
 
 	@Override
@@ -64,7 +63,7 @@ public class UserRowsAdapter extends ArrayAdapter<SearchProfile> {
 				R.layout.activity_display_search_results, parent, false);
 
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(imageSize, imageSize);
-		params.setMargins(2, 2, 2, 2);
+		params.setMargins(5, 5, 5, 5);
 		params.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		RelativeLayout imageFrame = (RelativeLayout) rowView.findViewById(R.id.imageFrame);
 		imageFrame.setLayoutParams(params);

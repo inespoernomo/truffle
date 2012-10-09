@@ -7,27 +7,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.coffeearrow.R;
-import com.example.coffeearrow.server.PostToServerAsyncTask;
-import com.example.coffeearrow.server.PostToServerCallback;
-import com.example.coffeearrow.server.RequestFactory;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.coffeearrow.server.PostToServerAsyncTask;
+import com.example.coffeearrow.server.PostToServerCallback;
+import com.example.coffeearrow.server.RequestFactory;
 //import android.support.v4.app.NavUtils;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 
 public class SignIn extends Activity implements PostToServerCallback {
 
@@ -35,13 +29,20 @@ public class SignIn extends Activity implements PostToServerCallback {
 
 	public final static String EMAIL = "com.coffeearrow.signIn.Email";
 	public final static String PASSWORD = "com.coffeearrow.signIn.Password";
+	private SharedPreferences settings;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		settings = getSharedPreferences("MyPrefsFile", 0);
+		String userId = settings.getString("userId", null);
+		
+		// User already logged in.
+		if (userId != null){
+		    goToNextActivity(userId);
+		    return;
+		}
+		
 		setContentView(R.layout.activity_sign_in);
 		//Button signInButton = (Button) findViewById(R.id.signInButton);
 		//signInButton.getBackground().setColorFilter(Color.DKGRAY,
@@ -91,6 +92,11 @@ public class SignIn extends Activity implements PostToServerCallback {
 		Intent intent = new Intent(this, SignUpActivity.class);
 		startActivity(intent);
 	}
+	
+	public void sendForgetPasswordLink(View view) {
+		Intent intent = new Intent(this, SendForgetPasswordLinkActivity.class);
+		startActivity(intent);
+	}
 
 	public void callback(Object result) {
 		// Dismiss the progress dialog.
@@ -117,13 +123,23 @@ public class SignIn extends Activity implements PostToServerCallback {
 			Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT)
 					.show();
 		} else {
-			SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
-			SharedPreferences.Editor editor = settings.edit();
-			editor.putString("userId", userId);
-			editor.commit();
-
-			Intent intent = new Intent(this, DisplaySearchResultsActivity.class);
-			startActivity(intent);
+			goToNextActivity(userId);
 		}
 	}
+
+	/**
+	 * Save userId in the shared preference and then go to the next activity.
+	 * @param userId The user's id.
+	 */
+    private void goToNextActivity(String userId) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("userId", userId);
+        editor.commit();
+
+        Intent intent = new Intent(this, DisplaySearchResultsActivity.class);
+        startActivity(intent);
+        
+        // Do not come back to the login page when user press back button
+        finish();
+    }
 }
