@@ -39,28 +39,54 @@ public class SignUpActivity extends Activity implements PostToServerCallback {
 	public void submit(View view) {
 		EditText emailText = (EditText) findViewById(R.id.email);
 		String email = emailText.getText().toString();
+		// Not a all mighty regular expression for email, but not worth it.
+		if (!email.matches(".+@.+\\..+")) {
+		    String message = "Please enter a valid email address.";
+            Toast.makeText(getApplicationContext(), message,
+                    Toast.LENGTH_LONG).show();
+            return;
+		}
+		
 		EditText passwordText = (EditText) findViewById(R.id.password);
 		String password = passwordText.getText().toString();
+		if (password.isEmpty()) {
+		    String message = "Please enter a password.";
+            Toast.makeText(getApplicationContext(), message,
+                    Toast.LENGTH_LONG).show();
+            return;
+		}
+		
+		EditText confirmPasswordText = (EditText) findViewById(R.id.confirmPassword);
+        String confirmPassword = confirmPasswordText.getText().toString();
+        if (! password.equals(confirmPassword)) {
+            String message = "Password and confirm password do not match.";
+            Toast.makeText(getApplicationContext(), message,
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+		
 		EditText nameText = (EditText) findViewById(R.id.name);
 		String name = nameText.getText().toString();
+		if (name.isEmpty()) {
+            String message = "Please enter a name.";
+            Toast.makeText(getApplicationContext(), message,
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+		
 		EditText zipCodeText = (EditText) findViewById(R.id.zipCode);
 		String zipCode = zipCodeText.getText().toString();
-		RadioGroup radioGenderGroup = (RadioGroup) findViewById(R.id.radioGender);
-		RadioGroup radioLookingForGroup = (RadioGroup) findViewById(R.id.radioLookingFor);
 		
+		RadioGroup radioGenderGroup = (RadioGroup) findViewById(R.id.radioGender);
 		int selectedGender = radioGenderGroup.getCheckedRadioButtonId();
 		RadioButton checkedGender = (RadioButton) findViewById(selectedGender);
 
-		int selectedLookingFor = radioLookingForGroup.getCheckedRadioButtonId();
-		RadioButton checkedLookingFor = (RadioButton) findViewById(selectedLookingFor);
-		
 		HashMap<String, String> requestParams = new HashMap<String, String>();
 	    requestParams.put("firstName", name);
 	    requestParams.put("email", email);
 	    requestParams.put("password", password);
 	    requestParams.put("zipCode", zipCode);
 	    requestParams.put("gender", checkedGender.getText().toString());
-	    requestParams.put("looking", checkedLookingFor.getText().toString());
 
 		HttpPost request = RequestFactory.create(requestParams, "submitUserInfoNative");
 
