@@ -74,7 +74,7 @@ public class DisplaySearchResultsActivity extends ListActivity implements PostTo
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    Log.i("DisplaySearchResultsActivity", "Got option item selected and menu item is: " + item.toString());
 		switch (item.getItemId()) {
-		case R.id.notifications:
+		case R.id.invitations:
 			Intent intent1 = new Intent(this, InvitationsActivity.class);
 			startActivity(intent1);
 			break;

@@ -102,7 +102,7 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 					Log.i("ShowUserProfileActivity", "got here 1");
 					ObjectMapper mapper = new ObjectMapper();
 					Log.i("ShowUserProfileActivity", "got here 2");
-					InvitationItem notificationItem = null;
+					InvitationItem invitationItem = null;
 					boolean invited = false;
 					Log.i("ShowUserProfileActivity", "got here 3");
 					try {
@@ -112,12 +112,12 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 							
 							JSONObject jsonObj = resultArray.getJSONObject(i);
 							String record = jsonObj.toString(1);
-							notificationItem = mapper.readValue(record, InvitationItem.class);
+							invitationItem = mapper.readValue(record, InvitationItem.class);
 							
-							Log.i("ShowUserProfileActivity", "Loop: " + i + " userId: " + notificationItem.getUserId() + " dateId: " + notificationItem.getDateId());
+							Log.i("ShowUserProfileActivity", "Loop: " + i + " userId: " + invitationItem.getUserId() + " dateId: " + invitationItem.getDateId());
 							
 							// Check both if user is inviting the user or being invited.
-							if (notificationItem.getUserId().equals(userId) || notificationItem.getDateId().equals(userId)) {
+							if (invitationItem.getUserId().equals(userId) || invitationItem.getDateId().equals(userId)) {
 								invited = true;
 								break;
 							}
@@ -142,15 +142,15 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 
 						Intent destIntent = new Intent(mainActivity, RequestHistoryActivity.class);
 
-						if (notificationItem.getLatestInitiatorId().equals(notificationItem.getUserId())) {
+						if (invitationItem.getLatestInitiatorId().equals(invitationItem.getUserId())) {
 							destIntent.putExtra("showSure", "true");
 							
 						}
-						destIntent.putExtra("matchId", notificationItem.get_id());
-						destIntent.putExtra("matchName", notificationItem.getName());
-						destIntent.putExtra("matchProfileImage", notificationItem.getProfileImage());
-						destIntent.putExtra("lockedDate", notificationItem.getLocked());
-						destIntent.putExtra("dateName", notificationItem.getName());
+						destIntent.putExtra("matchId", invitationItem.get_id());
+						destIntent.putExtra("matchName", invitationItem.getName());
+						destIntent.putExtra("matchProfileImage", invitationItem.getProfileImage());
+						destIntent.putExtra("lockedDate", invitationItem.getLocked());
+						destIntent.putExtra("dateName", invitationItem.getName());
 
 						startActivity(destIntent);
 						

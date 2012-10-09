@@ -80,8 +80,8 @@ public class InvitationsActivity extends ListActivity implements PostToServerCal
 			for(int i = 0; i<resultArray.length(); i++) {
 				JSONObject jsonObj = resultArray.getJSONObject(i);
 				String record = jsonObj.toString(1);
-				InvitationItem notificationItem = mapper.readValue(record, InvitationItem.class);
-				responseList.add(notificationItem);
+				InvitationItem invitationItem = mapper.readValue(record, InvitationItem.class);
+				responseList.add(invitationItem);
 				
 			} 
 		}catch (JSONException e) {
@@ -97,10 +97,10 @@ public class InvitationsActivity extends ListActivity implements PostToServerCal
 			e.printStackTrace();
 		}
 		
-		InvitationsAdapter notificationAdapter = 
+		InvitationsAdapter invitationsAdapter = 
 					new InvitationsAdapter(InvitationsActivity.this, 
 							responseList);
-        InvitationsActivity.this.setListAdapter(notificationAdapter);
+        InvitationsActivity.this.setListAdapter(invitationsAdapter);
 	}
 
 }

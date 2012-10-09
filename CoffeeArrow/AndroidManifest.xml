@@ -19,29 +19,19 @@
             android:name=".SignIn"
             android:label="@string/signIn"
             android:theme="@style/notitle" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.coffeearrow.SignIn" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".InvitationsActivity"
-            android:label="@string/title_activity_notifications" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.coffeearrow.NotificationsActivity" />
+            android:label="@string/title_activity_invitations" >
         </activity>
         <activity
             android:name=".DisplaySearchResultsActivity"
             android:label="@string/title_activity_display_search_results" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="android.app.ListActivity" />
         </activity>
         <activity
             android:name=".ShowUserProfileActivity"

@@ -1,8 +1,7 @@
 <resources>
 
     <string name="appName">truffle</string>
-    <string name="notifications">My Notifications</string>
-    <string name="title_activity_notifications">My dates</string>
+    <string name="title_activity_invitations">My dates</string>
     <string name="title_activity_request_history">Date requests with:</string>
     <string name="newTimeButton">New Time</string>
     <string name="email">Email</string>
