@@ -33,7 +33,7 @@
     <string name="title_activity_upload_image">Upload Image</string>
     <string name="imageCaptionLabel">Caption:</string>
     <string name="title_activity_change_date">Change Date Request</string>
-    <string name="changeDateButton">Change Date or Place</string>
+    <string name="changeDateButton">Change time and/or location</string>
     <string name="sureButton">Yes!</string>
     <string name="title_activity_edit_image">Edit Image</string>
     <string name="deleteImage">Delete Image</string>

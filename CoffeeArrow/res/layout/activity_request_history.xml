@@ -14,77 +14,49 @@
         
         <TextView	
             android:layout_marginTop="5dp"
-            android:id="@+id/lockDate"
+            android:id="@+id/invitationInitiation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:visibility="gone"
-            style="@style/loginbox"
             android:textColor="#FFFFFF" />
         
-        <TextView
-            android:layout_marginTop="15dp"
-            android:layout_width="wrap_content"
+        <TextView	
+            android:layout_marginTop="5dp"
+            android:id="@+id/timeLocationProposer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="With"
-            android:textColor="#58D3F7"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFF" />
         
-        <TextView
-            android:id="@+id/matchName"
-            android:layout_width="wrap_content"
+        <TextView	
+            android:layout_marginTop="5dp"
+            android:id="@+id/invitationTime"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/prePlaceMsgView"
-            android:layout_width="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFF" />
+        
+        <TextView	
+            android:layout_marginTop="5dp"
+            android:id="@+id/invitationLocation"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#58D3F7"
-            android:text="Prev Meeting info"
-            android:layout_marginTop="15dp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-        <TextView
-            android:id="@+id/prePlaceTextView"
-            android:layout_width="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFF" />
+        
+        <TextView	
+            android:layout_marginTop="5dp"
+            android:id="@+id/invitationStatus"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-        <TextView
-            android:id="@+id/preTimeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:layout_marginTop="15dp"
-            android:id="@+id/lastModifierTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#58D3F7"
-            android:text="New Meeting info"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/placeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-        <TextView
-            android:id="@+id/timeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFF" />
+        
         <LinearLayout
+            android:id="@+id/decisionButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-
+            
             <Button
                 android:id="@+id/noButton"
                 style="@style/bluebutton"
@@ -92,6 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
+                android:onClick="declineInvitation"
                 android:text="@string/noString" />
 
             <Button
@@ -101,13 +74,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginLeft="5dp"
-                android:onClick="lockTheDate"
+                android:onClick="acceptInvitation"
                 android:text="@string/sureButton" />
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/changeDatebutton"
+            android:id="@+id/changeDateButton"
             style="@style/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -30,11 +30,11 @@ public class InvitationItem implements Serializable {
 	public void setProfileImage(String profileImage) {
 		this.profileImage = profileImage;
 	}
-	public String getLocked() {
-		return locked;
+	public String getStatus() {
+		return status;
 	}
-	public void setLocked(String locked) {
-		this.locked = locked;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	public String getName() {
 		return name;
@@ -108,7 +108,7 @@ public class InvitationItem implements Serializable {
         this.matchId = matchId;
     }
     
-	String locked;
+	String status;
 	String name;
 	String userId;
 	String dateId;
