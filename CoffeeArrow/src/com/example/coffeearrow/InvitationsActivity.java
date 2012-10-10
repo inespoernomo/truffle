@@ -19,13 +19,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ListView;
-import com.example.coffeearrow.adapter.NotificationAdapter;
-import com.example.coffeearrow.domain.NotificationItem;
+import com.example.coffeearrow.adapter.InvitationsAdapter;
+import com.example.coffeearrow.domain.InvitationItem;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 
-public class NotificationsActivity extends ListActivity implements PostToServerCallback {
+public class InvitationsActivity extends ListActivity implements PostToServerCallback {
 
 	public String userId;
 	
@@ -39,7 +39,7 @@ public class NotificationsActivity extends ListActivity implements PostToServerC
         HashMap<String, String> requestParams = new HashMap<String, String>();
 		requestParams.put("userId", userId);
         
-		HttpPost request = RequestFactory.create(requestParams, "getAllNotificationsNative");
+		HttpPost request = RequestFactory.create(requestParams, "getAllInvitationsNative");
 		
 		PostToServerAsyncTask task = new PostToServerAsyncTask(this);
 		task.execute(request);
@@ -47,41 +47,28 @@ public class NotificationsActivity extends ListActivity implements PostToServerC
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_notifications, menu);
+        getMenuInflater().inflate(R.menu.activity_invitations, menu);
         return true;
     }
     
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-    	NotificationItem item = (NotificationItem) getListAdapter().getItem(position);
-		
+    	InvitationItem item = (InvitationItem) getListAdapter().getItem(position);
 		Intent destIntent = new Intent(this, RequestHistoryActivity.class);
-
-		if (item.getLatestInitiatorId().equals(item.getUserId())) {
-			destIntent.putExtra("showSure", "true");
-			
-		}
-		destIntent.putExtra("matchId", item.get_id());
-		destIntent.putExtra("matchName", item.getName());
-		destIntent.putExtra("matchProfileImage", item.getProfileImage());
-		destIntent.putExtra("lockedDate", item.getLocked());
-		destIntent.putExtra("dateName", item.getName());
-		destIntent.putExtra("userId", item.getUserId());
-		destIntent.putExtra("dateId", item.getDateId());
-
+		destIntent.putExtra("invitationItem", item);
 		startActivity(destIntent);
 	}
     
     public void callback(Object objResult) {
 		JSONArray resultArray = (JSONArray)objResult;
-		ArrayList<NotificationItem> responseList = new ArrayList<NotificationItem>();
+		ArrayList<InvitationItem> responseList = new ArrayList<InvitationItem>();
 		ObjectMapper mapper = new ObjectMapper(); 
 		try {
 			for(int i = 0; i<resultArray.length(); i++) {
 				JSONObject jsonObj = resultArray.getJSONObject(i);
 				String record = jsonObj.toString(1);
-				NotificationItem notificationItem = mapper.readValue(record, NotificationItem.class);
-				responseList.add(notificationItem);
+				InvitationItem invitationItem = mapper.readValue(record, InvitationItem.class);
+				responseList.add(invitationItem);
 				
 			} 
 		}catch (JSONException e) {
@@ -97,10 +84,10 @@ public class NotificationsActivity extends ListActivity implements PostToServerC
 			e.printStackTrace();
 		}
 		
-		NotificationAdapter notificationAdapter = 
-					new NotificationAdapter(NotificationsActivity.this, 
+		InvitationsAdapter invitationsAdapter = 
+					new InvitationsAdapter(InvitationsActivity.this, 
 							responseList);
-        NotificationsActivity.this.setListAdapter(notificationAdapter);
+        InvitationsActivity.this.setListAdapter(invitationsAdapter);
 	}
 
 }

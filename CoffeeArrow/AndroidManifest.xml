@@ -17,30 +17,21 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".SignIn"
-            android:label="@string/signIn" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.coffeearrow.SignIn" />
+            android:label="@string/signIn"
+            android:theme="@style/notitle" >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".NotificationsActivity"
-            android:label="@string/title_activity_notifications" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.coffeearrow.NotificationsActivity" />
+            android:name=".InvitationsActivity"
+            android:label="@string/title_activity_invitations" >
         </activity>
         <activity
             android:name=".DisplaySearchResultsActivity"
             android:label="@string/title_activity_display_search_results" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="android.app.ListActivity" />
         </activity>
         <activity
             android:name=".ShowUserProfileActivity"
@@ -52,7 +43,8 @@
         </activity>
         <activity
             android:name=".SignUpActivity"
-            android:label="@string/title_activity_sign_up" >
+            android:label="@string/title_activity_sign_up"
+            android:theme="@style/notitle" >
         </activity>
         <activity
             android:name=".PendingVerificationActivity"
@@ -60,7 +52,8 @@
         </activity>
         <activity
             android:name=".RequestHistoryActivity"
-            android:label="@string/title_activity_request_history" >
+            android:label="@string/title_activity_request_history"
+            android:theme="@style/notitle" >
         </activity>
         <activity
             android:name=".TestActivity"
@@ -90,12 +83,8 @@
         </activity>
         <activity
             android:name=".SendForgetPasswordLinkActivity"
-            android:label="@string/title_activity_send_forget_password_link" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:label="@string/title_activity_send_forget_password_link"
+            android:theme="@style/notitle" >
         </activity>
     </application>
 

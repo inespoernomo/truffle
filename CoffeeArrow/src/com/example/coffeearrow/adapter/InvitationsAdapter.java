@@ -16,17 +16,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.coffeearrow.R;
-import com.example.coffeearrow.domain.NotificationItem;
+import com.example.coffeearrow.domain.InvitationItem;
 import com.example.coffeearrow.helpers.ImageLoader;
 
-public class NotificationAdapter extends ArrayAdapter<NotificationItem> {
+public class InvitationsAdapter extends ArrayAdapter<InvitationItem> {
 	
 	private Activity activity; 
-	private List<NotificationItem> profileList;
+	private List<InvitationItem> profileList;
 	public ImageLoader imageLoader;
 	
-	public NotificationAdapter(Activity activity, List<NotificationItem> profileList) {
-		super(activity, R.layout.activity_notifications, profileList);
+	public InvitationsAdapter(Activity activity, List<InvitationItem> profileList) {
+		super(activity, R.layout.activity_invitations, profileList);
 		this.profileList = profileList;
 		this.activity = activity;
 		imageLoader=new ImageLoader(activity);
@@ -36,13 +36,13 @@ public class NotificationAdapter extends ArrayAdapter<NotificationItem> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
 		// Find the profile
-		NotificationItem profile = profileList.get(position);
+		InvitationItem profile = profileList.get(position);
 		
 		// Get the empty row view from the xml.
 		LayoutInflater inflater = (LayoutInflater) activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater
-				.inflate(R.layout.activity_notifications,
+				.inflate(R.layout.activity_invitations,
 						parent, false);
 		
 		// Get the size of the display.

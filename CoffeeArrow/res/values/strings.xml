@@ -1,8 +1,7 @@
 <resources>
 
     <string name="appName">truffle</string>
-    <string name="notifications">My Notifications</string>
-    <string name="title_activity_notifications">My dates</string>
+    <string name="title_activity_invitations">My dates</string>
     <string name="title_activity_request_history">Date requests with:</string>
     <string name="newTimeButton">New Time</string>
     <string name="email">Email</string>
@@ -34,7 +33,7 @@
     <string name="imageCaptionLabel">Caption:</string>
     <string name="title_activity_change_date">Change Date Request</string>
     <string name="changeDateButton">Change Date or Place</string>
-    <string name="sureButton">Agree</string>
+    <string name="sureButton">Yes!</string>
     <string name="title_activity_edit_image">Edit Image</string>
     <string name="deleteImage">Delete Image</string>
     <string name="updateCaption">Update Caption</string>
@@ -70,5 +69,6 @@
     <string name="forgetPassword">Forget Password</string>
     <string name="title_activity_send_forget_password_link">SendForgetPasswordLinkActivity</string>
     <string name="sendResetLink">Send Reset Link</string>
+    <string name="noString">No</string>
 
 </resources>

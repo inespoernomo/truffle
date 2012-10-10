@@ -29,7 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.coffeearrow.domain.NotificationItem;
+import com.example.coffeearrow.domain.InvitationItem;
 import com.example.coffeearrow.domain.UserProfile;
 import com.example.coffeearrow.helpers.ImageLoader;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
@@ -92,32 +92,25 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
         HashMap<String, String> requestParams = new HashMap<String, String>();
 		requestParams.put("userId", loggedInUserId);
         
-		HttpPost request = RequestFactory.create(requestParams, "getAllNotificationsNative");
+		HttpPost request = RequestFactory.create(requestParams, "getAllInvitationsNative");
 		
 		PostToServerAsyncTask task = new PostToServerAsyncTask(
 			new PostToServerCallback() {
 				public void callback(Object objResult) {
-					Log.i("ShowUserProfileActivity", "getAllNotificationsNative called back with: " + objResult);
+					Log.i("ShowUserProfileActivity", "getAllInvitationsNative called back with: " + objResult);
 					JSONArray resultArray = (JSONArray)objResult;
-					Log.i("ShowUserProfileActivity", "got here 1");
 					ObjectMapper mapper = new ObjectMapper();
-					Log.i("ShowUserProfileActivity", "got here 2");
-					NotificationItem notificationItem = null;
+					InvitationItem invitationItem = null;
 					boolean invited = false;
-					Log.i("ShowUserProfileActivity", "got here 3");
 					try {
-						Log.i("ShowUserProfileActivity", "got here 4 array size: "+resultArray.length());
-						
 						for(int i = 0; i<resultArray.length(); i++) {
 							
 							JSONObject jsonObj = resultArray.getJSONObject(i);
 							String record = jsonObj.toString(1);
-							notificationItem = mapper.readValue(record, NotificationItem.class);
-							
-							Log.i("ShowUserProfileActivity", "Loop: " + i + " userId: " + notificationItem.getUserId() + " dateId: " + notificationItem.getDateId());
+							invitationItem = mapper.readValue(record, InvitationItem.class);
 							
 							// Check both if user is inviting the user or being invited.
-							if (notificationItem.getUserId().equals(userId) || notificationItem.getDateId().equals(userId)) {
+							if (invitationItem.getUserId().equals(userId) || invitationItem.getDateId().equals(userId)) {
 								invited = true;
 								break;
 							}
@@ -141,17 +134,7 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 					if (invited) {
 
 						Intent destIntent = new Intent(mainActivity, RequestHistoryActivity.class);
-
-						if (notificationItem.getLatestInitiatorId().equals(notificationItem.getUserId())) {
-							destIntent.putExtra("showSure", "true");
-							
-						}
-						destIntent.putExtra("matchId", notificationItem.get_id());
-						destIntent.putExtra("matchName", notificationItem.getName());
-						destIntent.putExtra("matchProfileImage", notificationItem.getProfileImage());
-						destIntent.putExtra("lockedDate", notificationItem.getLocked());
-						destIntent.putExtra("dateName", notificationItem.getName());
-
+						destIntent.putExtra("invitationItem", invitationItem);
 						startActivity(destIntent);
 						
 					} else {
@@ -190,46 +173,6 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 	 * @param caption The caption string for the image.
 	 */
 	protected void addImageWithCaption(String s3url, String caption) {
-	    /*
-		// A vertical linear layout with one picture (square) and caption for the picture.
-		// Width set to the width of the display
-		RelativeLayout onePicWithCaption = new RelativeLayout(this);
-		//onePicWithCaption.setOrientation(LinearLayout.VERTICAL);
-		onePicWithCaption.setLayoutParams(
-				new LinearLayout.LayoutParams(displayWidth, LinearLayout.LayoutParams.MATCH_PARENT));
-		userImages.addView(onePicWithCaption);
-		
-		// This the frame that make sure the picture is in a square frame.
-		//SquareFrameLayout picFrame = new SquareFrameLayout(this, null);
-		//picFrame.setLayoutParams(
-			//	new ViewGroup.LayoutParams(displayWidth, ViewGroup.LayoutParams.MATCH_PARENT));
-		//onePicWithCaption.addView(picFrame);
-		
-		// This is the image itself.
-		ImageView imageView = new ImageView(this);
-		imageView.setScaleType(ImageView.ScaleType.CENTER);
-		//picFrame.addView(imageView);
-		onePicWithCaption.addView(imageView);
-		// Lazy load and cache the image.
-		imageLoader.DisplayImage(s3url, imageView);
-		
-		// Add click handler for the image
-		addImageClickListener(imageView, s3url, caption);
-	
-		// This is the caption for the image.
-		RelativeLayout.LayoutParams tParams = new RelativeLayout.LayoutParams
-		        (LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-		tParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-		tParams.addRule(RelativeLayout.ALIGN_TOP, RelativeLayout.TRUE);
-		TextView captionTextView = new TextView(this);
-		
-		captionTextView.setTextAppearance(this, R.style.transparency);
-		captionTextView.setLayoutParams(tParams);
-		captionTextView.setText(caption);
-		
-		onePicWithCaption.addView(captionTextView);
-		*/
-	    
 	    LayoutInflater inflater = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(
