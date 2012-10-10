@@ -147,15 +147,4 @@ public class SignIn extends Activity implements PostToServerCallback {
         // Do not come back to the login page when user press back button
         finish();
     }
-    
-    private void goToPendingActivity(String email) {
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString("email", email);
-        editor.commit();
-
-        Intent intent = new Intent(this, PendingVerificationActivity.class);
-        startActivity(intent);
-      
-        finish();
-    }
 }

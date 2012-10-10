@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -28,13 +27,11 @@ public class SignUpActivity extends Activity implements PostToServerCallback {
 	private ProgressDialog dialog;
 	public final static String EMAIL = "com.coffeearrow.signIn.Email";
 	public String newUserEmail = null;
-	private SharedPreferences settings;
-    
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        settings = getSharedPreferences("MyPrefsFile", 0);
+        getSharedPreferences("MyPrefsFile", 0);
         dialog = new ProgressDialog(this);
     }
 
