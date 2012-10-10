@@ -48,7 +48,8 @@
         </activity>
         <activity
             android:name=".PendingVerificationActivity"
-            android:label="@string/title_activity_pending_verification" >
+            android:label="@string/title_activity_pending_verification"
+            android:theme="@style/notitle"  >
         </activity>
         <activity
             android:name=".RequestHistoryActivity"

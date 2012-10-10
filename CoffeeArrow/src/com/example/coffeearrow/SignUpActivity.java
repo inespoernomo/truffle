@@ -8,7 +8,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -22,11 +24,18 @@ import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 
 public class SignUpActivity extends Activity implements PostToServerCallback {
-
-    @Override
+	
+	private ProgressDialog dialog;
+	public final static String EMAIL = "com.coffeearrow.signIn.Email";
+	public String newUserEmail = null;
+	private SharedPreferences settings;
+    
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        settings = getSharedPreferences("MyPrefsFile", 0);
+        dialog = new ProgressDialog(this);
     }
 
     @Override
@@ -37,8 +46,11 @@ public class SignUpActivity extends Activity implements PostToServerCallback {
     }
 
     public void submit(View view) {
+    	dialog.setMessage("Submitting...");
+    	dialog.show();
         EditText emailText = (EditText) findViewById(R.id.email);
         String email = emailText.getText().toString();
+        newUserEmail = email;
         // Not a all mighty regular expression for email, but not worth it.
         if (!email.matches(".+@.+\\..+")) {
             String message = "Please enter a valid email address.";
@@ -96,6 +108,8 @@ public class SignUpActivity extends Activity implements PostToServerCallback {
     }
 
     public void callback(Object objResult) {
+    	if (dialog.isShowing())
+			dialog.dismiss();
         JSONArray resultArray = (JSONArray) objResult;
         String status = null;
         try {
@@ -117,7 +131,10 @@ public class SignUpActivity extends Activity implements PostToServerCallback {
                     .show();
         } else {
             Intent intent = new Intent(this, PendingVerificationActivity.class);
+            intent.putExtra(EMAIL,newUserEmail);
             startActivity(intent);
+            finish();
+            
         }
     }
 }
