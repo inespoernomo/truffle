@@ -95,7 +95,7 @@ public class RequestHistoryActivity extends Activity {
                 "MM/dd/yyyy HH:mm:ss").format(new java.util.Date(Long
                 .parseLong(invitation.getCurrEpoch()) * 1000));
         timeTextView.setText(timeTextView.getText() + date);
-        placeTextView.setText(placeTextView.getText() + invitation.getPrevPlace());
+        placeTextView.setText(placeTextView.getText() + invitation.getCurrPlace());
         //lastModifierTextView.setText("Update time/place");
 
         // Lock date section.
