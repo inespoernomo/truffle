@@ -4,7 +4,7 @@
         android:orderInCategory="100"
         android:showAsAction="never" />
     
-      <item android:id="@+id/notifications"
+      <item android:id="@+id/invitations"
         android:title="My dates"
         android:showAsAction="always"
         android:orderInCategory="0" />

@@ -18,12 +18,12 @@ public class RequestFactory {
 	
     //TODO: Put these in config
 	//public static final String URL = "http://coffeearrow.com/";
-    public static final String URL = "http://truffleapp.herokuapp.com/";
+    //public static final String URL = "http://truffleapp.herokuapp.com/";
     
     // This is equal to 127.0.0.1 but 127.0.0.1 will fail
     // http://stackoverflow.com/questions/2301560/java-net-connectexception-127-0-0-18080-an-android-emulator
     // http://www.linuxtopia.org/online_books/android/devguide/guide/developing/tools/android_emulator_networkaddresses.html
-    // public static final String URL = "http://10.0.2.2/";
+    public static final String URL = "http://10.0.2.2/";
     
 	public static HttpPost create(Map<String, String> query, String method) {
 		

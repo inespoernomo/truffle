@@ -1,8 +1,7 @@
 <resources>
 
     <string name="appName">truffle</string>
-    <string name="notifications">My Notifications</string>
-    <string name="title_activity_notifications">My dates</string>
+    <string name="title_activity_invitations">My dates</string>
     <string name="title_activity_request_history">Date requests with:</string>
     <string name="newTimeButton">New Time</string>
     <string name="email">Email</string>
@@ -26,15 +25,16 @@
     <string name="title_activity_show_user_profile">Profile</string>
     <string name="title_activity_sign_up">Sign Up</string>
     <string name="title_activity_pending_verification">PendingVerificationActivity</string>
-    <string name="pendingVerificationMessage">        Please verify your work email and you ll automatically taken to app again.</string>
+    <string name="verificationMessage">Awesome, now look for an email from truffle in your work email inbox</string> 
+    <string name="noEmailDelivered">Did not get an email? Check your spam folder or click the link below</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="uploadPhotoMenuItem">Upload Photo</string>
     <string name="sendInvitationMenuItemTitle">Invite</string>
     <string name="title_activity_upload_image">Upload Image</string>
     <string name="imageCaptionLabel">Caption:</string>
     <string name="title_activity_change_date">Change Date Request</string>
-    <string name="changeDateButton">Change Date or Place</string>
-    <string name="sureButton">Agree</string>
+    <string name="changeDateButton">Change time and/or location</string>
+    <string name="sureButton">Yes!</string>
     <string name="title_activity_edit_image">Edit Image</string>
     <string name="deleteImage">Delete Image</string>
     <string name="updateCaption">Update Caption</string>
@@ -70,5 +70,7 @@
     <string name="forgetPassword">Forget Password</string>
     <string name="title_activity_send_forget_password_link">SendForgetPasswordLinkActivity</string>
     <string name="sendResetLink">Send Reset Link</string>
+    <string name="noString">No</string>
+    <string name="sendVerificationLinkAgain">Send Verification Email Again</string>
 
 </resources>

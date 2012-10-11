@@ -1,5 +1,7 @@
 package com.example.coffeearrow.domain;
 
+import java.io.Serializable;
+
 import org.codehaus.jackson.annotate.JsonAnySetter;
 
 
@@ -15,19 +17,24 @@ import org.codehaus.jackson.annotate.JsonAnySetter;
  * "_id": "3680348388", 
  * "type": "match"}]}
 */
-public class NotificationItem {
-	String profileImage; 
+public class InvitationItem implements Serializable {
+	/**
+     * This is auto generated. I have no idea what is it for. 
+     */
+    private static final long serialVersionUID = -6945657293809464262L;
+    
+    String profileImage; 
 	public String getProfileImage() {
 		return profileImage;
 	}
 	public void setProfileImage(String profileImage) {
 		this.profileImage = profileImage;
 	}
-	public String getLocked() {
-		return locked;
+	public String getStatus() {
+		return status;
 	}
-	public void setLocked(String locked) {
-		this.locked = locked;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	public String getName() {
 		return name;
@@ -65,13 +72,54 @@ public class NotificationItem {
 	public void setType(String type) {
 		this.type = type;
 	}
-	String locked;
+	
+	public String getCurrEpoch() {
+        return currEpoch;
+    }
+    public void setCurrEpoch(String currEpoch) {
+        this.currEpoch = currEpoch;
+    }
+    
+    public String getCurrPlace() {
+        return currPlace;
+    }
+    public void setCurrPlace(String currPlace) {
+        this.currPlace = currPlace;
+    }
+    
+    public String getPrevEpoch() {
+        return prevEpoch;
+    }
+    public void setPrevEpoch(String prevEpoch) {
+        this.prevEpoch = prevEpoch;
+    }
+    
+    public String getPrevPlace() {
+        return prevPlace;
+    }
+    public void setPrevPlace(String prevPlace) {
+        this.prevPlace = prevPlace;
+    }
+    
+    public String getMatchId() {
+        return matchId;
+    }
+    public void setMatchId(String matchId) {
+        this.matchId = matchId;
+    }
+    
+	String status;
 	String name;
 	String userId;
 	String dateId;
 	String latestInitiatorId;
 	String _id;
 	String type;
+    String currEpoch;
+    String currPlace;
+    String prevEpoch;
+    String prevPlace;
+    String matchId;
 	
 	@JsonAnySetter
 	public void handleUnknown(String key, Object value) {

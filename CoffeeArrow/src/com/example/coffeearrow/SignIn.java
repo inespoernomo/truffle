@@ -29,6 +29,7 @@ public class SignIn extends Activity implements PostToServerCallback {
 
 	public final static String EMAIL = "com.coffeearrow.signIn.Email";
 	public final static String PASSWORD = "com.coffeearrow.signIn.Password";
+	public String kEmail = null;
 	private SharedPreferences settings;
 
 	@Override
@@ -36,12 +37,12 @@ public class SignIn extends Activity implements PostToServerCallback {
 		super.onCreate(savedInstanceState);
 		settings = getSharedPreferences("MyPrefsFile", 0);
 		String userId = settings.getString("userId", null);
-		
 		// User already logged in.
+		
 		if (userId != null){
-		    goToNextActivity(userId);
+			goToDisplayActivity(userId);
 		    return;
-		}
+		} 
 		
 		setContentView(R.layout.activity_sign_in);
 		//Button signInButton = (Button) findViewById(R.id.signInButton);
@@ -70,6 +71,7 @@ public class SignIn extends Activity implements PostToServerCallback {
 
 		EditText emailText = (EditText) findViewById(R.id.email);
 		String email = emailText.getText().toString();
+		kEmail = email;
 		EditText passwordText = (EditText) findViewById(R.id.password);
 		String password = passwordText.getText().toString();
 
@@ -122,8 +124,11 @@ public class SignIn extends Activity implements PostToServerCallback {
 			String message = "Account not verfied, check your work email for verification link";
 			Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT)
 					.show();
+			Intent intent = new Intent(this, PendingVerificationActivity.class);
+			intent.putExtra(EMAIL, kEmail);
+			startActivity(intent);
 		} else {
-			goToNextActivity(userId);
+			goToDisplayActivity(userId);
 		}
 	}
 
@@ -131,7 +136,7 @@ public class SignIn extends Activity implements PostToServerCallback {
 	 * Save userId in the shared preference and then go to the next activity.
 	 * @param userId The user's id.
 	 */
-    private void goToNextActivity(String userId) {
+    private void goToDisplayActivity(String userId) {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("userId", userId);
         editor.commit();
