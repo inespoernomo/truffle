@@ -73,32 +73,32 @@ public class InvitationItem implements Serializable {
 		this.type = type;
 	}
 	
-	public String getCurrEpoch() {
-        return currEpoch;
+	public String getCurEpoch() {
+        return curEpoch;
     }
-    public void setCurrEpoch(String currEpoch) {
-        this.currEpoch = currEpoch;
-    }
-    
-    public String getCurrPlace() {
-        return currPlace;
-    }
-    public void setCurrPlace(String currPlace) {
-        this.currPlace = currPlace;
+    public void setCurEpoch(String currEpoch) {
+        this.curEpoch = currEpoch;
     }
     
-    public String getPrevEpoch() {
-        return prevEpoch;
+    public String getCurPlace() {
+        return curPlace;
     }
-    public void setPrevEpoch(String prevEpoch) {
-        this.prevEpoch = prevEpoch;
+    public void setCurPlace(String currPlace) {
+        this.curPlace = currPlace;
     }
     
-    public String getPrevPlace() {
-        return prevPlace;
+    public String getPreEpoch() {
+        return preEpoch;
     }
-    public void setPrevPlace(String prevPlace) {
-        this.prevPlace = prevPlace;
+    public void setPreEpoch(String prevEpoch) {
+        this.preEpoch = prevEpoch;
+    }
+    
+    public String getPrePlace() {
+        return prePlace;
+    }
+    public void setPrePlace(String prevPlace) {
+        this.prePlace = prevPlace;
     }
     
     public String getMatchId() {
@@ -115,10 +115,10 @@ public class InvitationItem implements Serializable {
 	String latestInitiatorId;
 	String _id;
 	String type;
-    String currEpoch;
-    String currPlace;
-    String prevEpoch;
-    String prevPlace;
+    String curEpoch;
+    String curPlace;
+    String preEpoch;
+    String prePlace;
     String matchId;
 	
 	@JsonAnySetter

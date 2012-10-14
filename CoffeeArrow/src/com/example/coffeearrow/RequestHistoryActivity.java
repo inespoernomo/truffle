@@ -96,11 +96,11 @@ public class RequestHistoryActivity extends Activity {
 	    
 	    String invitationTime = new java.text.SimpleDateFormat(
                 "MM/dd/yyyy HH:mm:ss").format(new java.util.Date(Long
-                .parseLong(invitation.getCurrEpoch()) * 1000));
+                .parseLong(invitation.getCurEpoch()) * 1000));
 	    TextView timeTextView = (TextView) findViewById(R.id.invitationTime);
 	    timeTextView.setText("Time: " + invitationTime);
         TextView placeTextView = (TextView) findViewById(R.id.invitationLocation);
-		placeTextView.setText("Location: " + invitation.getCurrPlace());
+		placeTextView.setText("Location: " + invitation.getCurPlace());
     }
 
 	@Override
