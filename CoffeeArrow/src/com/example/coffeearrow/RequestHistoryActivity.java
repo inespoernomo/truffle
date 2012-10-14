@@ -31,6 +31,7 @@ public class RequestHistoryActivity extends Activity {
 	private ImageLoader imageLoader;
 	private String userId;
 	private InvitationItem invitation;
+	private boolean comesFromProfile;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class RequestHistoryActivity extends Activity {
 		imageLoader = new ImageLoader(this);
 		Intent intent = getIntent();
 		invitation = (InvitationItem)intent.getSerializableExtra("invitationItem");
+		comesFromProfile = intent.getBooleanExtra("comesFromProfile", false);
 		
 		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
 		userId = settings.getString("userId", null);
@@ -210,6 +212,14 @@ public class RequestHistoryActivity extends Activity {
 		Intent intent = new Intent(this, ChangeDateActivity.class);
 		intent.putExtra("matchId", invitation.getMatchId());
 		startActivity(intent);
+	}
+	
+	public void goToProfile(View v) {
+	    Log.i("RequestHistoryActivity", "Profile image clicked.");
+
+	    if (comesFromProfile) {
+	        finish();
+	    }
 	}
 
 }

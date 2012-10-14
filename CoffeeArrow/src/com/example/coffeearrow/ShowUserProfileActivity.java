@@ -135,6 +135,7 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 
 						Intent destIntent = new Intent(mainActivity, RequestHistoryActivity.class);
 						destIntent.putExtra("invitationItem", invitationItem);
+						destIntent.putExtra("comesFromProfile", true);
 						startActivity(destIntent);
 						
 					} else {
