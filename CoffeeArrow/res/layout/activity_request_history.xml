@@ -22,6 +22,14 @@
         
         <TextView	
             android:layout_marginTop="5dp"
+            android:id="@+id/invitationStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFF" />
+        
+        <TextView	
+            android:layout_marginTop="5dp"
             android:id="@+id/timeLocationProposer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,14 +47,6 @@
         <TextView	
             android:layout_marginTop="5dp"
             android:id="@+id/invitationLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#FFFFFF" />
-        
-        <TextView	
-            android:layout_marginTop="5dp"
-            android:id="@+id/invitationStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"

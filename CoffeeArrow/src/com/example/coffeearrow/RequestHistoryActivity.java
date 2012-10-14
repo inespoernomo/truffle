@@ -68,10 +68,10 @@ public class RequestHistoryActivity extends Activity {
 	    else if (invitation.getStatus().equals("accepted")) {
 	        if (invitation.getUserId().equals(userId)) {
                 initiationTextView.setText("You invited " + invitation.getName() + " to a date.");
-                statusTextView.setText(invitation.getName() + " has accepted.");
+                statusTextView.setText(invitation.getName() + " has accepted your invitation.");
             } else {
                 initiationTextView.setText(invitation.getName() + " invited you to a date.");
-                statusTextView.setText("You have accepted.");
+                statusTextView.setText("You have accepted the invitation.");
             }
 	        changeDateButton.setVisibility(View.VISIBLE);
 	        changeDateButton.setEnabled(true);
