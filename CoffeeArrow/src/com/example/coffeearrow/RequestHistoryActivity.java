@@ -26,6 +26,7 @@ import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 
 public class RequestHistoryActivity extends Activity {
+    private static final int ACTIVITY_CHANGE_DATE = 1237;
 
 	private RequestHistoryActivity mainActivity = null;
 	private ImageLoader imageLoader;
@@ -51,6 +52,7 @@ public class RequestHistoryActivity extends Activity {
 	}
 
     public void displayInvitation() {
+        Log.i("RequestHistoryActivity", "display invitation called");
         ImageView profileImage = (ImageView) findViewById(R.id.profileImage);
         imageLoader.DisplayImage(invitation.getProfileImage(), profileImage);
         
@@ -211,7 +213,32 @@ public class RequestHistoryActivity extends Activity {
 	public void changeDate(View v) {
 		Intent intent = new Intent(this, ChangeDateActivity.class);
 		intent.putExtra("matchId", invitation.getMatchId());
-		startActivity(intent);
+		startActivityForResult(intent, ACTIVITY_CHANGE_DATE);
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent returnedIntent) {
+	    Log.i("RequestHistoryActivity", "change date called back");
+	    switch(requestCode) { 
+        case ACTIVITY_CHANGE_DATE:
+            Log.i("RequestHistoryActivity", "code is change date");
+            if(resultCode == RESULT_OK){
+                Log.i("RequestHistoryActivity", "result code is ok");
+                String epoch = returnedIntent.getStringExtra("epoch");
+                String place = returnedIntent.getStringExtra("place");
+                
+                if (!invitation.getLatestInitiatorId().equals(userId)) {
+                    invitation.setLatestInitiatornId(userId);
+                    invitation.setPreEpoch(invitation.getCurEpoch());
+                    invitation.setPrePlace(invitation.getCurPlace());
+                }
+                invitation.setCurEpoch(epoch);
+                invitation.setCurPlace(place);
+                displayInvitation();
+            }
+            break;
+        default:
+            break;
+	    }
 	}
 	
 	public void goToProfile(View v) {

@@ -32,6 +32,7 @@ public class ChangeDateActivity extends Activity implements
 	protected String matchId;
 	private String userId;
 	private String place;
+	private String epoch;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -92,7 +93,7 @@ public class ChangeDateActivity extends Activity implements
 				+ " Day of Month: " + day + " Day of Week: " + dayOfWeek
 				+ "Hour: " + hour + " Minute: " + minute);
 
-		String epoch = String
+		epoch = String
 				.valueOf(datePicker.getCalendarView().getDate() / 1000);
 		Log.i("ChangeDateActivity", "Epoch is: " + epoch);
 
@@ -108,6 +109,7 @@ public class ChangeDateActivity extends Activity implements
 
 	@Override
 	public void callback(Object result) {
+	    Log.i("ChangeDateActivity", "change date called back");
 		JSONArray resultArray = (JSONArray) result;
 		String status = null;
 		try {
@@ -121,6 +123,12 @@ public class ChangeDateActivity extends Activity implements
 		}
 
 		if (status.equals("ok")) {
+		    Log.i("ChangeDateActivity", "status ok");
+		    Intent resultIntent = new Intent();
+            resultIntent.putExtra("epoch", epoch);
+            resultIntent.putExtra("place", place);
+            setResult(RESULT_OK, resultIntent);
+            
 			finish();
 		} else {
 			Log.i("ChangeDateActivity", "ChangeDateActivity failed.");
