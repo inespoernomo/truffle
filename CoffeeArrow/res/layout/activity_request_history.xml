@@ -27,30 +27,89 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FFFFFF" />
-        
-        <TextView	
-            android:layout_marginTop="5dp"
-            android:id="@+id/timeLocationProposer"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#FFFFFF" />
-        
-        <TextView	
-            android:layout_marginTop="5dp"
-            android:id="@+id/invitationTime"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/prePlaceMsgView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Previously"
+                android:visibility="gone"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#58D3F7" />
+
+            <TextView
+                android:id="@+id/preTimeLocationProposer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/preInvitationTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/preInvitationLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#FFFFFF" />
-        
-        <TextView	
-            android:layout_marginTop="5dp"
-            android:id="@+id/invitationLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#FFFFFF" />
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/curPlaceMsgView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Currently"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#58D3F7" />
+
+            <TextView
+                android:id="@+id/curTimeLocationProposer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/curInvitationTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/curInvitationLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFFFFF" />
+
+        </LinearLayout>
         
         <LinearLayout
             android:id="@+id/decisionButtons"

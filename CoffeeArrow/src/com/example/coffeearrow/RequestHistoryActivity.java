@@ -86,21 +86,44 @@ public class RequestHistoryActivity extends Activity {
             }
 	        changeDateButton.setVisibility(View.GONE);
 	    }
+
+        if (invitation.getPreEpoch() != null && !invitation.getPreEpoch().isEmpty()) {
+            TextView prePlaceLabel = (TextView) findViewById(R.id.prePlaceMsgView);
+            prePlaceLabel.setVisibility(View.VISIBLE);
+            TextView preTimeLocationProposer = (TextView) findViewById(R.id.preTimeLocationProposer);
+            preTimeLocationProposer.setVisibility(View.VISIBLE);
+            
+            if (invitation.getLatestInitiatorId().equals(userId)) {
+                preTimeLocationProposer.setText(invitation.getName() + " proposed the following time and location:");
+            } else {
+                preTimeLocationProposer.setText("You proposed the following time and location:");
+            }
+            String preInvitationTime = new java.text.SimpleDateFormat(
+                    "MM/dd/yyyy HH:mm:ss").format(new java.util.Date(Long
+                    .parseLong(invitation.getCurEpoch()) * 1000));
+            TextView preTimeTextView = (TextView) findViewById(R.id.preInvitationTime);
+            preTimeTextView.setVisibility(View.VISIBLE);
+            preTimeTextView.setText("Time: " + preInvitationTime);
+            TextView prePlaceTextView = (TextView) findViewById(R.id.preInvitationLocation);
+            prePlaceTextView.setVisibility(View.VISIBLE);
+            prePlaceTextView.setText("Location: " + invitation.getCurPlace());
+        }
 	    
-	    TextView timeLocationProposer = (TextView) findViewById(R.id.timeLocationProposer);
+	    TextView curTimeLocationProposer = (TextView) findViewById(R.id.curTimeLocationProposer);
+
 	    if (invitation.getLatestInitiatorId().equals(userId)) {
-	        timeLocationProposer.setText("You proposed the following time and location:");
+	        curTimeLocationProposer.setText("You proposed the following time and location:");
 	    } else {
-	        timeLocationProposer.setText(invitation.getName() + " proposed the following time and location:");
+	        curTimeLocationProposer.setText(invitation.getName() + " proposed the following time and location:");
 	    }
 	    
-	    String invitationTime = new java.text.SimpleDateFormat(
+	    String curInvitationTime = new java.text.SimpleDateFormat(
                 "MM/dd/yyyy HH:mm:ss").format(new java.util.Date(Long
                 .parseLong(invitation.getCurEpoch()) * 1000));
-	    TextView timeTextView = (TextView) findViewById(R.id.invitationTime);
-	    timeTextView.setText("Time: " + invitationTime);
-        TextView placeTextView = (TextView) findViewById(R.id.invitationLocation);
-		placeTextView.setText("Location: " + invitation.getCurPlace());
+	    TextView curTimeTextView = (TextView) findViewById(R.id.curInvitationTime);
+	    curTimeTextView.setText("Time: " + curInvitationTime);
+        TextView curPlaceTextView = (TextView) findViewById(R.id.curInvitationLocation);
+		curPlaceTextView.setText("Location: " + invitation.getCurPlace());
     }
 
 	@Override
