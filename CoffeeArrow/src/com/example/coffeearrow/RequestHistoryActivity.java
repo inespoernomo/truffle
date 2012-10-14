@@ -57,12 +57,12 @@ public class RequestHistoryActivity extends Activity {
 	        if (invitation.getUserId().equals(userId)) {
 	            initiationTextView.setText("You are inviting " + invitation.getName() + " to a date.");
 	            statusTextView.setText("Waiting for " + invitation.getName() + " to decide.");
-	            changeDateButton.setEnabled(true);
+	            changeDateButton.setVisibility(View.VISIBLE);
 	        } else {
 	            initiationTextView.setText(invitation.getName() + " is inviting you to a date.");
 	            statusTextView.setText("Waiting for you to decide. You can change time and location if you accept.");
 	            decisionButtons.setVisibility(View.VISIBLE);
-	            changeDateButton.setEnabled(false);
+	            changeDateButton.setVisibility(View.GONE);
 	        }
 	    }
 	    else if (invitation.getStatus().equals("accepted")) {
@@ -74,7 +74,6 @@ public class RequestHistoryActivity extends Activity {
                 statusTextView.setText("You have accepted the invitation.");
             }
 	        changeDateButton.setVisibility(View.VISIBLE);
-	        changeDateButton.setEnabled(true);
 	    }
 	    else if (invitation.getStatus().equals("declined")) {
 	        if (invitation.getUserId().equals(userId)) {
