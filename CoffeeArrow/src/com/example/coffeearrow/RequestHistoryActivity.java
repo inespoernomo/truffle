@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.coffeearrow.domain.InvitationItem;
-import com.example.coffeearrow.domain.SearchProfile;
 import com.example.coffeearrow.helpers.ImageLoader;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
@@ -227,6 +226,7 @@ public class RequestHistoryActivity extends Activity {
 	            theOtherId = invitation.getDateId();
 	        }
 	        intent.putExtra("userId", theOtherId);
+	        intent.putExtra("comesFromInvitation", true);
 	        startActivity(intent);
 	    }
 	}

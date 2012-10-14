@@ -43,6 +43,7 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 	private int displayWidth;
 	private LinearLayout userImages;
 	private ProgressDialog dialog;
+	private boolean comesFromInvitation;
 	protected String userId;
 	protected ShowUserProfileActivity mainActivity;
 
@@ -63,6 +64,7 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 		Intent sourceIntent = getIntent();
 		userId = sourceIntent.getStringExtra("userId");
 		System.out.println("Got user id from source intent:"+userId);
+		comesFromInvitation = sourceIntent.getBooleanExtra("comesFromInvitation", false);
 		HashMap<String, String> requestParams = new HashMap<String, String>();
 	    requestParams.put("userId", userId);
 		HttpPost request = RequestFactory.create(requestParams, "getUserProfile");
@@ -132,11 +134,16 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 					}
 					
 					if (invited) {
-
-						Intent destIntent = new Intent(mainActivity, RequestHistoryActivity.class);
-						destIntent.putExtra("invitationItem", invitationItem);
-						destIntent.putExtra("comesFromProfile", true);
-						startActivity(destIntent);
+                        if (comesFromInvitation) {
+                            finish();
+                        } else {
+                            Intent destIntent = new Intent(mainActivity,
+                                    RequestHistoryActivity.class);
+                            destIntent.putExtra("invitationItem",
+                                    invitationItem);
+                            destIntent.putExtra("comesFromProfile", true);
+                            startActivity(destIntent);
+                        }
 						
 					} else {
 					    Intent intent = new Intent(mainActivity, NewDateActivity.class);
