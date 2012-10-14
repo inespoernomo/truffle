@@ -15,10 +15,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.coffeearrow.domain.InvitationItem;
+import com.example.coffeearrow.helpers.ImageLoader;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
@@ -26,6 +28,7 @@ import com.example.coffeearrow.server.RequestFactory;
 public class RequestHistoryActivity extends Activity {
 
 	private RequestHistoryActivity mainActivity = null;
+	private ImageLoader imageLoader;
 	private String userId;
 	private InvitationItem invitation;
 
@@ -34,6 +37,7 @@ public class RequestHistoryActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		mainActivity = this;
+		imageLoader = new ImageLoader(this);
 		Intent intent = getIntent();
 		invitation = (InvitationItem)intent.getSerializableExtra("invitationItem");
 		
@@ -45,6 +49,9 @@ public class RequestHistoryActivity extends Activity {
 	}
 
     public void displayInvitation() {
+        ImageView profileImage = (ImageView) findViewById(R.id.profileImage);
+        imageLoader.DisplayImage(invitation.getProfileImage(), profileImage);
+        
         TextView initiationTextView = (TextView) findViewById(R.id.invitationInitiation);
 	    TextView statusTextView = (TextView) findViewById(R.id.invitationStatus);
 	    Button changeDateButton = (Button) findViewById(R.id.changeDateButton);
