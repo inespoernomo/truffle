@@ -87,11 +87,10 @@ public class RequestHistoryActivity extends Activity {
 	    }
 
         if (invitation.getPreEpoch() != null && !invitation.getPreEpoch().isEmpty()) {
-            TextView prePlaceLabel = (TextView) findViewById(R.id.prePlaceMsgView);
-            prePlaceLabel.setVisibility(View.VISIBLE);
-            TextView preTimeLocationProposer = (TextView) findViewById(R.id.preTimeLocationProposer);
-            preTimeLocationProposer.setVisibility(View.VISIBLE);
+            LinearLayout preSection = (LinearLayout) findViewById(R.id.preSection);
+            preSection.setVisibility(View.VISIBLE);
             
+            TextView preTimeLocationProposer = (TextView) findViewById(R.id.preTimeLocationProposer);
             if (invitation.getLatestInitiatorId().equals(userId)) {
                 preTimeLocationProposer.setText(invitation.getName() + " proposed the following time and location:");
             } else {
@@ -101,10 +100,8 @@ public class RequestHistoryActivity extends Activity {
                     "MM/dd/yyyy HH:mm:ss").format(new java.util.Date(Long
                     .parseLong(invitation.getCurEpoch()) * 1000));
             TextView preTimeTextView = (TextView) findViewById(R.id.preInvitationTime);
-            preTimeTextView.setVisibility(View.VISIBLE);
             preTimeTextView.setText("Time: " + preInvitationTime);
             TextView prePlaceTextView = (TextView) findViewById(R.id.preInvitationLocation);
-            prePlaceTextView.setVisibility(View.VISIBLE);
             prePlaceTextView.setText("Location: " + invitation.getCurPlace());
         }
 	    
