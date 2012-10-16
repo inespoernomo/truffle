@@ -39,7 +39,7 @@ import com.example.coffeearrow.server.RequestFactory;
 public class ShowUserProfileActivity extends Activity implements PostToServerCallback {
     private static final int INVITE_REQUEST_CODE = 4567;
 
-	private ImageLoader imageLoader;
+	protected ImageLoader imageLoader;
 	private int displayWidth;
 	private LinearLayout userImages;
 	private ProgressDialog dialog;
@@ -203,6 +203,12 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
         userImages.addView(rowView);
 	}
 	
+	protected void updateProfileImage(String url) {
+        ImageView imageView = (ImageView)findViewById(R.id.icon);
+        imageLoader.DisplayImage(url, imageView);
+        imageView.setAdjustViewBounds(true);
+	}
+	
 	protected void addImageClickListener(ImageView view, String s3url, String caption) {
 		// Do nothing now. For SelfProfileActivity to override.
 	}
@@ -252,12 +258,9 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 			
 			//This is the name and profile picture.
 			TextView textView = (TextView) findViewById(R.id.label);
-			ImageView imageView = (ImageView)findViewById(R.id.icon);
 			textView.setText(userProfile.getFirstName());
 
-			//Lazy load and cache the image.
-			imageLoader.DisplayImage(userProfile.getProfileImage(), imageView);
-			imageView.setAdjustViewBounds(true);
+			updateProfileImage(userProfile.getProfileImage());
 			
 			for(final UserProfile.Image image : userProfile.getImages()) {
 				addImageWithCaption(image.getImgLink(), image.getImgCaption());

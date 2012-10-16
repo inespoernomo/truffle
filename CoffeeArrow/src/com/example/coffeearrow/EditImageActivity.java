@@ -107,6 +107,21 @@ public class EditImageActivity extends Activity implements PostToServerCallback 
 		task.execute(request);
     }
     
+    public void setProfileImage(View view){
+        action = "setProfile";
+        HashMap<String, String> requestParams = new HashMap<String, String>();
+        requestParams.put("userId", userId);
+        requestParams.put("profileImage", s3url);
+        HttpPost request = RequestFactory.create(requestParams, "saveProfileImage");
+        
+        // Display the progress dialog.
+        this.dialog.setMessage("Updating profile image...");
+        this.dialog.show();
+        PostToServerAsyncTask task = new PostToServerAsyncTask(this);
+        task.execute(request);
+        
+    }
+    
 	public void callback(Object objResult) {
 		Log.i("UploadUserImage", "Got back to onPostExecute.");
 		Log.i("UploadUserImage", "The result is: " + objResult);

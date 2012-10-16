@@ -124,13 +124,15 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 	    		String s3url = returnedIntent.getStringExtra("s3url");
 	    		String editType = returnedIntent.getStringExtra("type");
 	    		
-	    		if(editType.equals("delete")) {
+	    		if (editType.equals("delete")) {
 	    			removeImage(s3url);
 	    		}
-	    		else {
+	    		else if (editType.equals("edit")) {
 	    			// Update the caption.
 	    			String caption = returnedIntent.getStringExtra("caption");
 	    			updateCaption(s3url, caption);
+	    		} else {
+	    		    updateProfileImage(s3url);
 	    		}
 	        } 
 	        else if (resultCode == 0)
