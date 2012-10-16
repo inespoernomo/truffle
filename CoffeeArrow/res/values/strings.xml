@@ -37,7 +37,7 @@
     <string name="sureButton">Yes!</string>
     <string name="title_activity_edit_image">Edit Image</string>
     <string name="deleteImage">Delete Image</string>
-    <string name="updateCaption">Update Caption</string>
+    <string name="updateCaption">Save</string>
     <string name="title_activity_authorize_amazon_payment">Amazon Payment</string>
     <string name="placesPrompt">Choose a place</string>
 
@@ -72,5 +72,6 @@
     <string name="sendResetLink">Send Reset Link</string>
     <string name="noString">No</string>
     <string name="sendVerificationLinkAgain">Send Verification Email Again</string>
+    <string name="setProfileImg">Set as my profile image</string>
 
 </resources>

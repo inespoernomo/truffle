@@ -41,23 +41,28 @@
 	
 	    <LinearLayout
 	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" >
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" >
 	
 	        <Button
 	            android:id="@+id/button1"
-	            android:layout_width="wrap_content"
+	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:layout_weight="1"
 	            android:onClick="deleteImage"
 	            android:text="@string/deleteImage" />
 	
 	        <Button
 	            android:id="@+id/button2"
-	            android:layout_width="wrap_content"
+	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:layout_weight="1"
 	            android:onClick="updateCaption"
 	            android:text="@string/updateCaption" />
+
+	        <Button
+	            android:id="@+id/button3"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/setProfileImg" />
 	
 	    </LinearLayout>
 	
