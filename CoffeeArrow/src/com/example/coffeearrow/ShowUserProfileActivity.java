@@ -46,6 +46,7 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 	private boolean comesFromInvitation;
 	protected String userId;
 	protected ShowUserProfileActivity mainActivity;
+	protected UserProfile userProfile;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -225,7 +226,6 @@ public class ShowUserProfileActivity extends Activity implements PostToServerCal
 		if (objResult != null) {
 			// Parse the JSON
 			JSONArray resultArray = (JSONArray) objResult;
-			UserProfile userProfile = null;
 			ObjectMapper mapper = new ObjectMapper();
 			try {
 				for (int i = 0; i < resultArray.length(); i++) {
