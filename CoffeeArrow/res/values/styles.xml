@@ -5,6 +5,16 @@
     <style name="MyTheme" parent="android:Theme.Light">
         <item name="android:textAppearance">@style/MyDefaultTextAppearance</item>
     </style>
+    
+
+    <style name="MyActionBarStyle" parent="@android:style/Widget.Holo.ActionBar.Solid">
+        <item name="android:displayOptions">showHome</item>
+       
+    </style>
+    
+    <style name="DisplayTheme" parent="android:Theme.Holo">
+       <item name="android:actionBarStyle">@style/MyActionBarStyle</item>
+   </style>
 
     <style name="MyDefaultTextAppearance" parent="@android:style/TextAppearance">
         <item name="android:layout_width">200dp</item>

@@ -12,8 +12,7 @@
 
     <application
         android:debuggable="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/appName"
+        
         android:theme="@style/AppTheme" >
         <activity
             android:name=".SignIn"
@@ -30,16 +29,20 @@
             android:label="@string/title_activity_invitations" >
         </activity>
         <activity
+            android:theme="@style/DisplayTheme"
             android:name=".DisplaySearchResultsActivity"
-            android:label="@string/title_activity_display_search_results" >
+            android:label="@string/title_activity_show_user_profile"
+            android:icon="@drawable/heart1">
         </activity>
         <activity
+             android:theme="@style/DisplayTheme"
             android:name=".ShowUserProfileActivity"
-            android:label="@string/title_activity_show_user_profile" >
+            android:icon="@drawable/user2">
         </activity>
         <activity
+            android:theme="@style/DisplayTheme"
             android:name=".SelfProfileActivity"
-            android:label="@string/title_activity_show_user_profile" >
+            android:icon="@drawable/user2" >
         </activity>
         <activity
             android:name=".SignUpActivity"

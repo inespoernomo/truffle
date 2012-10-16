@@ -6,6 +6,7 @@
         android:id="@+id/imageFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        style = "@style/loginbox"
         android:layout_centerHorizontal="@bool/truetrue"
         android:layout_margin="2dp" >
 

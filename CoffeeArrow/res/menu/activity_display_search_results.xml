@@ -2,15 +2,16 @@
     <item android:id="@+id/menu_settings"
         android:title="@string/menu_settings"
         android:orderInCategory="100"
-        android:showAsAction="never" />
+        android:showAsAction="collapseActionView" />
     
       <item android:id="@+id/invitations"
-        android:title="My dates"
+          
+       android:icon="@drawable/dates"
         android:showAsAction="always"
         android:orderInCategory="0" />
      
       <item android:id="@+id/userProfile"
-        android:title="\@Me"
+        android:icon="@drawable/user2"
         android:showAsAction="always"
         android:orderInCategory="1" />
    

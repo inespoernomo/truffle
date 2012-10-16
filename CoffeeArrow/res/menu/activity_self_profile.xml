@@ -6,7 +6,7 @@
     
     <item android:id="@+id/uploadPhoto" 
         android:orderInCategory="0" 
-        android:title="@string/uploadPhotoMenuItem" 
+        android:icon="@drawable/camera1" 
         android:showAsAction="always"></item>
     <item android:id="@+id/logout" 
         android:showAsAction="always" 
