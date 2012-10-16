@@ -14,7 +14,9 @@ import com.example.coffeearrow.server.RequestFactory;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -37,11 +39,13 @@ public class EditImageActivity extends Activity implements PostToServerCallback 
 	private String action;
 	private String userId;
 	private ProgressDialog dialog;
+	private EditImageActivity mainActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_image);
+        mainActivity = this;
         
         dialog = new ProgressDialog(this);
         
@@ -73,18 +77,34 @@ public class EditImageActivity extends Activity implements PostToServerCallback 
     }
 
     public void deleteImage(View view) {
-    	action = "delete";
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure to delete this picture?")
+        .setCancelable(false)
+        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
 
-		HashMap<String, String> requestParams = new HashMap<String, String>();
-		requestParams.put("userId", userId);
-		requestParams.put("imgLink", s3url);
-		HttpPost request = RequestFactory.create(requestParams, "deleteUserImage");
-		
-		// Display the progress dialog.
-		this.dialog.setMessage("Deleting image...");
-		this.dialog.show();
-		PostToServerAsyncTask task = new PostToServerAsyncTask(this);
-		task.execute(request);
+                action = "delete";
+
+                HashMap<String, String> requestParams = new HashMap<String, String>();
+                requestParams.put("userId", userId);
+                requestParams.put("imgLink", s3url);
+                HttpPost request = RequestFactory.create(requestParams, "deleteUserImage");
+                
+                // Display the progress dialog.
+                mainActivity.dialog.setMessage("Deleting image...");
+                mainActivity.dialog.show();
+                PostToServerAsyncTask task = new PostToServerAsyncTask(mainActivity);
+                task.execute(request);
+            }
+        })
+        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                 //
+            }
+        });
+        
+        AlertDialog alert = builder.create();
+        alert.show();
     }
     
     public void updateCaption(View view) {
@@ -105,6 +125,21 @@ public class EditImageActivity extends Activity implements PostToServerCallback 
 		this.dialog.show();
 		PostToServerAsyncTask task = new PostToServerAsyncTask(this);
 		task.execute(request);
+    }
+    
+    public void setProfileImage(View view){
+        action = "setProfile";
+        HashMap<String, String> requestParams = new HashMap<String, String>();
+        requestParams.put("userId", userId);
+        requestParams.put("profileImage", s3url);
+        HttpPost request = RequestFactory.create(requestParams, "saveProfileImage");
+        
+        // Display the progress dialog.
+        this.dialog.setMessage("Updating profile image...");
+        this.dialog.show();
+        PostToServerAsyncTask task = new PostToServerAsyncTask(this);
+        task.execute(request);
+        
     }
     
 	public void callback(Object objResult) {

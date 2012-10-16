@@ -11,12 +11,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class SelfProfileActivity extends ShowUserProfileActivity {
 
 	private static final int ACTIVITY_SELECT_IMAGE = 1234;
 	private static final int ACTIVITY_UPLOAD_IMAGE = 1235;
 	private static final int ACTIVITY_EDIT_IMAGE = 1236;
+	private static final int MAX_PIC_NUMBER = 5;
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -29,9 +31,15 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 		//Log.i("selfprofile", "Got option item selected and menu item is: " + item.toString());
 		switch(item.getItemId()){
 		case R.id.uploadPhoto:
-    		Intent i = new Intent(Intent.ACTION_PICK,
-    	               android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-    		startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
+		    if (userProfile.getImages().size() < MAX_PIC_NUMBER) {
+        		Intent i = new Intent(Intent.ACTION_PICK,
+        	               android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        		startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
+		    } else {
+		        String message = "You can only upload " + MAX_PIC_NUMBER + " pictures.";
+	            Toast.makeText(getApplicationContext(), message,
+	                    Toast.LENGTH_LONG).show();
+		    }
 		break;
 		case R.id.logout:
 		    SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
@@ -124,13 +132,15 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 	    		String s3url = returnedIntent.getStringExtra("s3url");
 	    		String editType = returnedIntent.getStringExtra("type");
 	    		
-	    		if(editType.equals("delete")) {
+	    		if (editType.equals("delete")) {
 	    			removeImage(s3url);
 	    		}
-	    		else {
+	    		else if (editType.equals("edit")) {
 	    			// Update the caption.
 	    			String caption = returnedIntent.getStringExtra("caption");
 	    			updateCaption(s3url, caption);
+	    		} else {
+	    		    updateProfileImage(s3url);
 	    		}
 	        } 
 	        else if (resultCode == 0)
