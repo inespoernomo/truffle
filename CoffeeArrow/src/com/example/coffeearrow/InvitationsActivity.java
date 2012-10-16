@@ -33,6 +33,8 @@ public class InvitationsActivity extends ListActivity implements PostToServerCal
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        setContentView(R.layout.activity_invitations);
+        
 		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
 		userId = settings.getString("userId", null);
 		
