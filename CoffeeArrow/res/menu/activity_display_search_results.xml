@@ -1,18 +1,27 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_settings"
-        android:title="@string/menu_settings"
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_settings"
         android:orderInCategory="100"
-        android:showAsAction="collapseActionView" />
-    
-      <item android:id="@+id/invitations"
-          
-       android:icon="@drawable/dates"
-        android:showAsAction="always"
-        android:orderInCategory="0" />
-     
-      <item android:id="@+id/userProfile"
+        android:showAsAction="collapseActionView"
+        android:title="@string/menu_settings"/>
+    <item
+        android:id="@+id/userProfile"
         android:icon="@drawable/user2"
-        android:showAsAction="always"
-        android:orderInCategory="1" />
-   
+        android:orderInCategory="0"
+        android:title= "@string/title_activity_show_user_profile"
+        android:showAsAction="always"/>
+    <item
+        android:id="@+id/invitations"
+        android:icon="@drawable/dates"
+        android:orderInCategory="1"
+         android:title="@string/proposal"
+        android:showAsAction="always"/>
+    <item
+        android:id="@+id/logout"
+        android:orderInCategory="2"
+        android:showAsAction="never"
+        android:title="@string/logoutString">
+    </item>
+
 </menu>

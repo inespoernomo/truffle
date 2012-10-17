@@ -73,5 +73,7 @@
     <string name="noString">No</string>
     <string name="sendVerificationLinkAgain">Send Verification Email Again</string>
     <string name="setProfileImg">Set as my profile image</string>
+    <string name="proposal">Proposals</string>
+    <string name="hearts">Hearts</string>
 
 </resources>

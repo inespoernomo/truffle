@@ -72,7 +72,7 @@ public class DisplaySearchResultsActivity extends ListActivity implements PostTo
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	   // Log.i("DisplaySearchResultsActivity", "Got option item selected and menu item is: " + item.toString());
+	    Log.i("DisplaySearchResultsActivity", "Got option item selected and menu item is: " + item.toString());
 		switch (item.getItemId()) {
 		case R.id.invitations:
 			Intent intent1 = new Intent(this, InvitationsActivity.class);
@@ -83,6 +83,17 @@ public class DisplaySearchResultsActivity extends ListActivity implements PostTo
 			intent2.putExtra("userId", userId);
 			startActivity(intent2);
 			break;
+		case R.id.logout:
+		    SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+		    SharedPreferences.Editor editor = settings.edit();
+	        editor.remove("userId");
+	        editor.commit();
+	        
+	        Intent intent = new Intent(this, SignIn.class);
+	        // These flags clear the whole thing, so back button will not come back.
+	        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+	        startActivity(intent);
+		    break;
 		default:
 		    Log.i("DisplaySearchResultsActivity", "Unknow menu item clicked.");
 		    break;

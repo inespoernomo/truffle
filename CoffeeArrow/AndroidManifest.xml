@@ -25,24 +25,27 @@
             </intent-filter>
         </activity>
         <activity
+             android:theme="@style/DisplayTheme"
             android:name=".InvitationsActivity"
-            android:label="@string/title_activity_invitations" >
+            android:label="@string/proposal" >
         </activity>
         <activity
             android:theme="@style/DisplayTheme"
             android:name=".DisplaySearchResultsActivity"
-            android:label="@string/title_activity_show_user_profile"
-            android:icon="@drawable/heart1">
+            android:label="@string/appName"
+            android:icon="@drawable/heart">
         </activity>
         <activity
              android:theme="@style/DisplayTheme"
             android:name=".ShowUserProfileActivity"
+            android:label="@string/title_activity_show_user_profile"
             android:icon="@drawable/user2">
         </activity>
         <activity
             android:theme="@style/DisplayTheme"
             android:name=".SelfProfileActivity"
-            android:icon="@drawable/user2" >
+            android:icon="@drawable/user2"
+            android:label="@string/appName" >
         </activity>
         <activity
             android:name=".SignUpActivity"

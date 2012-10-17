@@ -28,7 +28,7 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		//Log.i("selfprofile", "Got option item selected and menu item is: " + item.toString());
+		Log.i("selfprofile", "Got option item selected and menu item is: " + item.toString());
 		switch(item.getItemId()){
 		case R.id.uploadPhoto:
 		    if (userProfile.getImages().size() < MAX_PIC_NUMBER) {
@@ -41,6 +41,14 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 	                    Toast.LENGTH_LONG).show();
 		    }
 		break;
+		case R.id.invitations:
+			Intent intent1 = new Intent(this, InvitationsActivity.class);
+			startActivity(intent1);
+			break;
+		case R.id.searchResults:
+			Intent intent2 = new Intent(this, DisplaySearchResultsActivity.class);
+			startActivity(intent2);
+			break;
 		case R.id.logout:
 		    SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
 		    SharedPreferences.Editor editor = settings.edit();

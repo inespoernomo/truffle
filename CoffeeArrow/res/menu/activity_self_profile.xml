@@ -1,16 +1,33 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_settings"
-        android:title="@string/menu_settings"
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_settings"
         android:orderInCategory="100"
-        android:showAsAction="never" />
-    
-    <item android:id="@+id/uploadPhoto" 
-        android:orderInCategory="0" 
-        android:icon="@drawable/camera1" 
-        android:showAsAction="always"></item>
-    <item android:id="@+id/logout" 
-        android:showAsAction="always" 
-        android:orderInCategory="1" 
-        android:title="@string/logoutString"></item>
-    
+        android:showAsAction="never"
+        android:title="@string/menu_settings"/>
+    <item
+        android:id="@+id/uploadPhoto"
+        android:icon="@drawable/camera1"
+        android:orderInCategory="0"
+        android:showAsAction="always">
+    </item>
+    <item
+        android:id="@+id/searchResults"
+        android:icon="@drawable/heart"
+        android:orderInCategory="1"
+        android:showAsAction="always"
+        android:title="@string/hearts">
+    </item>
+    <item
+        android:id="@+id/invitations"
+        android:icon="@drawable/dates"
+        android:orderInCategory="2"
+        android:showAsAction="always"/>
+    <item
+        android:id="@+id/logout"
+        android:orderInCategory="3"
+        android:showAsAction="ifRoom"
+        android:title="@string/logoutString">
+    </item>
+
 </menu>
