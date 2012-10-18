@@ -15,7 +15,7 @@
         android:id="@+id/invitations"
         android:icon="@drawable/dates"
         android:orderInCategory="1"
-         android:title="@string/proposal"
+        android:title="@string/proposal"
         android:showAsAction="always"/>
     <item
         android:id="@+id/logout"
