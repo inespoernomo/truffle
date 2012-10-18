@@ -45,9 +45,6 @@ public class SignIn extends Activity implements PostToServerCallback {
 		} 
 		
 		setContentView(R.layout.activity_sign_in);
-		//Button signInButton = (Button) findViewById(R.id.signInButton);
-		//signInButton.getBackground().setColorFilter(Color.DKGRAY,
-		//		PorterDuff.Mode.MULTIPLY);
 		dialog = new ProgressDialog(this);
 	}
 

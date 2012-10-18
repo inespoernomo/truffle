@@ -33,7 +33,7 @@ public class NewDateActivity extends ChangeDateActivity {
                })
                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
-                        //
+                        mainActivity.finish();
                    }
                });
         AlertDialog alert = builder.create();
