@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class ChangeDateActivity extends Activity implements
 	private String userId;
 	private String place;
 	private String epoch;
+	private ProgressDialog dialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class ChangeDateActivity extends Activity implements
 		matchId = intent.getStringExtra("matchId");
 		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
 		userId = settings.getString("userId", null);
+		dialog = new ProgressDialog(this);
 	}
 
 	@Override
@@ -104,11 +107,18 @@ public class ChangeDateActivity extends Activity implements
 		requestParams.put("userId", userId);
 		HttpPost request = RequestFactory.create(requestParams, "saveDate");
 		PostToServerAsyncTask task = new PostToServerAsyncTask(this);
+		
+		dialog.setMessage("Sending invitations...");
+        dialog.show();
 		task.execute(request);
 	}
 
 	@Override
 	public void callback(Object result) {
+        // Dismiss the progress dialog.
+        if (dialog.isShowing())
+            dialog.dismiss();
+        
 	    Log.i("ChangeDateActivity", "change date called back");
 		JSONArray resultArray = (JSONArray) result;
 		String status = null;
