@@ -1,9 +1,13 @@
 package com.example.coffeearrow;
 
+import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import org.apache.http.client.methods.HttpPost;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +26,7 @@ import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
+import com.example.coffeearrow.domain.InvitationItem;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
@@ -120,23 +125,30 @@ public class ChangeDateActivity extends Activity implements
             dialog.dismiss();
         
 	    Log.i("ChangeDateActivity", "change date called back");
-		JSONArray resultArray = (JSONArray) result;
-		String status = null;
+	    JSONArray resultArray = (JSONArray)result;
+	    InvitationItem invitationItem = null;
+        ObjectMapper mapper = new ObjectMapper();
 		try {
-			for (int i = 0; i < resultArray.length(); i++) {
-				JSONObject record = resultArray.getJSONObject(i);
-
-				status = record.getString("status");
-			}
+            JSONObject jsonObj = resultArray.getJSONObject(0);
+            String record = jsonObj.toString(1);
+            invitationItem = mapper.readValue(record, InvitationItem.class);
 		} catch (JSONException e) {
 			e.printStackTrace();
-		}
+		} catch (JsonParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-		if (status.equals("ok")) {
-		    Log.i("ChangeDateActivity", "status ok");
+		if (invitationItem != null) {
+		    Log.i("ChangeDateActivity", "Got back the invitation item.");
 		    Intent resultIntent = new Intent();
-            resultIntent.putExtra("epoch", epoch);
-            resultIntent.putExtra("place", place);
+		    resultIntent.putExtra("invitationItem", invitationItem);
             setResult(RESULT_OK, resultIntent);
             
 			finish();

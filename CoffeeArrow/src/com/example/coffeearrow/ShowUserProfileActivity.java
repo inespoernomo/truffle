@@ -90,7 +90,7 @@ public class ShowUserProfileActivity extends Activity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
 		SharedPreferences.Editor editor = settings.edit();
-		Log.i("ShowUserProfileActivity", "Invite menu item clicked." + item.toString());
+
 		switch (item.getItemId()) {
 		case R.id.invitations:
 			Intent intent1 = new Intent(this, InvitationsActivity.class);
@@ -169,14 +169,7 @@ public class ShowUserProfileActivity extends Activity implements
 								if (comesFromInvitation) {
 									finish();
 								} else {
-									Intent destIntent = new Intent(
-											mainActivity,
-											RequestHistoryActivity.class);
-									destIntent.putExtra("invitationItem",
-											invitationItem);
-									destIntent.putExtra("comesFromProfile",
-											true);
-									startActivity(destIntent);
+									mainActivity.showExistingInvitation(invitationItem);
 								}
 
 							} else {
@@ -196,6 +189,14 @@ public class ShowUserProfileActivity extends Activity implements
 		}
 		return true;
 	}
+	
+    private void showExistingInvitation(InvitationItem invitationItem) {
+        Log.i("ShowUserProfileActivity", "Got to show existing activity.");
+        Intent destIntent = new Intent(mainActivity, RequestHistoryActivity.class);
+        destIntent.putExtra("invitationItem", invitationItem);
+        destIntent.putExtra("comesFromProfile", true);
+        startActivity(destIntent);
+    }
 
 	protected void onActivityResult(int requestCode, int resultCode,
 			Intent returnedIntent) {
@@ -210,7 +211,10 @@ public class ShowUserProfileActivity extends Activity implements
 		case INVITE_REQUEST_CODE:
 			if (resultCode == RESULT_OK) {
 				Log.i("ShowUserProfileActivity", "still ok");
-				onOptionsItemSelected(null);
+				InvitationItem invitationItem = (InvitationItem)returnedIntent.getSerializableExtra("invitationItem");
+				if (invitationItem != null) {
+				    mainActivity.showExistingInvitation(invitationItem);
+				}
 			}
 			break;
 		default:
