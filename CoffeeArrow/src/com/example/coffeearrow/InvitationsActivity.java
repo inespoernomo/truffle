@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -30,12 +31,11 @@ import com.example.coffeearrow.server.RequestFactory;
 public class InvitationsActivity extends ListActivity implements PostToServerCallback {
 
 	public String userId;
+	private ProgressDialog dialog;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        setContentView(R.layout.activity_invitations);
         
 		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
 		userId = settings.getString("userId", null);
@@ -46,6 +46,10 @@ public class InvitationsActivity extends ListActivity implements PostToServerCal
 		HttpPost request = RequestFactory.create(requestParams, "getAllInvitationsNative");
 		
 		PostToServerAsyncTask task = new PostToServerAsyncTask(this);
+		
+		dialog = new ProgressDialog(this);
+		dialog.setMessage("Fetching existing invitations...");
+        dialog.show();
 		task.execute(request);
     }
     
@@ -90,6 +94,11 @@ public class InvitationsActivity extends ListActivity implements PostToServerCal
 	}
     
     public void callback(Object objResult) {
+        // Dismiss the progress dialog.
+        if (dialog.isShowing())
+            dialog.dismiss();
+        setContentView(R.layout.activity_invitations);
+        
 		JSONArray resultArray = (JSONArray)objResult;
 		ArrayList<InvitationItem> responseList = new ArrayList<InvitationItem>();
 		ObjectMapper mapper = new ObjectMapper(); 
