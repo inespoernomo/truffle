@@ -28,7 +28,7 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.i("selfprofile", "Got option item selected and menu item is: " + item.toString());
+
 		switch(item.getItemId()){
 		case R.id.uploadPhoto:
 		    if (userProfile.getImages().size() < MAX_PIC_NUMBER) {
