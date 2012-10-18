@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.example.coffeearrow.server.RequestFactory;
 public class RequestHistoryActivity extends Activity {
     private static final int ACTIVITY_CHANGE_DATE = 1237;
 
+    private ProgressDialog dialog;
 	private RequestHistoryActivity mainActivity = null;
 	private ImageLoader imageLoader;
 	private String userId;
@@ -37,7 +39,9 @@ public class RequestHistoryActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		dialog = new ProgressDialog(this);
+		this.dialog.setMessage("Loading...");
+		this.dialog.show();
 		mainActivity = this;
 		imageLoader = new ImageLoader(this);
 		Intent intent = getIntent();
@@ -131,6 +135,9 @@ public class RequestHistoryActivity extends Activity {
 	    curTimeTextView.setText("Time: " + curInvitationTime);
         TextView curPlaceTextView = (TextView) findViewById(R.id.curInvitationLocation);
 		curPlaceTextView.setText("Location: " + invitation.getCurPlace());
+		if (dialog.isShowing())
+			dialog.dismiss();
+		
     }
 
 	@Override
@@ -211,8 +218,10 @@ public class RequestHistoryActivity extends Activity {
     }	
 
 	public void changeDate(View v) {
+		
 		Intent intent = new Intent(this, ChangeDateActivity.class);
 		intent.putExtra("matchId", invitation.getMatchId());
+		
 		startActivityForResult(intent, ACTIVITY_CHANGE_DATE);
 	}
 	

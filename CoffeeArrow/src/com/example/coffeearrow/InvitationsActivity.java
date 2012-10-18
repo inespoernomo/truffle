@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -29,12 +30,15 @@ import com.example.coffeearrow.server.RequestFactory;
 
 public class InvitationsActivity extends ListActivity implements PostToServerCallback {
 
+	private ProgressDialog dialog;
 	public String userId;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        dialog = new ProgressDialog(this);
+		this.dialog.setMessage("Loading...");
+		this.dialog.show();
         setContentView(R.layout.activity_invitations);
         
 		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
@@ -90,6 +94,7 @@ public class InvitationsActivity extends ListActivity implements PostToServerCal
 	}
     
     public void callback(Object objResult) {
+    	
 		JSONArray resultArray = (JSONArray)objResult;
 		ArrayList<InvitationItem> responseList = new ArrayList<InvitationItem>();
 		ObjectMapper mapper = new ObjectMapper(); 
@@ -118,6 +123,8 @@ public class InvitationsActivity extends ListActivity implements PostToServerCal
 					new InvitationsAdapter(InvitationsActivity.this, 
 							responseList);
         InvitationsActivity.this.setListAdapter(invitationsAdapter);
+        if (dialog.isShowing())
+			dialog.dismiss();
 	}
 
 }

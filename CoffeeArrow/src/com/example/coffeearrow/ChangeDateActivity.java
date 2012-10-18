@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.example.coffeearrow.server.RequestFactory;
 public class ChangeDateActivity extends Activity implements
 		OnItemSelectedListener, PostToServerCallback {
 
+	private ProgressDialog dialog;
 	protected ChangeDateActivity mainActivity;
 	protected String matchId;
 	private String userId;
@@ -38,6 +40,7 @@ public class ChangeDateActivity extends Activity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_change_date);
+		
 		/*DatePicker picker;
 		ViewGroup childpicker;
 		childpicker = (ViewGroup) findViewById(Resources.getSystem()
@@ -75,6 +78,9 @@ public class ChangeDateActivity extends Activity implements
 	}
 
 	public void submit(View view) {
+		dialog = new ProgressDialog(this);
+		this.dialog.setMessage("Loading...");
+		this.dialog.show();
 		Log.i("ChangeDateActivity", "Submit called.");
 		Log.i("ChangeDateActivity", "matchId is: " + matchId);
 
@@ -109,6 +115,8 @@ public class ChangeDateActivity extends Activity implements
 
 	@Override
 	public void callback(Object result) {
+		if (dialog.isShowing())
+			dialog.dismiss();
 	    Log.i("ChangeDateActivity", "change date called back");
 		JSONArray resultArray = (JSONArray) result;
 		String status = null;
