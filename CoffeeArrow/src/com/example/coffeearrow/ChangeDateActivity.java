@@ -40,7 +40,6 @@ public class ChangeDateActivity extends Activity implements
 	private String userId;
 	private String place;
 	private String epoch;
-	private ProgressDialog dialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

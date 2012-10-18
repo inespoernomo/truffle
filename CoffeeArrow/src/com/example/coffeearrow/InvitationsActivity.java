@@ -32,14 +32,10 @@ public class InvitationsActivity extends ListActivity implements PostToServerCal
 
 	private ProgressDialog dialog;
 	public String userId;
-	private ProgressDialog dialog;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dialog = new ProgressDialog(this);
-		this.dialog.setMessage("Loading...");
-		this.dialog.show();
         setContentView(R.layout.activity_invitations);
         
 		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
@@ -99,9 +95,6 @@ public class InvitationsActivity extends ListActivity implements PostToServerCal
 	}
     
     public void callback(Object objResult) {
-        // Dismiss the progress dialog.
-        if (dialog.isShowing())
-            dialog.dismiss();
         setContentView(R.layout.activity_invitations);
         
 		JSONArray resultArray = (JSONArray)objResult;
