@@ -223,17 +223,13 @@ public class RequestHistoryActivity extends Activity {
             Log.i("RequestHistoryActivity", "code is change date");
             if(resultCode == RESULT_OK){
                 Log.i("RequestHistoryActivity", "result code is ok");
-                String epoch = returnedIntent.getStringExtra("epoch");
-                String place = returnedIntent.getStringExtra("place");
-                
-                if (!invitation.getLatestInitiatorId().equals(userId)) {
-                    invitation.setLatestInitiatornId(userId);
-                    invitation.setPreEpoch(invitation.getCurEpoch());
-                    invitation.setPrePlace(invitation.getCurPlace());
+                invitation = (InvitationItem)returnedIntent.getSerializableExtra("invitationItem");
+                if (invitation != null) {
+                    displayInvitation();
+                } else {
+                    //TODO: show error message.
+                    Log.i("RequestHistoryActivity", "No invitation.");
                 }
-                invitation.setCurEpoch(epoch);
-                invitation.setCurPlace(place);
-                displayInvitation();
             }
             break;
         default:
