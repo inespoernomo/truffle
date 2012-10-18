@@ -1,8 +1,4 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_settings"
-        android:title="@string/menu_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
     
     <item
         android:id="@+id/invitations"
@@ -10,11 +6,6 @@
         android:title="@string/proposal"
         android:orderInCategory="0"
         android:showAsAction="always"/>
-    <item
-        android:id="@+id/logout"
-        android:orderInCategory="2"
-        android:showAsAction="never"
-        android:title="@string/logoutString"/>
         
     <item android:id="@+id/sendInvitation"
         android:title="@string/sendInvitationMenuItemTitle"
