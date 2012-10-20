@@ -7,9 +7,15 @@
         android:orderInCategory="0"
         android:showAsAction="always"/>
         
-    <item android:id="@+id/sendInvitation"
+    <!-- <item android:id="@+id/sendInvitation"
         android:title="@string/sendInvitationMenuItemTitle"
         android:orderInCategory="1"
-        android:showAsAction="always" />
+        android:showAsAction="always" />-->
+        <item
+        android:id="@+id/logout"
+        android:orderInCategory="1"
+        android:showAsAction="never"
+        android:title="@string/logoutString">
+    </item>
 
 </menu>

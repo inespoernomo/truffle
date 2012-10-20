@@ -108,81 +108,7 @@ public class ShowUserProfileActivity extends Activity implements
 					| Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			startActivity(intent);
 			break;
-		case R.id.sendInvitation:
-			// TODO: Below need to be replaced with an different server method.
-			// TODO: When the other user has invited you, we should also not
-			// charge the user.
-			String loggedInUserId = settings.getString("userId", null);
-
-			HashMap<String, String> requestParams = new HashMap<String, String>();
-			requestParams.put("userId", loggedInUserId);
-
-			HttpPost request = RequestFactory.create(requestParams,
-					"getAllInvitationsNative");
-
-			PostToServerAsyncTask task = new PostToServerAsyncTask(
-					new PostToServerCallback() {
-						public void callback(Object objResult) {
-							Log.i("ShowUserProfileActivity",
-									"getAllInvitationsNative called back with: "
-											+ objResult);
-							JSONArray resultArray = (JSONArray) objResult;
-							ObjectMapper mapper = new ObjectMapper();
-							InvitationItem invitationItem = null;
-							boolean invited = false;
-							try {
-								for (int i = 0; i < resultArray.length(); i++) {
-
-									JSONObject jsonObj = resultArray
-											.getJSONObject(i);
-									String record = jsonObj.toString(1);
-									invitationItem = mapper.readValue(record,
-											InvitationItem.class);
-
-									// Check both if user is inviting the user
-									// or being invited.
-									if (invitationItem.getUserId().equals(
-											userId)
-											|| invitationItem.getDateId()
-													.equals(userId)) {
-										invited = true;
-										break;
-									}
-								}
-							} catch (JSONException e) {
-								e.printStackTrace();
-							} catch (JsonParseException e) {
-								// TODO Auto-generated catch block
-								Log.i("ShowUserProfileActivity", "exception 1");
-								e.printStackTrace();
-							} catch (JsonMappingException e) {
-								// TODO Auto-generated catch block
-								Log.i("ShowUserProfileActivity", "exception 2");
-								e.printStackTrace();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								Log.i("ShowUserProfileActivity", "exception 3");
-								e.printStackTrace();
-							}
-
-							if (invited) {
-								if (comesFromInvitation) {
-									finish();
-								} else {
-									mainActivity.showExistingInvitation(invitationItem);
-								}
-
-							} else {
-								Intent intent = new Intent(mainActivity,
-										NewDateActivity.class);
-								intent.putExtra("dateId", mainActivity.userId);
-								mainActivity.startActivityForResult(intent,
-										INVITE_REQUEST_CODE);
-							}
-
-						}
-					});
-			task.execute(request);
+		
 		default:
 			Log.i("SelfProfile", "Unknown menu item.");
 			break;
@@ -269,6 +195,86 @@ public class ShowUserProfileActivity extends Activity implements
 	protected void editImage(String s3url, String caption) {
 		// Do nothing now. For SelfProfileActivity to override.
 	}
+	
+	public void onCoffeeMugClick(View view) {
+		dialog.setMessage("Loading...");
+		dialog.show();
+		SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+		
+		String loggedInUserId = settings.getString("userId", null);
+
+		HashMap<String, String> requestParams = new HashMap<String, String>();
+		requestParams.put("userId", loggedInUserId);
+
+		HttpPost request = RequestFactory.create(requestParams,
+				"getAllInvitationsNative");
+
+		PostToServerAsyncTask task = new PostToServerAsyncTask(
+				new PostToServerCallback() {
+					public void callback(Object objResult) {
+						Log.i("ShowUserProfileActivity",
+								"getAllInvitationsNative called back with: "
+										+ objResult);
+						JSONArray resultArray = (JSONArray) objResult;
+						ObjectMapper mapper = new ObjectMapper();
+						InvitationItem invitationItem = null;
+						boolean invited = false;
+						try {
+							for (int i = 0; i < resultArray.length(); i++) {
+
+								JSONObject jsonObj = resultArray
+										.getJSONObject(i);
+								String record = jsonObj.toString(1);
+								invitationItem = mapper.readValue(record,
+										InvitationItem.class);
+
+								// Check both if user is inviting the user
+								// or being invited.
+								if (invitationItem.getUserId().equals(
+										userId)
+										|| invitationItem.getDateId()
+												.equals(userId)) {
+									invited = true;
+									break;
+								}
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						} catch (JsonParseException e) {
+							// TODO Auto-generated catch block
+							Log.i("ShowUserProfileActivity", "exception 1");
+							e.printStackTrace();
+						} catch (JsonMappingException e) {
+							// TODO Auto-generated catch block
+							Log.i("ShowUserProfileActivity", "exception 2");
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							Log.i("ShowUserProfileActivity", "exception 3");
+							e.printStackTrace();
+						}
+						if (dialog.isShowing())
+							dialog.dismiss();
+
+						if (invited) {
+							if (comesFromInvitation) {
+								finish();
+							} else {
+								mainActivity.showExistingInvitation(invitationItem);
+							}
+
+						} else {
+							Intent intent = new Intent(mainActivity,
+									NewDateActivity.class);
+							intent.putExtra("dateId", mainActivity.userId);
+							mainActivity.startActivityForResult(intent,
+									INVITE_REQUEST_CODE);
+						}
+
+					}
+				});
+		task.execute(request);
+	}
 
 	public void callback(Object objResult) {
 		// Dismiss the progress dialog
@@ -306,6 +312,16 @@ public class ShowUserProfileActivity extends Activity implements
 			// that time and will display
 			// empty info like (null) etc, and it's bad for user experience.
 			mainActivity.setContentView(R.layout.activity_show_user_profile);
+			ImageView coffeeMug = (ImageView) findViewById(R.id.coffee);
+			SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+			
+			String loggedInUserId = settings.getString("userId", null);
+			Log.i("Self Profile Activity" ,"current user ID " + loggedInUserId +" selected user Id " + userProfile.get_id());
+			
+			if(loggedInUserId.equals(userProfile.get_id())){
+				coffeeMug.setVisibility(View.GONE);
+				Log.i("Came here", "we");
+			}
 
 			// This is the LinearLayout containing all the pictures of this user
 			// with caption.
