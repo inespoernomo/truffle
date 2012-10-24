@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,7 +25,7 @@ import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 
-public class RequestHistoryActivity extends Activity {
+public class RequestHistoryActivity extends PortraitActivity {
     private static final int ACTIVITY_CHANGE_DATE = 1237;
 
     private ProgressDialog dialog;

@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +21,7 @@ import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 
-public class SignUpActivity extends Activity implements PostToServerCallback {
+public class SignUpActivity extends PortraitActivity implements PostToServerCallback {
 	
 	private ProgressDialog dialog;
 	public final static String EMAIL = "com.coffeearrow.signIn.Email";

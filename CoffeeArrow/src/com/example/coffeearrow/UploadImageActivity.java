@@ -17,7 +17,6 @@ import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,7 +35,7 @@ import android.widget.Toast;
  * @author sunshi
  *
  */
-public class UploadImageActivity extends Activity implements PostToServerCallback {
+public class UploadImageActivity extends PortraitActivity implements PostToServerCallback {
 
 	private String filePath;
 	private String caption;

@@ -12,7 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,7 +27,7 @@ import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 
-public class InvitationsActivity extends ListActivity implements PostToServerCallback {
+public class InvitationsActivity extends PortraitListActivity implements PostToServerCallback {
 
 	private ProgressDialog dialog;
 	public String userId;

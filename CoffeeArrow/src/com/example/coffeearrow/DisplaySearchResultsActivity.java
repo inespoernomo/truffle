@@ -12,7 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,7 +28,7 @@ import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 
-public class DisplaySearchResultsActivity extends ListActivity implements PostToServerCallback {
+public class DisplaySearchResultsActivity extends PortraitListActivity implements PostToServerCallback {
 
 	private String userId;
 	private ProgressDialog dialog;

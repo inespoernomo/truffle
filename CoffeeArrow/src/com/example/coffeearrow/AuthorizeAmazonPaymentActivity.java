@@ -22,7 +22,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class AuthorizeAmazonPaymentActivity extends Activity {
+public class AuthorizeAmazonPaymentActivity extends PortraitActivity {
 	
 	private AuthorizeAmazonPaymentActivity mainActivity;
 	

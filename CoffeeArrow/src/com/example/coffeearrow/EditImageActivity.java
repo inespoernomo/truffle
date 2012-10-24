@@ -13,7 +13,6 @@ import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -32,7 +31,7 @@ import android.widget.Toast;
  * @author sunshi
  *
  */
-public class EditImageActivity extends Activity implements PostToServerCallback {
+public class EditImageActivity extends PortraitActivity implements PostToServerCallback {
 
 	private String s3url;
 	private String caption;

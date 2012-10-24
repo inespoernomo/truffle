@@ -11,7 +11,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -36,7 +35,7 @@ import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 
-public class ShowUserProfileActivity extends Activity implements
+public class ShowUserProfileActivity extends PortraitActivity implements
 		PostToServerCallback {
 	private static final int INVITE_REQUEST_CODE = 4567;
 

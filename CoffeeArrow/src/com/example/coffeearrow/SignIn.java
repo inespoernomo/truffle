@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,7 +22,7 @@ import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 //import android.support.v4.app.NavUtils;
 
-public class SignIn extends Activity implements PostToServerCallback {
+public class SignIn extends PortraitActivity implements PostToServerCallback {
 
 	private ProgressDialog dialog;
 
