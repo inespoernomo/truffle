@@ -1,6 +1,5 @@
 package com.example.coffeearrow;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
