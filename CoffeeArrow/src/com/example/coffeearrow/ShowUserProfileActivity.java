@@ -195,6 +195,10 @@ public class ShowUserProfileActivity extends PortraitActivity implements
 		// Do nothing now. For SelfProfileActivity to override.
 	}
 	
+    public void editProfile(View view) {
+        // Do nothing now. For SelfProfileActivity to override.
+    }
+	
 	public void onCoffeeMugClick(View view) {
 		dialog.setMessage("Loading...");
 		dialog.show();

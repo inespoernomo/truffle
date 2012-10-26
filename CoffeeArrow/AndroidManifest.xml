@@ -16,106 +16,112 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".SignIn"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/signIn"
             android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/notitle" >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-             android:theme="@style/DisplayTheme"
-             android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:name=".InvitationsActivity"
-            android:label="@string/proposal" >
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/proposal"
+            android:screenOrientation="portrait"
+            android:theme="@style/DisplayTheme" >
         </activity>
         <activity
-            android:theme="@style/DisplayTheme"
             android:name=".DisplaySearchResultsActivity"
-            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:icon="@drawable/heart"
             android:label="@string/appName"
-            android:icon="@drawable/heart">
+            android:screenOrientation="portrait"
+            android:theme="@style/DisplayTheme" >
         </activity>
         <activity
-             android:theme="@style/DisplayTheme"
             android:name=".ShowUserProfileActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_show_user_profile"
-            android:icon="@drawable/user2">
-        </activity>
-        <activity
-            android:theme="@style/DisplayTheme"
-            android:name=".SelfProfileActivity"
-            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:icon="@drawable/user2"
-            android:label="@string/appName" >
+            android:label="@string/title_activity_show_user_profile"
+            android:screenOrientation="portrait"
+            android:theme="@style/DisplayTheme" >
+        </activity>
+        <activity
+            android:name=".SelfProfileActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:icon="@drawable/user2"
+            android:label="@string/appName"
+            android:screenOrientation="portrait"
+            android:theme="@style/DisplayTheme" >
         </activity>
         <activity
             android:name=".SignUpActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_sign_up"
             android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/notitle" >
         </activity>
         <activity
             android:name=".PendingVerificationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_pending_verification"
             android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/notitle"  >
+            android:theme="@style/notitle" >
         </activity>
         <activity
             android:name=".RequestHistoryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_request_history"
             android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/notitle" >
         </activity>
         <activity
             android:name=".UploadImageActivity"
-            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_upload_image" >
+            android:label="@string/title_activity_upload_image"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".ChangeDateActivity"
-            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_change_date"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.SelectDate" >
         </activity>
         <activity
             android:name=".NewDateActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_new_date"
             android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.SelectDate" >
         </activity>
         <activity
             android:name=".EditImageActivity"
-            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_edit_image" >
+            android:label="@string/title_activity_edit_image"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".AuthorizeAmazonPaymentActivity"
-            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_authorize_amazon_payment" >
+            android:label="@string/title_activity_authorize_amazon_payment"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".SendForgetPasswordLinkActivity"
-            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_send_forget_password_link"
+            android:screenOrientation="portrait"
             android:theme="@style/notitle" >
+        </activity>
+        <activity
+            android:name=".EditProfile"
+            android:label="@string/title_activity_edit_profile"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
     </application>
 

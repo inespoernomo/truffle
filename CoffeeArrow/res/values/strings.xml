@@ -25,7 +25,7 @@
     <string name="title_activity_show_user_profile">Profile</string>
     <string name="title_activity_sign_up">Sign Up</string>
     <string name="title_activity_pending_verification">PendingVerificationActivity</string>
-    <string name="verificationMessage">Awesome, now look for an email from truffle in your work email inbox</string> 
+    <string name="verificationMessage">Awesome, now look for an email from truffle in your work email inbox</string>
     <string name="noEmailDelivered">Did not get an email? Check your spam folder or click the link below</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="uploadPhotoMenuItem">Upload Photo</string>
@@ -75,5 +75,6 @@
     <string name="setProfileImg">Set as my profile image</string>
     <string name="proposal">Proposals</string>
     <string name="hearts">Hearts</string>
+    <string name="title_activity_edit_profile">EditProfile</string>
 
 </resources>

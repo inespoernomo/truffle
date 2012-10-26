@@ -226,4 +226,11 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
         destinationIntent.putExtra("caption", caption);
         startActivityForResult(destinationIntent, ACTIVITY_EDIT_IMAGE);
 	}
+	
+	@Override
+	public void editProfile(View view) {
+        // Do nothing now. For SelfProfileActivity to override.
+	    Intent destinationIntent = new Intent(this, EditProfile.class);
+        startActivity(destinationIntent);
+    }
 }
