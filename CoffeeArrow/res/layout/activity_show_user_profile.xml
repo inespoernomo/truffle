@@ -13,9 +13,8 @@
 
         <LinearLayout
             android:id="@+id/layout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            
             android:orientation="horizontal" >
 
             <com.example.coffeearrow.helpers.SquareFrameLayout
@@ -37,20 +36,21 @@
                 android:id="@+id/label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:text="@+id/label"
                 android:textSize="20dp" />
-        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/coffee"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:clickable="true"
-            android:padding="2dp"
-            android:onClick="onCoffeeMugClick"
-            android:layout_alignParentRight="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/coffee" />
+            <ImageView
+                android:id="@+id/coffee"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:onClick="onCoffeeMugClick"
+                android:padding="2dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/coffee" />
+
+        </LinearLayout>
 </RelativeLayout>
         <HorizontalScrollView
             android:id="@+id/hscroll"
