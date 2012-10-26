@@ -36,15 +36,19 @@ public final class PostToServerAsyncTask extends AsyncTask<HttpPost, Integer, Ob
 			Log.i("SeverInterface", "request url is:"+request.getURI());
 			response = client.execute(request);
 			StatusLine status = response.getStatusLine();
-			Log.i("ServerInterface", "response code:"+status.toString());
+			int statusCode = status.getStatusCode();
 			
-			if (status.getStatusCode() ==200) {
+			if (statusCode ==200) {
     			BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
     			String json = reader.readLine();
     			System.out.println(json);
     			Log.i("ServerInterface", "json is:"+json);
     			JSONObject obj = new JSONObject(json);
     			finalResult = obj.getJSONArray("results");
+			}
+			// Failed
+			else {
+			    Log.i("ServerInterface", "Request failed with code: " + statusCode);
 			}
 		} catch (ClientProtocolException e) {		
 			e.printStackTrace();
