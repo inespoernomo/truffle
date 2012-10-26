@@ -3,7 +3,6 @@ package com.example.coffeearrow;
 import java.util.HashMap;
 
 import org.apache.http.client.methods.HttpPost;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,16 +55,12 @@ public class PendingVerificationActivity extends PortraitActivity implements Pos
     }
     
 	@Override
-	public void callback(Object objResult) {
+	public void callback(JSONObject objResult) {
 		if (dialog.isShowing())
 			dialog.dismiss();
-		JSONArray resultArray = (JSONArray) objResult;
 		String status = null;
 		try {
-			for (int i = 0; i < resultArray.length(); i++) {
-				JSONObject record = resultArray.getJSONObject(i);
-				status = record.getString("status");
-			}
+			status = objResult.getString("status");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

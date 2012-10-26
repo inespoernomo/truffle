@@ -4,23 +4,22 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.http.client.methods.HttpPost;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.coffeearrow.server.PostToServerAsyncTask;
-import com.example.coffeearrow.server.PostToServerCallback;
-import com.example.coffeearrow.server.RequestFactory;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.example.coffeearrow.server.PostToServerAsyncTask;
+import com.example.coffeearrow.server.PostToServerCallback;
+import com.example.coffeearrow.server.RequestFactory;
 
 public class AuthorizeAmazonPaymentActivity extends PortraitActivity {
 	
@@ -59,19 +58,14 @@ public class AuthorizeAmazonPaymentActivity extends PortraitActivity {
                         HttpPost request = new HttpPost(urlStr);
 						
 						PostToServerCallback callback = new PostToServerCallback() {
-							public void callback(Object objResult) {
+							public void callback(JSONObject objResult) {
 								String status = "failed";
 								String matchId = "";
 								if (objResult != null) {
 									// Parse the JSON
-									JSONArray resultArray = (JSONArray) objResult;
 									try {
-										for (int i = 0; i < resultArray.length(); i++) {
-											JSONObject record = resultArray.getJSONObject(i);
-
-											status = record.getString("status");
-											matchId = record.getString("matchId");
-										}
+										status = objResult.getString("status");
+										matchId = objResult.getString("matchId");
 									} catch (JSONException e) {
 										e.printStackTrace();
 									}

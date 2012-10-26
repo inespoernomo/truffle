@@ -3,20 +3,19 @@ package com.example.coffeearrow;
 import java.util.HashMap;
 
 import org.apache.http.client.methods.HttpPost;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.coffeearrow.server.PostToServerAsyncTask;
-import com.example.coffeearrow.server.PostToServerCallback;
-import com.example.coffeearrow.server.RequestFactory;
-
-import android.os.Bundle;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.coffeearrow.server.PostToServerAsyncTask;
+import com.example.coffeearrow.server.PostToServerCallback;
+import com.example.coffeearrow.server.RequestFactory;
 
 public class SendForgetPasswordLinkActivity extends PortraitActivity implements PostToServerCallback {
 
@@ -45,15 +44,10 @@ public class SendForgetPasswordLinkActivity extends PortraitActivity implements 
     }
 
 	@Override
-	public void callback(Object objResult) {
-		JSONArray resultArray = (JSONArray) objResult;
+	public void callback(JSONObject objResult) {
 		String status = null;
 		try {
-			for (int i = 0; i < resultArray.length(); i++) {
-				JSONObject record = resultArray.getJSONObject(i);
-
-				status = record.getString("status");
-			}
+			status = objResult.getString("status");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

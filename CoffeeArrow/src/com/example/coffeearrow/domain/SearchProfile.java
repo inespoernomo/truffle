@@ -3,6 +3,8 @@
  */
 package com.example.coffeearrow.domain;
 
+import org.codehaus.jackson.annotate.JsonAnySetter;
+
 /**
  * @author Nishant
  *
@@ -73,5 +75,9 @@ public class SearchProfile {
 	public void set_id(String _id) {
 		this._id = _id;
 	}
-
+    
+    @JsonAnySetter
+    public void handleUnknown(String key, Object value) {
+        // do something: put to a Map; log a warning, whatever
+    }
 }

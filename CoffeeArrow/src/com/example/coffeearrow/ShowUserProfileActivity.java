@@ -214,15 +214,15 @@ public class ShowUserProfileActivity extends PortraitActivity implements
 
 		PostToServerAsyncTask task = new PostToServerAsyncTask(
 				new PostToServerCallback() {
-					public void callback(Object objResult) {
+					public void callback(JSONObject objResult) {
 						Log.i("ShowUserProfileActivity",
 								"getAllInvitationsNative called back with: "
 										+ objResult);
-						JSONArray resultArray = (JSONArray) objResult;
 						ObjectMapper mapper = new ObjectMapper();
 						InvitationItem invitationItem = null;
 						boolean invited = false;
 						try {
+						    JSONArray resultArray = objResult.getJSONArray("results");
 							for (int i = 0; i < resultArray.length(); i++) {
 
 								JSONObject jsonObj = resultArray
@@ -279,21 +279,18 @@ public class ShowUserProfileActivity extends PortraitActivity implements
 		task.execute(request);
 	}
 
-	public void callback(Object objResult) {
+	@Override
+	public void callback(JSONObject objResult) {
 		// Dismiss the progress dialog
 		if (dialog.isShowing())
 			dialog.dismiss();
 
 		if (objResult != null) {
 			// Parse the JSON
-			JSONArray resultArray = (JSONArray) objResult;
 			ObjectMapper mapper = new ObjectMapper();
 			try {
-				for (int i = 0; i < resultArray.length(); i++) {
-					JSONObject jsonObj = resultArray.getJSONObject(i);
-					String record = jsonObj.toString(1);
-					userProfile = mapper.readValue(record, UserProfile.class);
-				}
+				String record = objResult.toString(1);
+				userProfile = mapper.readValue(record, UserProfile.class);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			} catch (JsonParseException e) {

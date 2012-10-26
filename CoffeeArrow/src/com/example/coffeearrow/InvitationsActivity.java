@@ -93,13 +93,14 @@ public class InvitationsActivity extends PortraitListActivity implements PostToS
 		startActivity(destIntent);
 	}
     
-    public void callback(Object objResult) {
+    @Override
+    public void callback(JSONObject objResult) {
         setContentView(R.layout.activity_invitations);
         
-		JSONArray resultArray = (JSONArray)objResult;
 		ArrayList<InvitationItem> responseList = new ArrayList<InvitationItem>();
 		ObjectMapper mapper = new ObjectMapper(); 
 		try {
+		    JSONArray resultArray = objResult.getJSONArray("results");
 			for(int i = 0; i<resultArray.length(); i++) {
 				JSONObject jsonObj = resultArray.getJSONObject(i);
 				String record = jsonObj.toString(1);

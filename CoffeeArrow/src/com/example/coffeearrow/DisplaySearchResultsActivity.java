@@ -100,16 +100,17 @@ public class DisplaySearchResultsActivity extends PortraitListActivity implement
 		return true;
 	}
 	
-	public void callback(Object result) {
+	@Override
+	public void callback(JSONObject result) {
 		// Dismiss the progress dialog.
 		if (dialog.isShowing())
 			dialog.dismiss();
 		
 		if (result != null) {
-			JSONArray resultArray = (JSONArray) result;
 			ArrayList<SearchProfile> profileList = new ArrayList<SearchProfile>();
 			ObjectMapper mapper = new ObjectMapper();
 			try {
+			    JSONArray resultArray = (JSONArray) result.getJSONArray("results");
 				for (int i = 0; i < resultArray.length(); i++) {
 					JSONObject jsonObj = resultArray.getJSONObject(i);
 					String record = jsonObj.toString(1);

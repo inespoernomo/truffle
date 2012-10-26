@@ -3,7 +3,6 @@ package com.example.coffeearrow;
 import java.util.HashMap;
 
 import org.apache.http.client.methods.HttpPost;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -159,17 +158,10 @@ public class RequestHistoryActivity extends PortraitActivity {
 				"acceptInvitation");
 
 		PostToServerCallback callback = new PostToServerCallback() {
-			public void callback(Object objResult) {
-				JSONArray resultArray = (JSONArray) objResult;
-
+			public void callback(JSONObject objResult) {
 				String status = null;
 				try {
-					for (int i = 0; i < resultArray.length(); i++) {
-
-						JSONObject jsonObj = resultArray.getJSONObject(i);
-						status = jsonObj.getString("status");
-
-					}
+					status = objResult.getString("status");
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -191,17 +183,10 @@ public class RequestHistoryActivity extends PortraitActivity {
                 "declineInvitation");
 
         PostToServerCallback callback = new PostToServerCallback() {
-            public void callback(Object objResult) {
-                JSONArray resultArray = (JSONArray) objResult;
-
+            public void callback(JSONObject objResult) {
                 String status = null;
                 try {
-                    for (int i = 0; i < resultArray.length(); i++) {
-
-                        JSONObject jsonObj = resultArray.getJSONObject(i);
-                        status = jsonObj.getString("status");
-
-                    }
+                    status = objResult.getString("status");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

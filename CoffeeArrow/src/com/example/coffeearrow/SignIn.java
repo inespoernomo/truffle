@@ -3,7 +3,6 @@ package com.example.coffeearrow;
 import java.util.HashMap;
 
 import org.apache.http.client.methods.HttpPost;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -94,19 +93,15 @@ public class SignIn extends PortraitActivity implements PostToServerCallback {
 		startActivity(intent);
 	}
 
-	public void callback(Object result) {
+	@Override
+	public void callback(JSONObject result) {
 		// Dismiss the progress dialog.
 		if (dialog.isShowing())
 			dialog.dismiss();
 
-		JSONArray resultArray = (JSONArray) result;
 		String userId = null;
 		try {
-			for (int i = 0; i < resultArray.length(); i++) {
-				JSONObject record = resultArray.getJSONObject(i);
-
-				userId = record.getString("userId");
-			}
+			userId = result.getString("userId");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

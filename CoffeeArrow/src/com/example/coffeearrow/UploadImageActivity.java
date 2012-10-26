@@ -8,26 +8,25 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.coffeearrow.server.PostToServerAsyncTask;
-import com.example.coffeearrow.server.PostToServerCallback;
-import com.example.coffeearrow.server.RequestFactory;
-
-import android.os.Bundle;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.coffeearrow.server.PostToServerAsyncTask;
+import com.example.coffeearrow.server.PostToServerCallback;
+import com.example.coffeearrow.server.RequestFactory;
 
 /**
  * This is the activity to upload a image from the phone.
@@ -120,7 +119,8 @@ public class UploadImageActivity extends PortraitActivity implements PostToServe
 	    }
 	}
 	
-	public void callback(Object objResult) {
+	@Override
+	public void callback(JSONObject objResult) {
 		// Dismiss the progress dialog.
 		if (dialog.isShowing())
 			dialog.dismiss();
@@ -128,18 +128,13 @@ public class UploadImageActivity extends PortraitActivity implements PostToServe
 		Log.i("UploadUserImage", "Got back to onPostExecute.");
 		Log.i("UploadUserImage", "The result is: " + objResult);
 		
-		JSONArray resultArray = (JSONArray) objResult;
 		String status = null;
 		String s3url = null;
 		try {
-			for (int i = 0; i < resultArray.length(); i++) {
-				JSONObject record = resultArray.getJSONObject(i);
-
-				status = record.getString("status");
+			status = objResult.getString("status");
 				
-				// This is the s3 url of the file we just uploaded.
-				s3url = record.getString("imgLink");
-			}
+			// This is the s3 url of the file we just uploaded.
+			s3url = objResult.getString("imgLink");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

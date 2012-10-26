@@ -3,7 +3,6 @@ package com.example.coffeearrow;
 import java.util.HashMap;
 
 import org.apache.http.client.methods.HttpPost;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -103,17 +102,13 @@ public class SignUpActivity extends PortraitActivity implements PostToServerCall
         task.execute(request);
     }
 
-    public void callback(Object objResult) {
+    @Override
+    public void callback(JSONObject objResult) {
     	if (dialog.isShowing())
 			dialog.dismiss();
-        JSONArray resultArray = (JSONArray) objResult;
         String status = null;
         try {
-            for (int i = 0; i < resultArray.length(); i++) {
-                JSONObject record = resultArray.getJSONObject(i);
-
-                status = record.getString("status");
-            }
+            status = objResult.getString("status");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -130,7 +125,6 @@ public class SignUpActivity extends PortraitActivity implements PostToServerCall
             intent.putExtra(EMAIL,newUserEmail);
             startActivity(intent);
             finish();
-            
         }
     }
 }

@@ -3,27 +3,26 @@ package com.example.coffeearrow;
 import java.util.HashMap;
 
 import org.apache.http.client.methods.HttpPost;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.coffeearrow.helpers.ImageLoader;
-import com.example.coffeearrow.server.PostToServerAsyncTask;
-import com.example.coffeearrow.server.PostToServerCallback;
-import com.example.coffeearrow.server.RequestFactory;
-
-import android.os.Bundle;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.coffeearrow.helpers.ImageLoader;
+import com.example.coffeearrow.server.PostToServerAsyncTask;
+import com.example.coffeearrow.server.PostToServerCallback;
+import com.example.coffeearrow.server.RequestFactory;
 
 /**
  * This is the activity to edit the image caption or delete the image.
@@ -141,18 +140,14 @@ public class EditImageActivity extends PortraitActivity implements PostToServerC
         
     }
     
-	public void callback(Object objResult) {
+    @Override
+	public void callback(JSONObject objResult) {
 		Log.i("UploadUserImage", "Got back to onPostExecute.");
 		Log.i("UploadUserImage", "The result is: " + objResult);
 		
-		JSONArray resultArray = (JSONArray) objResult;
 		String status = null;
 		try {
-			for (int i = 0; i < resultArray.length(); i++) {
-				JSONObject record = resultArray.getJSONObject(i);
-
-				status = record.getString("status");
-			}
+			status = objResult.getString("status");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

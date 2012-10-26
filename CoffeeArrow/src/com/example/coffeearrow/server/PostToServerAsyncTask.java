@@ -10,7 +10,6 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,10 +27,10 @@ public final class PostToServerAsyncTask extends AsyncTask<HttpPost, Integer, Ob
 	}
 
 	@Override
-	protected JSONArray doInBackground(HttpPost... params) {
+	protected JSONObject doInBackground(HttpPost... params) {
 		HttpPost request = params[0];
 		HttpResponse response = null;
-        JSONArray finalResult = null;
+		JSONObject finalResult = null;
 		try {
 			Log.i("SeverInterface", "request url is:"+request.getURI());
 			response = client.execute(request);
@@ -47,8 +46,7 @@ public final class PostToServerAsyncTask extends AsyncTask<HttpPost, Integer, Ob
     			}
     			System.out.println(json);
     			Log.i("ServerInterface", "json is:"+json);
-    			JSONObject obj = new JSONObject(json);
-    			finalResult = obj.getJSONArray("results");
+    			finalResult = new JSONObject(json);
 			}
 			// Failed
 			else {
@@ -70,7 +68,7 @@ public final class PostToServerAsyncTask extends AsyncTask<HttpPost, Integer, Ob
 	@Override
 	protected void onPostExecute(Object objResult) {
 		if (caller != null) {
-			caller.callback(objResult);
+			caller.callback((JSONObject)objResult);
 			caller = null;
 		}
 	}

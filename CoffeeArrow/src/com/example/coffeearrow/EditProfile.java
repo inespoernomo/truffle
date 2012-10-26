@@ -3,7 +3,6 @@ package com.example.coffeearrow;
 import java.util.HashMap;
 
 import org.apache.http.client.methods.HttpPost;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -100,7 +99,8 @@ public class EditProfile extends PortraitActivity implements PostToServerCallbac
         task.execute(request);
     }
     
-    public void callback(Object objResult) {
+    @Override
+    public void callback(JSONObject objResult) {
         // Dismiss the progress dialog.
         if (dialog.isShowing())
             dialog.dismiss();
@@ -109,13 +109,8 @@ public class EditProfile extends PortraitActivity implements PostToServerCallbac
         Log.i("EditProfile", "The result is: " + objResult);
         
         String status = null;
-        JSONArray resultArray = (JSONArray) objResult;
         try {
-            for (int i = 0; i < resultArray.length(); i++) {
-                JSONObject record = resultArray.getJSONObject(i);
-
-                status = record.getString("status");
-            }
+            status = objResult.getString("status");
         } catch (JSONException e) {
             e.printStackTrace();
         }

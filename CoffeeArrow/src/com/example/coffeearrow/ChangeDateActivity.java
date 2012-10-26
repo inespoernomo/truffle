@@ -8,7 +8,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -122,16 +121,14 @@ public class ChangeDateActivity extends PortraitActivity implements
 	}
 
 	@Override
-	public void callback(Object result) {
+	public void callback(JSONObject result) {
 		if (dialog.isShowing())
 			dialog.dismiss();
 	    Log.i("ChangeDateActivity", "change date called back");
-	    JSONArray resultArray = (JSONArray)result;
 	    InvitationItem invitationItem = null;
         ObjectMapper mapper = new ObjectMapper();
 		try {
-            JSONObject jsonObj = resultArray.getJSONObject(0);
-            String record = jsonObj.toString(1);
+            String record = result.toString(1);
             invitationItem = mapper.readValue(record, InvitationItem.class);
 		} catch (JSONException e) {
 			e.printStackTrace();
