@@ -40,7 +40,11 @@ public final class PostToServerAsyncTask extends AsyncTask<HttpPost, Integer, Ob
 			
 			if (statusCode ==200) {
     			BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-    			String json = reader.readLine();
+    			String json = "";
+    			String line;
+    			while ((line = reader.readLine()) != null) {
+    			    json += line;
+    			}
     			System.out.println(json);
     			Log.i("ServerInterface", "json is:"+json);
     			JSONObject obj = new JSONObject(json);
