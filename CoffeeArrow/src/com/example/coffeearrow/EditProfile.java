@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
 public class EditProfile extends PortraitActivity {
 
@@ -19,6 +21,17 @@ public class EditProfile extends PortraitActivity {
                 sourceIntent.getStringExtra("gender"),
                 sourceIntent.getStringExtra("zip")
                 ));
+        
+        TextView name = (TextView)findViewById(R.id.editProfileName);
+        TextView zipcode = (TextView)findViewById(R.id.editProfileZipcode);
+        
+        name.setText(sourceIntent.getStringExtra("name"));
+        zipcode.setText(sourceIntent.getStringExtra("zip"));
+        
+        if (sourceIntent.getStringExtra("gender").equals("Female")) {
+            RadioButton female = (RadioButton)findViewById(R.id.editProfileGenderRadio2);
+            female.setChecked(true);
+        }
     }
 
     @Override
