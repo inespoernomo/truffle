@@ -1,7 +1,6 @@
 package com.example.coffeearrow;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.Menu;
 
 public class EditProfile extends PortraitActivity {

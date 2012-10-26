@@ -76,5 +76,6 @@
     <string name="proposal">Proposals</string>
     <string name="hearts">Hearts</string>
     <string name="title_activity_edit_profile">EditProfile</string>
+    <string name="updateProfile">Update Profile</string>
 
 </resources>
