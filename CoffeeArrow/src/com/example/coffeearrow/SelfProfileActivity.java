@@ -231,6 +231,10 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 	public void editProfile(View view) {
         // Do nothing now. For SelfProfileActivity to override.
 	    Intent destinationIntent = new Intent(this, EditProfile.class);
+	    destinationIntent.putExtra("userId", userId);
+	    destinationIntent.putExtra("name", userProfile.getFirstName());
+	    destinationIntent.putExtra("gender", userProfile.getGender());
+	    destinationIntent.putExtra("zip", userProfile.getZipcode());
         startActivity(destinationIntent);
     }
 }

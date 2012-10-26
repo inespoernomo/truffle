@@ -123,4 +123,20 @@ public class UserProfile {
 		this.images = images;
 	}
 
+	String gender;
+	public String getGender() {
+	    return gender;
+	}
+	public void setGender(String gender) {
+	    this.gender = gender;
+	}
+	
+	String zipcode;
+	public String getZipcode() {
+	    return zipcode;
+	}
+	public void setZipcode(String zipcode) {
+	    this.zipcode = zipcode;
+	}
+	
 }
