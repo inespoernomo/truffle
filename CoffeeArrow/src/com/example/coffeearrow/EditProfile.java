@@ -27,6 +27,9 @@ public class EditProfile extends PortraitActivity implements PostToServerCallbac
     private String userId;
     private TextView nameText;
     private TextView zipcodeText;
+    private String newName;
+    private String newZipcode;
+    private String newGender;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,25 +70,28 @@ public class EditProfile extends PortraitActivity implements PostToServerCallbac
         dialog.setMessage("Updating...");
         dialog.show();
 
-        String name = nameText.getText().toString();
-        if (name.isEmpty()) {
+        newName = nameText.getText().toString();
+        if (newName.isEmpty()) {
             String message = "Please enter a name.";
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG)
                     .show();
             return;
+        } else {
+            newName = newName.trim();
         }
 
-        String zipCode = zipcodeText.getText().toString();
+        newZipcode = zipcodeText.getText().toString();
 
         RadioGroup radioGenderGroup = (RadioGroup) findViewById(R.id.editProfileRadioGender);
         int selectedGender = radioGenderGroup.getCheckedRadioButtonId();
         RadioButton checkedGender = (RadioButton) findViewById(selectedGender);
+        newGender = checkedGender.getText().toString();
 
         HashMap<String, String> requestParams = new HashMap<String, String>();
         requestParams.put("userId", userId);
-        requestParams.put("name", name.trim());
-        requestParams.put("zipcode", zipCode);
-        requestParams.put("gender", checkedGender.getText().toString());
+        requestParams.put("name", newName);
+        requestParams.put("zipcode", newZipcode);
+        requestParams.put("gender", newGender);
 
         HttpPost request = RequestFactory.create(requestParams,
                 "updateUserInfo");
@@ -118,6 +124,11 @@ public class EditProfile extends PortraitActivity implements PostToServerCallbac
             Toast.makeText(getApplicationContext(), message,
                     Toast.LENGTH_SHORT).show();
         } else {
+            Intent result = new Intent();
+            result.putExtra("newName", newName);
+            result.putExtra("newGender", newGender);
+            result.putExtra("newZipcode", newZipcode);
+            setResult(RESULT_OK, result);
             
             // Go back to the profile activity
             finish();

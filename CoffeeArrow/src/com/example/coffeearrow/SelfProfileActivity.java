@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SelfProfileActivity extends ShowUserProfileActivity {
@@ -18,6 +19,7 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 	private static final int ACTIVITY_SELECT_IMAGE = 1234;
 	private static final int ACTIVITY_UPLOAD_IMAGE = 1235;
 	private static final int ACTIVITY_EDIT_IMAGE = 1236;
+	private static final int ACTIVITY_UPDATE_PROFILE = 1237;
 	private static final int MAX_PIC_NUMBER = 5;
 	
 	@Override
@@ -162,6 +164,29 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 	        	Log.i("selfprofile", "Result code not OK.");
 	        }
 	        break;
+	    case ACTIVITY_UPDATE_PROFILE:
+	        Log.i("selfprofile", "Call back from update profile activity with resultCode:"+resultCode);
+	        if(resultCode == RESULT_OK){
+	            String newName = returnedIntent.getStringExtra("newName");
+	            String newGender = returnedIntent.getStringExtra("newGender");
+	            String newZipcode = returnedIntent.getStringExtra("newZipcode");
+	            TextView textView = (TextView) findViewById(R.id.label);
+	            textView.setText(newName);
+	            userProfile.setFirstName(newName);
+	            userProfile.setGender(newGender);
+	            userProfile.setZipcode(newZipcode);
+	        }
+	        else if (resultCode == 0)
+            {
+                // User cancelled.
+                //TODO: Collect info for user behavior?
+                Log.i("selfprofile", "User cancelled image edit.");
+            }
+            else 
+            {
+                Log.i("selfprofile", "Result code not OK.");
+            }
+	        break;
 	    }
 	}
 
@@ -235,6 +260,6 @@ public class SelfProfileActivity extends ShowUserProfileActivity {
 	    destinationIntent.putExtra("name", userProfile.getFirstName());
 	    destinationIntent.putExtra("gender", userProfile.getGender());
 	    destinationIntent.putExtra("zip", userProfile.getZipcode());
-        startActivity(destinationIntent);
+	    startActivityForResult(destinationIntent, ACTIVITY_UPDATE_PROFILE);
     }
 }
