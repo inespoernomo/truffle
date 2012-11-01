@@ -1,14 +1,21 @@
 package com.example.coffeearrow;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.http.client.methods.HttpPost;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +23,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.coffeearrow.domain.Area;
 import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
@@ -31,6 +39,50 @@ public class SignUpActivity extends PortraitActivity implements PostToServerCall
         setContentView(R.layout.activity_sign_up);
         getSharedPreferences("MyPrefsFile", 0);
         dialog = new ProgressDialog(this);
+        dialog.setMessage("Getting areas...");
+        dialog.show();
+        
+        HashMap<String, String> requestParams = new HashMap<String, String>();
+
+        HttpPost request = RequestFactory.create(requestParams,
+                "getAreas");
+
+        PostToServerCallback callback = new PostToServerCallback() {
+            @Override
+            public void callback(JSONObject objResult) {
+                if (dialog.isShowing())
+                    dialog.dismiss();
+                Log.i("SignUpActivity", "Got the following areas:");
+                ArrayList<Area> areasList = new ArrayList<Area>();
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    JSONArray resultArray = (JSONArray) objResult.getJSONArray("areas");
+                    for (int i = 0; i < resultArray.length(); i++) {
+                        JSONObject jsonObj = resultArray.getJSONObject(i);
+                        String record = jsonObj.toString(1);
+                        Area area = mapper.readValue(record,
+                                Area.class);
+
+                        areasList.add(area);
+                        Log.i("SignUpActivity", area.getId()+":"+area.getDisplay());
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (JsonParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (JsonMappingException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        };
+        PostToServerAsyncTask task = new PostToServerAsyncTask(callback);
+        task.execute(request);
     }
 
     @Override
