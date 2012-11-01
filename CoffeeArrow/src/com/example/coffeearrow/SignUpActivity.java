@@ -18,9 +18,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.coffeearrow.domain.Area;
@@ -28,16 +32,23 @@ import com.example.coffeearrow.server.PostToServerAsyncTask;
 import com.example.coffeearrow.server.PostToServerCallback;
 import com.example.coffeearrow.server.RequestFactory;
 
-public class SignUpActivity extends PortraitActivity implements PostToServerCallback {
+public class SignUpActivity extends PortraitActivity implements PostToServerCallback, OnItemSelectedListener {
 	
 	private ProgressDialog dialog;
 	public final static String EMAIL = "com.coffeearrow.signIn.Email";
 	public String newUserEmail = null;
+	private Spinner areaSpinner;
+	private SignUpActivity mainActivity;
+	private ArrayList<Area> areasList;
+	private Area selectedArea;
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        getSharedPreferences("MyPrefsFile", 0);
+        mainActivity = this;
+        areaSpinner = (Spinner)findViewById(R.id.areaSpinner);
+        
         dialog = new ProgressDialog(this);
         dialog.setMessage("Getting areas...");
         dialog.show();
@@ -53,7 +64,8 @@ public class SignUpActivity extends PortraitActivity implements PostToServerCall
                 if (dialog.isShowing())
                     dialog.dismiss();
                 Log.i("SignUpActivity", "Got the following areas:");
-                ArrayList<Area> areasList = new ArrayList<Area>();
+                areasList = new ArrayList<Area>();
+                ArrayList<String> areasNameList = new ArrayList<String>(); 
                 ObjectMapper mapper = new ObjectMapper();
                 try {
                     JSONArray resultArray = (JSONArray) objResult.getJSONArray("areas");
@@ -64,9 +76,17 @@ public class SignUpActivity extends PortraitActivity implements PostToServerCall
                                 Area.class);
 
                         areasList.add(area);
+                        areasNameList.add(area.getDisplay());
                         Log.i("SignUpActivity", area.getId()+":"+area.getDisplay());
+                        
                     }
-
+                    
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mainActivity,
+                            android.R.layout.simple_spinner_item, areasNameList);
+                    areaSpinner.setAdapter(dataAdapter);
+                    
+                    areaSpinner.setOnItemSelectedListener(mainActivity);
+                    selectedArea = areasList.get(0);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (JsonParseException e) {
@@ -83,6 +103,13 @@ public class SignUpActivity extends PortraitActivity implements PostToServerCall
         };
         PostToServerAsyncTask task = new PostToServerAsyncTask(callback);
         task.execute(request);
+    }
+	
+	@Override
+    public void onItemSelected(AdapterView<?> parent, View view, int pos,
+            long id) {
+        selectedArea = areasList.get(pos);
+        Log.i("SignUpActivity", "Selected area: " + selectedArea.getId() + " " + selectedArea.getDisplay());
     }
 
     @Override
@@ -178,5 +205,11 @@ public class SignUpActivity extends PortraitActivity implements PostToServerCall
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
+        
     }
 }
