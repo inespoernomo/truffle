@@ -110,18 +110,6 @@
 	                    android:text="@string/female" />
 	            </RadioGroup>
 	        </LinearLayout>
-	
-	        <EditText
-	            android:id="@+id/zipCode"
-	            style="@style/email"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_marginTop="10dp"
-	            android:layout_weight="1"
-	            android:ems="10"
-	            android:hint="@string/zipCode"
-	            android:inputType="number"
-	            android:textCursorDrawable="@null" />
 	        
 	        <Spinner
             android:id="@+id/areaSpinner"

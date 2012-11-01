@@ -160,9 +160,6 @@ public class SignUpActivity extends PortraitActivity implements PostToServerCall
             return;
         }
 
-        EditText zipCodeText = (EditText) findViewById(R.id.zipCode);
-        String zipCode = zipCodeText.getText().toString();
-
         RadioGroup radioGenderGroup = (RadioGroup) findViewById(R.id.radioGender);
         int selectedGender = radioGenderGroup.getCheckedRadioButtonId();
         RadioButton checkedGender = (RadioButton) findViewById(selectedGender);
@@ -171,7 +168,7 @@ public class SignUpActivity extends PortraitActivity implements PostToServerCall
         requestParams.put("firstName", name.trim());
         requestParams.put("email", email.trim());
         requestParams.put("password", password.trim());
-        requestParams.put("zipCode", zipCode);
+        requestParams.put("areaId", selectedArea.getId());
         requestParams.put("gender", checkedGender.getText().toString());
 
         HttpPost request = RequestFactory.create(requestParams,
